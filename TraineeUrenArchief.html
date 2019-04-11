@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard Trainee | Uren Archief</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+<body onload="selectMonth()">
+	<nav>
+		<a href="index.html"><img id="logo" src="QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="login.html" onclick="Userlogout()">uitloggen</a></li>
+				<li><a href="dashboard-trainee-declaraties.html">Declaraties</a></li>
+                  <li><a href="TraineeUrenoverzicht.html">Uren</a></li>
+                  <li><a href="TraineeUrenArchief.html" class="active">UrenArchief</a></li>
+			</ul>
+		</div>
+	</nav>
+<div class="wrapperUren">
+	
+	<div class="container">
+		<h1>Urentabel</h1>
+			<div id="setMonthDiv">
+				<select id="selectedMonth"
+				onchange = "selectMonth()">
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maart</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Augustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">December</option>
+				  </select>
+			</div>
+		<br>
+		
+		<div id="urentabelDiv">
+
+			<table id="urenTabel" >
+				<thead>
+				<tr class="UrenHeader">
+					<th>Datum</a></th>
+					<th>Soort</a></th>
+					<th>Aantal</a></th>
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="TraineeUrenArchief.js"></script>
+</body>
+</html>
