@@ -10,6 +10,8 @@ var apiUserId = "http://localhost:8082/api/trainee/"+1//+sessionStorage.getItem(
 var trainee;
 var statusAkkoord;
 
+// EMIEL - de gevraagde maand
+var theMonth = "";
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
 var dd = today.getDate();
@@ -33,14 +35,21 @@ function traineeDropDownMenu(selectID){
 
 // GET trainee
 function GETTrainee(){
+	theMonth = mm;
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-    	trainee = JSON.parse(this.responseText);	
-    	trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
-     	for(var i = 0; i<trainee.uren.length; i++){
-     		GETRowUrenTabel(trainee.uren[i]);
-     	}
+				trainee = JSON.parse(this.responseText);	
+				trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
+				for(var i = 0; i<trainee.uren.length; i++){
+
+					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
+
+					if(uurInDBHemZeMonth <= theMonth && uurInDBHemZeMonth >= (theMonth-1) ) {
+
+					GETRowUrenTabel(trainee.uren[i]);
+					}
+				}
       }
     };
       xhttp.open("GET", apiUserId, true);
