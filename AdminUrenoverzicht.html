@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin | Urenoverzicht</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body onload="AdminUrenoverzichtPageLoad()">
+	<nav>
+		<a href="index.html"><img id="logo" src="QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			
+			<ul>
+				<li><a href="" >Uitloggen</a></li>
+				<li><a href="AdminBeheer.html" >Beheer</a></li>
+				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
+				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
+				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
+				<li><a href="AdminUrenoverzicht.html" class="active">Uren</a></li>
+				<li><a href="AdminDashboard.html" >Dashboard</a></li>
+				<br><br><br> HARDCODED: Ingelogd als admin
+			</ul>
+		</div>
+	</nav>
+		<div class="wrapperAdminUrenOverzicht">
+			<div class="container">
+				<h1>Urenoverzicht</h1>
+
+				<div id="AdminUrenOverzichtTabelDiv">
+					<table id="AdminUrenOverzichtTabel">
+					</table>
+								<!-- Tweede tabel -->
+				</div>
+				<div id="AdminTotaalUrenOverzichtTabelDiv">
+						<table id="AdminTotaalUrenOverzichtTabel">
+						</table>
+				</div>
+			</div>
+		</div>
+
+
+<script type="text/javascript" src="AdminUrenoverzicht.js"></script>
+</body>
+</html>

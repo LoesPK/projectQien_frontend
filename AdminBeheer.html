@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin | Beheer</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css"></link>
+</head>
+<body>
+	<nav>
+		<a href="index.html"><img id="logo" src="QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			
+			<ul>
+				<li><a href="" >Uitloggen</a></li>
+				<li><a href="AdminBeheer.html" class="active" >Beheer</a></li>
+				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
+				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
+				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
+				<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
+				<li><a href="AdminDashboard.html" >Dashboard</a></li>
+				<br><br><br> HARDCODED: Ingelogd als admin
+			</ul>
+		</div>
+	</nav>
+<!-- 		<div class="wrapperAdminUrenOverzicht"></div> -->
+    <div class="container">
+    	<h1>Account Aanmaken</h1>
+    	<div class="beheer">
+    	<div class="traineeAanmaken">
+        
+        <h2>Trainee</h2>
+        <p>Voornaam:</p><input type="text" id="voornaamTrainee"/><br />
+        <p>Achternaam:</p><input type="text" id="achternaamTrainee"/><br />
+        <p>Username:</p><input type="text" id="usernameTrainee"/><br />
+        <p>Wachtwoord:</p><input type="text" id="wachtwoordTrainee"/><br />
+        <p>Loon:</p><input type="text" id="loonTrainee"/><br />
+    </div>
+    <div class="klant aanmaken">
+        <h2>Klant</h2>
+       <p> Voornaam:</p><input type="text" id="voornaamKlant"/><br/>
+        <p>Achternaam:</p><input type="text" id="achternaamKlant"/><br />
+        <p>Username:</p><input type="text" id="usernameKlant"/><br />
+        <p>Wachtwoord:</p><input type="text" id="wachtwoordKlant"/><br />
+        <p>Loon:</p><input type="text" id="traineeKlant"/><br />
+    </div>
+   
+    <br/>
+    
+    </div>
+<!-- </div> -->
+ <button onclick="UserVersturen()">Verstuur</button>
+
+
+<script type="text/javascript" src="AdminTraineeAanmaken.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> Admin | Trainees</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body onload="GETTrainee()">
+		<nav>
+				<a href="index.html"><img id="logo" src="QienLogo.jpg"style="height: 70px;"></a>
+				<div class="nav">
+					
+					<ul>
+						<li><a href="" >Uitloggen</a></li>
+						<li><a href="AdminBeheer.html" >Beheer</a></li>
+						<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
+						<li><a href="AdminTraineeOverzicht.html" class="active">Trainees</a></li>
+						<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
+						<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
+						<li><a href="AdminDashboard.html" >Dashboard</a></li>
+						<br><br><br> HARDCODED: Ingelogd als admin
+					</ul>
+				</div>
+			</nav>
+
+	<div id="traineelijst"></div>
+		<button><a href="AdminTraineeAanmaken.html">  Maak nieuwe trainee aan</a></button>
+			<br/>
+			Verwijder index:<input id="numberToDelete" type="number" max="1" default="1" name="DeleteNummer">
+		<button onclick="AdminGetTraineeNumberToDelete()">Delete trainee</button>
+			<br/>
+
+			<p>Welke trainee wilt u wijzigen? Voer het ID in</p>
+				Wijzig index:<input id="numberToChange" type="number" max="1" default="1" name="wijzigen">
+		<button onclick="AdminShowTrainee()">Toon trainee</button>
+	<div id="traineeIndividu"></div>
+		<button onclick="changeTrainee()">Wijzig trainee</button>
+	<br/>
+<br/>
+
+<button id="exporting" onclick="export_table_to_csv('Trainees.csv')">Export tabel</button>
+
+<script type="text/javascript" src="AdminTraineeOverzicht.js"></script>
+</body>
+</html>

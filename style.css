@@ -1,0 +1,304 @@
+/* main styling */
+
+*{
+	box-sizing: border-box;
+	font-family: 'sans-serif', 'roboto';
+}
+
+[disabled]{
+	opacity: 0.5;	
+}
+
+[disabled]:hover{
+	cursor: not-allowed;
+	box-shadow: none;
+}
+
+body{
+	margin: 0;
+	min-height: 100vh;
+	background-color: #f3f3f3;
+}
+
+h1{
+	margin-bottom: 70px;
+	color: #333;
+	text-align: center;
+}
+
+h2{
+	color: #640080; 
+}
+
+h4{
+	color: #fff;
+}
+
+a{
+	text-decoration: none;
+	color: #fff;
+}
+
+th:hover{
+	cursor: pointer;
+}
+
+#logo{
+	margin: 10px;
+	float: left;
+}
+
+nav{
+	margin-right: 20px;
+	min-height: 61px;
+}
+
+.nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.nav li {
+  float: right;
+  padding: 10px 10px;
+}
+
+.nav li a {
+	font-size: 1.1rem;
+ 	display: block;
+  	color: #555;
+  	text-align: center;
+  	padding: 10px 10px;
+  	text-decoration: none;
+}
+
+.nav li a.active {
+  color: #640080;
+  font-weight: 600;
+}
+
+.nav li a:hover{
+  color: #640080;
+  font-weight: 600;
+}
+
+p{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+/* login page*/
+
+.inlogvelden{
+	font-size: 1.1rem;
+}
+
+
+.wrapper{
+	min-height: 80vh;
+	flex-direction: column;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+button{
+	background-color: #640080;
+	border: none;
+	padding: 10px 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	color: #fff;
+	font-size: 1.2rem;
+}
+
+button:hover{
+	opacity: 0.5;
+	cursor: pointer;
+  	box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.subs{
+	color: #000;
+	font-style: italic;
+}
+.subs:hover{
+	font-style: normal;
+}
+
+/*dashboard trainee - uren*/
+
+.tableheader{
+	color: #fff;
+}
+
+.wrapperUren{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+.container{
+	min-height: 80vh;
+	flex-direction: column;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.beheer{
+	min-height: 80vh;
+	flex-direction: row;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#addButton{
+	margin-left: 10px;	 
+	margin-bottom: 35px;
+	position: relative;
+	left: 300px;
+	top: 80px;
+}
+
+#addButtonDecla{
+	margin-left: 10px;	 
+	margin-bottom: 35px;
+	position: relative;
+	left: 550px;
+	top: 80px;
+}
+
+.dropBtn{
+	background-color: #fefefe;
+	border: none;
+	padding: 5px 5px;
+	color: #000;
+	font-size: 0.8rem;
+}
+
+.dropdownContent {
+	padding: 5px;
+  display: none;
+  overflow: auto;
+  z-index: 1;
+}
+
+.dropdownContent ul{
+	list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.dropdownContent ul li{
+	font-size: 0.8rem;
+}
+
+.dropdownContent ul li:hover{
+	cursor: pointer;
+}
+
+.show {display: block;}
+
+.dropdown{
+	margin-top: 5px;
+}
+
+table{
+  	border-spacing: 0;
+  	border-collapse: collapse;
+  	margin-bottom: 35px;
+}
+
+th{
+	font-size: 1.3rem;
+	padding: 12px 20px 12px 10px;
+  	text-align: left;
+  	background-color: #333;
+  	color: white;
+}
+
+td{
+	padding: 4px 20px 4px 10px;
+  	text-align: left;
+}
+
+tr:nth-child(odd){
+	background-color: #ddd;
+}
+
+/*dashboard trainee - declaraties*/
+
+.bijlageToevoegen{
+	background-color: #fefefe;
+	border: solid #640080 ;
+	padding: 10px 10px;
+	color: #000;
+	font-size: 1rem;
+	box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+/*#addBijlage{
+	display: none;
+}*/
+
+/*dashboard klant*/
+
+.wrapperKlant{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.overzichtTrainees {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.overzichtTrainees li {
+  cursor: pointer;
+  padding: 12px 40px;
+  min-width: 200px;
+  width: 20vw;
+  background: #eee;
+  font-size: 1.2rem;
+}
+
+
+.overzichtTrainees li:nth-child(odd) {
+  background: #333;
+  opacity: 0.5;
+  color: #fff;
+}
+
+.overzichtTrainees li.task{
+	background: #640080;
+	opacity: 0.5;
+	color: #fff;
+}
+
+/*dashboard admin*/
+
+.card{
+	margin: 0px 20px ;
+}
+.cardHead{
+	text-align: center;
+}
+
+.wrapper-admin{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: stretch;
+}
+
+
+
