@@ -1,6 +1,6 @@
 
 //Loes: de api's
-var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
+var apiUserId = "http://localhost:8082/api/trainee/+1";//+sessionStorage.getItem("storedUserID");
 //trainee variabele 
 var trainee;
 
@@ -76,7 +76,22 @@ function GETRowUrenTabel(uur){
 	var insertedCell2 = insertedRow.insertCell(2);   
     var AantalUur = document.createElement("td");
 		AantalUur.innerHTML = uur.aantal;
-        insertedCell2.appendChild(AantalUur);
+				insertedCell2.appendChild(AantalUur);
+
+		//akkoordstatus
+	var insertedCell3 = insertedRow.insertCell(3);   
+	var status = document.createElement("td");
+	if(uur.accordStatus == "NIETINGEVULD"){
+		statusAkkoord = "Opgeslagen";
+	}if(uur.accordStatus == "TEACCODEREN"){
+		statusAkkoord = "Te Accoderen";
+	}if(uur.accordStatus == "GOEDGEKEURD"){
+		statusAkkoord = "Goedgekeurd";
+	}if(uur.accordStatus == "AFGEKEURD"){
+		statusAkkoord = "Afgekeurd";
+	}
+	insertedCell3.innerHTML = statusAkkoord;
+	insertedCell3.appendChild(status);
 }
 
 function Userlogout(){
