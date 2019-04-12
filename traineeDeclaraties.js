@@ -96,9 +96,12 @@ var yyyy = maxDate.getFullYear();
 function addRowKostenTabel(){
 	console.log("in addRowKostenTabel()")
     var table = document.getElementById("kostenTabel");
+    console.log("table:");
     console.log(table);
-    console.log("table length: " + table.children.length);
-    var insertedRow = table.insertRow(table.children.length); //Jordi, was: 2
+    // console.log("tabl children length: " + table.children.children.length); // kan niet length van de children.children
+    console.log("table.children[1]:");
+    console.log(table.children[1]);
+    var insertedRow = table.children[1].insertRow(0); //oud: zonder children, en insertRow(1)
 	insertedRow.id = "0";
     // insertedRow.className = "kostenRow";
 	for(var i = 0; i<4; i++){
@@ -158,18 +161,18 @@ function KostenOpslaan(){
     console.log(table);
     console.log("table children:");
     console.log(table.children);
-    var tablebody = table.children[2];
-    console.log("tablebody:");
-    console.log(tablebody);
-    var aantal = tablebody.children.length; // hij denkt dat alleen de onderste rij bestaat
-    console.log("aantal:" + aantal);
+    // var tablebody = table.children[2];
+    // console.log("tablebody:");
+    // console.log(tablebody);
+    // var aantal = tablebody.children.length; // hij denkt dat alleen de onderste rij bestaat
+    // console.log("aantal:" + aantal);
 
     var nieuwekosten = trainee.kosten;
     // voor elke rij (i is een rij)
-    for(var rij = 0; rij<aantal; rij++){
+    for(var rij = 0; rij<2; rij++){
         console.log("we kijken nu naar rij:" + rij);
         var kosten = {};
-        var tablerow = tablebody.children[rij];
+        var tablerow = table.children[0].children[rij]; //var tablerow = tablebody.children[rij];
         kosten.id = tablerow.id;
         var c = tablerow.children;
 
@@ -246,6 +249,36 @@ function KostenOpslaan(){
     PutTrainee(trainee);
 }
 
+function kostenOpslaanJordi(){
+    var kostenTabel = document.getElementById("kostenTabel");
+    var kostenTabelBody = kostenTabel.children[1];
+    var aantalChildren = kostenTabelBody.children.length;
+    // voor elke rij
+    // rij is het getal van de rij
+    // huidigeRij is het object dat alle children van die rij bevat
+    for(var rij = 0; rij<aantalChildren; rij++){
+        var kost = {};
+        var huidigeRij = kostenTabelBody.children[rij];
+        // als deze rij een kost heeft met status Open
+        if (huidigeRij.children[0].children[0].innerHTML === "Open"){
+            kost.id = rij+100; //test, misschien dom idee
+            kost.status = "Opgeslagen";//huidigeRij.children[0].children[0].innerHTML;
+            kost.factuurDatum = huidigeRij.children[1].children[0].value;
+            kost.soort = huidigeRij.children[2].children[0].value;
+            kost.bedrag = huidigeRij.children[3].children[0].value;
+            trainee.kosten.push(kost);
+        }
+    }
+    PutTrainee(trainee);
+}
+
+function kostenVerzendenJordi(){
+    for(var aantalOpgeslagenKosten = 0; aantalOpgeslagenKosten < trainee.kosten.length; aantalOpgeslagenKosten++){
+        trainee.kosten[aantalOpgeslagenKosten].status = "Verzonden";
+    }
+    PutTrainee(trainee);
+}
+
 //VERZENDEN
 function KostenVerzenden(){
     console.log("in KostenVerzenden()");
@@ -316,6 +349,7 @@ function KostenVerzenden(){
 
 //PUT uren
 function PutTrainee(trainee){
+    console.log("in PutTrainee");
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4)
