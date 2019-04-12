@@ -44,18 +44,25 @@ function GETTrainee(){
 				for(var i = 0; i<trainee.uren.length; i++){
 
 					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
-
-					if(uurInDBHemZeMonth <= theMonth && uurInDBHemZeMonth >= (theMonth-1) ) {
-
-					GETRowUrenTabel(trainee.uren[i]);
-					}
-				}
-      }
-    };
+					var uurInDBHemZeDay = trainee.uren[i].factuurDatum.substring(8,10);
+					console.log("Dag: "+uurInDBHemZeDay)
+					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN") { 
+						GETRowUrenTabel(trainee.uren[i]);
+						
+						if(uurInDBHemZeMonth < theMonth-1 || uurInDBHemZeMonth > theMonth || 
+								uurInDBHemZeMonth > theMonth && uurInDBHemZeDay > dd ) {
+							var id = trainee.uren[i].id;
+							document.getElementById(id).style.background = "red";
+							console.log("Datum: " + dd)
+						}//end 3e if
+				}//end 2e if 		
+			}//end for
+		}//end 1e if
+	}//end http function;
       xhttp.open("GET", apiUserId, true);
 	    xhttp.setRequestHeader("Content-type", "application/json");
 	    xhttp.send();	
-}
+}//end GETTrainee
 
 function UrenVerzenden(){
 	var table = document.getElementById("urenTabel");
