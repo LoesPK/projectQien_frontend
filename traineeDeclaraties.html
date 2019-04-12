@@ -35,22 +35,21 @@
                         <th><a href="javascript:SortTable(2,'N');" class="tableheader">Bedrag €</a></th>
                         <th class="tableheader">Bijlage</th>
                     </tr>
-                    </thead>
-                    <!-- <tr id="0"> -->
-                        <!-- <td>Open</td>
-                        <td><input type="date" name="datum" id="datum0" max="today" required="required"/></td>                        
-                        <td>
-                            <select id="select0">
-                                <option value="Openbaar Vervoer" required="required">Openbaar Vervoer</option>
-                            </select>
-                        </td>
-                        <td><input type="number" name="Bedrag" value="0" id="bedrag0" required="required"/></td>
-                    </tr>
-                    </tbody> -->
-                </table>
+                </thead>
+                <tbody>
+                    <!-- tbody wordt met de [+] knop aangevuld -->
+                    <!-- <tr> FOR TESTING
+                        <td>td item 1 in de tbody</td>
+                        <td>td item 2 in de tbody</td>
+                        <td>td item 3 in de tbody</td>
+                    </tr> -->
+                </tbody>
+            </table>
         </div>
-        <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
-        <button onclick="KostenVerzenden()">Verzenden</button>
+        <button type ="submit" value="opslaan" onclick="kostenOpslaanJordi()">Opslaan</button> <!--Jordi: edited-->
+        <button onclick="kostenVerzendenJordi()">Verzenden</button>
+
+        <!-- leegte -->
 
         <div><button id="addButton" onclick="addRowAutoKostenTabel()">+</button></div>
         <h2>Auto</h2>
