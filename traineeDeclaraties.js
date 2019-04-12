@@ -67,6 +67,8 @@ function GETTrainee(){
           trainee = JSON.parse(this.responseText);	
           trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
            for(var i = 0; i<trainee.kosten.length; i++){
+               console.log("trainee.kosten," + "i = " + i);
+               console.log(trainee.kosten);
                GETRowKostenTabel(trainee.kosten[i]);
            }
         }
@@ -83,8 +85,8 @@ var yyyy = maxDate.getFullYear();
     if(mm<10){
         mm='0'+mm
     } 
-maxDate = (yyyy+'-'+mm+'-'+'01');
-function setMaxDatum(){
+    maxDate = (yyyy+'-'+mm+'-'+'01');
+    function setMaxDatum(){
 	var datumveld = document.getElementById("datum0");
     datumveld.setAttribute("max", maxDate);
     //console.log("setMaxDatum methode");
@@ -93,53 +95,54 @@ function setMaxDatum(){
 //voegt 1 nieuwe rij toe aan de tabel
 function addRowKostenTabel(){
 	console.log("in addRowKostenTabel()")
-	table = document.getElementById("kostenTabel");
-    var insertedRow = table.insertRow(2);
+    var table = document.getElementById("kostenTabel");
+    console.log(table);
+    console.log("table length: " + table.children.length);
+    var insertedRow = table.insertRow(table.children.length); //Jordi, was: 2
 	insertedRow.id = "0";
-// insertedRow.className = "kostenRow";
+    // insertedRow.className = "kostenRow";
 	for(var i = 0; i<4; i++){
 		var insertedCell = insertedRow.insertCell(i);
         insertedCell.id = IDCell++;
         
-//voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
-            if (i == 0) {
-                var temp1 = document.createElement("td");
-                temp1.innerHTML = "Open";
-                insertedCell.appendChild(temp1);
-            }
-//voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
-			if (i == 1) {
-				dateID++;
-				var temp1 = document.createElement("input");
-				temp1.type = "date";
-				temp1.id = "datum"+dateID; 
-				temp1.setAttribute("max", maxDate);
-				temp1.value = today;
-				//console.log(temp1.value)
-				// temp1.required = "required";
-				insertedCell.appendChild(temp1);
-			}
-//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
-			if (i == 2) {
-				selectID++;
-				var temp1 = document.createElement("select");
-				temp1.id = "select"+selectID;
-				var temp2 = document.createElement("OPTION");
-				temp2.innerHTML = "Openbaar Vervoer"
-				temp1.appendChild(temp2);
-				insertedCell.appendChild(temp1);
-			}
-//voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
-			if (i == 3) {
-				aantalID++;
-				var temp1 = document.createElement("input");
-				temp1.type = "number";
-				temp1.value = 0;
-				temp1.id = "aantal"+aantalID; 
-				
-				insertedCell.appendChild(temp1);
-            }
-			
+        //voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
+        if (i == 0) {
+            var temp1 = document.createElement("td");
+            temp1.innerHTML = "Open";
+            insertedCell.appendChild(temp1);
+        }
+        //voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
+        if (i == 1) {
+            dateID++;
+            var temp1 = document.createElement("input");
+            temp1.type = "date";
+            temp1.id = "datum"+dateID; 
+            temp1.setAttribute("max", maxDate);
+            temp1.value = today;
+            //console.log(temp1.value)
+            // temp1.required = "required";
+            insertedCell.appendChild(temp1);
+        }
+        //voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
+        if (i == 2) {
+            selectID++;
+            var temp1 = document.createElement("select");
+            temp1.id = "select"+selectID;
+            var temp2 = document.createElement("OPTION");
+            temp2.innerHTML = "Openbaar Vervoer"
+            temp1.appendChild(temp2);
+            insertedCell.appendChild(temp1);
+        }
+        //voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
+        if (i == 3) {
+            aantalID++;
+            var temp1 = document.createElement("input");
+            temp1.type = "number";
+            temp1.value = 0;
+            temp1.id = "aantal"+aantalID; 
+            
+            insertedCell.appendChild(temp1);
+        }
 	}
     dropkosten(selectID);
 }
@@ -150,28 +153,28 @@ function addRowKostenTabel(){
 function KostenOpslaan(){
     console.log("in kosten opslaan");
     var kostenlijst = new Array();
-    //console.log(kostenlijst);
-	var table = document.getElementById("kostenTabel");
-    //console.log(table + "table");
-    
-	// var aantal = table.children[2];
-	var tablebody = table.children[2];
-    //console.log(tablebody + "tablebody");
-    
-	var aantal = tablebody.children.length;
-    //console.log("Start loop" + aantal);
+    var table = document.getElementById("kostenTabel");
+    console.log("table:");
+    console.log(table);
+    console.log("table children:");
+    console.log(table.children);
+    var tablebody = table.children[2];
+    console.log("tablebody:");
+    console.log(tablebody);
+    var aantal = tablebody.children.length; // hij denkt dat alleen de onderste rij bestaat
+    console.log("aantal:" + aantal);
 
-    // voor elke cel
-    for(var i = 0; i<aantal; i++){
-        var kosten = {}
-        var tablerow = tablebody.children[i];
+    var nieuwekosten = trainee.kosten;
+    // voor elke rij (i is een rij)
+    for(var rij = 0; rij<aantal; rij++){
+        console.log("we kijken nu naar rij:" + rij);
+        var kosten = {};
+        var tablerow = tablebody.children[rij];
         kosten.id = tablerow.id;
         var c = tablerow.children;
 
         var ch2 = c[3];
         var chi2 = ch2.children[0];
-        console.log(c[3] + "ch2");
-        console.log(chi2.value + "chi2 value");
         // Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
         if(chi2.value <= 0){
             console.log("continue");
@@ -180,59 +183,135 @@ function KostenOpslaan(){
 
         // ------- datumveld -------//
         var ch0 = c[1];
-        //console.log(ch0 + " ch0");
         var chi0 = ch0.children[0];
-        //console.log(chi0 + "chi0");
-        //console.log(chi0.value + "chi0.value");
 
         // ------- soort kosten veld -------//
         var ch = c[2];
-        //console.log(ch + " ch");
         var chi = ch.children[0];
         var chiVal = chi.value;
-        //console.log(chiVal + " chiVal");
 
         // ------- bedrag -------//
         var ch2 = c[3];
-        //console.log(ch2 + "ch2");
         var chi2 = ch2.children[0];
-        //console.log(chi2.value + " chi2.value");
 
         kosten.soort = chiVal;
         kosten.bedrag = chi2.value*100; 
         var d = new Date(chi0.value);
         kosten.factuurDatum = d;
         kosten.status = "Opgeslagen";
-        console.log(kosten);
-
         kostenlijst.push(kosten);
-        // Jordi
-        trainee.kosten = kostenlijst;
-        PutTrainee(trainee);
+        console.log("kostenlijst:");
+        console.log(kostenlijst);
 
+        nieuwekosten.push(kosten)
+        console.log("nieuwe kosten:");
+        console.log(nieuwekosten);
+       
         //POST alleen als het id van uren 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
         if(tablerow.id == 0){
             //console.log(tablerow.id + "tablerow.id");
             var test = JSON.stringify(kosten),tablerow;
             //console.log(test + " JSON Test");
-            PostDataKosten(JSON.stringify(kosten),tablerow);	
+            // PostDataKosten(JSON.stringify(kosten),tablerow);	
         }
         //PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
-        if(tablerow.id !=0){
+        // CHANGESTUFFHERE
+        else{
             if(chi0.value != kosten.factuurDatum){
                 console.log("niet gelijk datum");
-                wijzigkosten(kosten);
+                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk datum");
+                // PUTwijzigkosten(kosten);
             }
             if(chiVal != kosten.soort){
                 console.log("niet gelijk kosten soort");
-                wijzigkosten(kosten);
+                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk soort");
+                // PUTwijzigkosten(kosten);
             }
             if(chi2.value != kosten.bedrag){
                 console.log("niet gelijk kosten bedrag");
-                wijzigkosten(kosten);
+                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk bedrag");
+                // PUTwijzigkosten(kosten);
             }
         }	
     }
+    // CHANGESTUFFHERE
+    // Jordi: let op dat je de uiteindelijke nieuwe kosten BUITEN de for loop toewijst (tenzij je het fatsoenlijk weet toe te voegen in elke loop)
+    
+    // for (var j=0; j<kostenlijst.length; j++){
+    //     console.log("loop " + j);
+    //     // nieuwekosten.push(kostenlijst[i]);
+    // }
+    console.log("nieuwe kosten:");
+    console.log(nieuwekosten);
+    PutTrainee(trainee);
+}
+
+//VERZENDEN
+function KostenVerzenden(){
+    console.log("in KostenVerzenden()");
+    var kostenlijst = new Array();
+	var table = document.getElementById("kostenTabel");
+	var tablebody = table.children[2];
+	var aantal = tablebody.children.length;
+
+   for(var i = 0; i<aantal; i++){
+ 	var kosten = {}
+   	var tablerow = tablebody.children[i];
+   	kosten.id = tablerow.id;
+    var c = tablerow.children;
+
+    var ch2 = c[3];
+    var chi2 = ch2.children[0];
+
+// Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
+    if(chi2.value <= 0){
+        console.log("continue");
+        continue;
+    }
+
+    // ------- datumveld -------//
+	var ch0 = c[1];    
+    var chi0 = ch0.children[0];
+    
+	// ------- soort kosten veld -------//
+	var ch = c[2];
+	var chi = ch.children[0];
+    var chiVal = chi.value;
+
+	// ------- bedrag -------//
+    var ch2 = c[3];
+	var chi2 = ch2.children[0];
+
+    kosten.soort = chiVal;
+	kosten.bedrag = chi2.value*100; 
+	var d = new Date(chi0.value);
+    kosten.factuurDatum = d;
+    kosten.status = "Opgeslagen";
+    console.log("kosten:");
+    console.log(kosten);
+
+    kostenlijst.push(kosten);
+
+    console.log("kostenlijst:");
+    console.log(kostenlijst);
+
+
+        //POST alleen als het id van kosten 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
+	 	if(tablerow.id == 0){
+          continue;	
+        }
+        //PUT alleen als het id van kosten geen 0 is (ofwel, hij staat al in de database "opgeslagen") en als de waarde daadwerkelijk anders is geworden.
+		if(tablerow.id !=0){
+            kosten.status = "Verzonden";
+            console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden");
+		 	// PUTwijzigkosten(kosten);
+        }
+    }
+    // Jordi
+    // trainee.kosten = kostenlijst;
+    // Put de kosten opnieuw naar de trainee, nu als verzonden kosten
+    PutTrainee(trainee);
+   // window.location.reload();
 }
 
 //PUT uren
@@ -241,13 +320,13 @@ function PutTrainee(trainee){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4)
           if(this.status == 200) {
-                  console.log("PutTrainee -> this.responseText"); 
+                  console.log("PutTrainee, this.responseText:"); 
                   console.log(this.responseText); 
           trainee = JSON.parse(this.responseText);
         //   document.location.reload(true); tijdelijk geuitcomment
           }
           else{
-              alert("HELP!" + this.status);
+              alert("HELP! status:" + this.status);
           }
     };
     xhttp.open("PUT", apiUserId, true);
@@ -255,43 +334,46 @@ function PutTrainee(trainee){
       xhttp.send(JSON.stringify(trainee));
   }
 
-//PUT kosten bij opslaan
-function wijzigkosten(kosten) {
-    console.log("in wijzigkosten()");
-    var xhttp = new XMLHttpRequest();
+// //PUT kosten bij opslaan
+// Jordi: vanaf nu PUTten we alleen nog trainees, geen losse kosten
+// function PUTwijzigkosten(kosten) {
+//     console.log("in PUTwijzigkosten()");
+//     var xhttp = new XMLHttpRequest();
  
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4) {
-            if (this.status == 200) {
-                // window.location.reload(); test uitgecomment
-            } else {
-                alert(this.statusText)
-            }
-        }
-    };
-    xhttp.open("PUT", apikosten+kosten.id, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send(JSON.stringify(kosten));  
- }
+//     xhttp.onreadystatechange = function () {
+//         if (this.readyState == 4) {
+//             if (this.status == 200) {
+//                 // window.location.reload(); test uitgecomment
+//             } else {
+//                 alert(this.statusText)
+//             }
+//         }
+//     };
+//     xhttp.open("PUT", apikosten+kosten.id, true);
+//     xhttp.setRequestHeader("Content-type", "application/json");
+//     xhttp.send(JSON.stringify(kosten));  
+//  }
 
 //POST kosten bij opslaan
 // roept maakverzondenkostentabel() aan
-function PostDataKosten(data, rij){
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-    	//console.log("POST" + this.responseText + this.status);
-    	var kosten = JSON.parse(this.responseText);
-    	rij.id = kosten.id;
-        //console.log(rij.id);
-        maakverzondenkostentabel();
-        // window.location.reload(); test uitgecomment
-        }
-    }
-    xhttp.open("POST", apikosten, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-	xhttp.send(data);
-}
+// Jordi: we posten geen kosten meer
+
+// function PostDataKosten(data, rij){
+//   var xhttp = new XMLHttpRequest();
+//   xhttp.onreadystatechange = function() {
+//     if (this.readyState == 4 && this.status == 200) {
+//     	//console.log("POST" + this.responseText + this.status);
+//     	var kosten = JSON.parse(this.responseText);
+//     	rij.id = kosten.id;
+//         //console.log(rij.id);
+//         maakverzondenkostentabel();
+//         // window.location.reload(); test uitgecomment
+//         }
+//     }
+//     xhttp.open("POST", apikosten, true);
+//     xhttp.setRequestHeader("Content-type", "application/json");
+// 	xhttp.send(data);
+// }
 // JORDI: bug oplossen STOP #################################################################################################################
 
 // TIM - het maken van de tabel
@@ -422,140 +504,59 @@ function totaalbedrag(kosten) {
 
 // oud
 // //GET functie met opbouwen rijen kostentabel
-// function GETRowKostenTabel(kosten){
-//     //console.log(kosten.status + "KOSTEN>STATUS");
-//     if(kosten.status != "Verzonden"){
-//         if(kosten.waarde != "Auto"){
+function GETRowKostenTabel(kosten){
+    //console.log(kosten.status + "KOSTEN>STATUS");
+    if(kosten.status != "Verzonden"){
+        if(kosten.waarde != "Auto"){
 
-// 	var table = document.getElementById("kostenTabel");
-// 	var insertedRow = table.insertRow(3);
-//     insertedRow.id = kosten.id;
-    
-//     //status
-// 	var insertedCell2 = insertedRow.insertCell(0);
-// 	var emp3 = document.createElement("td");
-//     emp3.innerHTML = kosten.status;
-//     //console.log(emp3 + "emp3");
-// 	insertedCell2.appendChild(emp3);
-
-// 	//datum
-// 	var insertedCell = insertedRow.insertCell(1);
-// 	var elm = document.createElement("input");
-// 	elm.type = "date";
-// 	//console.log(kosten.factuurDatum);
-// 	elm.value = kosten.factuurDatum.substring(0,10);
-// 	elm.setAttribute("max", maxDate);
-// 	//console.log(elm);
-//     insertedCell.appendChild(elm);
-    
-// 	//soort kosten
-// 	var insertedCell1 = insertedRow.insertCell(2);
-// 	var elm1 = document.createElement("select");
-// 	elm1.id = kosten.id;
-// 	var arr = ["Openbaar Vervoer", "Overige Kosten"];
-// 	for(var i = 0; i<arr.length; i++){
-// 		var option = document.createElement("OPTION"),
-// 		txt = document.createTextNode(arr[i]);
-// 		option.appendChild(txt);
-// 		option.value = arr[i];
-// 		elm1.insertBefore(option,elm1.lastChild);
-// 		    if(arr[i] === kosten.waarde){
-// 			    elm1.value = kosten.waarde;
-// 		    }
-// 	}
-// 	//console.log(elm1.value);
-//     insertedCell1.appendChild(elm1);
-    
-// 	//bedrag
-// 	var insertedCell2 = insertedRow.insertCell(3);
-// 	var emp3 = document.createElement("input");
-// 	emp3.type = "number";
-// 	emp3.value = kosten.bedrag/100;
-// 	insertedCell2.appendChild(emp3);
-//     //console.log(insertedCell1);
-//     }
-// }
-// }
-
-//VERZENDEN
-function KostenVerzenden(){
-    console.log("in KostenVerzenden()");
-    var kostenlijst = new Array();
-    //console.log(kostenlijst);
 	var table = document.getElementById("kostenTabel");
-    //console.log(table + "table");
+	var insertedRow = table.insertRow(3);
+    insertedRow.id = kosten.id;
     
-	// var aantal = table.children[2];
-	var tablebody = table.children[2];
-    //console.log(tablebody + "tablebody");
+    //status
+	var insertedCell2 = insertedRow.insertCell(0);
+	var emp3 = document.createElement("td");
+    emp3.innerHTML = kosten.status;
+    //console.log(emp3 + "emp3");
+	insertedCell2.appendChild(emp3);
+
+	//datum
+	var insertedCell = insertedRow.insertCell(1);
+	var elm = document.createElement("input");
+	elm.type = "date";
+	//console.log(kosten.factuurDatum);
+	elm.value = kosten.factuurDatum.substring(0,10);
+	elm.setAttribute("max", maxDate);
+	//console.log(elm);
+    insertedCell.appendChild(elm);
     
-	var aantal = tablebody.children.length;
-    //console.log("Start loop" + aantal);
-
-   for(var i = 0; i<aantal; i++){
- 	var kosten = {}
-   	var tablerow = tablebody.children[i];
-   	kosten.id = tablerow.id;
-    var c = tablerow.children;
-
-    var ch2 = c[3];
-    var chi2 = ch2.children[0];
-    console.log(c[3] + "ch2");
-    console.log(chi2.value + "chi2 value");
-// Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
-    if(chi2.value <= 0){
-        console.log("continue");
-        continue;
+	//soort kosten
+	var insertedCell1 = insertedRow.insertCell(2);
+	var elm1 = document.createElement("select");
+	elm1.id = kosten.id;
+	var arr = ["Openbaar Vervoer", "Overige Kosten"];
+	for(var i = 0; i<arr.length; i++){
+		var option = document.createElement("OPTION"),
+		txt = document.createTextNode(arr[i]);
+		option.appendChild(txt);
+		option.value = arr[i];
+		elm1.insertBefore(option,elm1.lastChild);
+		    if(arr[i] === kosten.waarde){
+			    elm1.value = kosten.waarde;
+		    }
+	}
+	//console.log(elm1.value);
+    insertedCell1.appendChild(elm1);
+    
+	//bedrag
+	var insertedCell2 = insertedRow.insertCell(3);
+	var emp3 = document.createElement("input");
+	emp3.type = "number";
+	emp3.value = kosten.bedrag/100;
+	insertedCell2.appendChild(emp3);
+    //console.log(insertedCell1);
     }
-
-    // ------- datumveld -------//
-	var ch0 = c[1];
-    //console.log(ch0 + " ch0");
-    
-	var chi0 = ch0.children[0];
-	//console.log(chi0 + "chi0");
-    //console.log(chi0.value + "chi0.value");
-
-	// ------- soort kosten veld -------//
-	var ch = c[2];
-    //console.log(ch + " ch");
-    
-	var chi = ch.children[0];
-    var chiVal = chi.value;
-    //console.log(chiVal + " chiVal");
-
-	// ------- bedrag -------//
-    var ch2 = c[3];
-    //console.log(ch2 + "ch2");
-	var chi2 = ch2.children[0];
-	//console.log(chi2.value + " chi2.value");
-
-    kosten.soort = chiVal;
-	kosten.bedrag = chi2.value*100; 
-	var d = new Date(chi0.value);
-    kosten.factuurDatum = d;
-    kosten.status = "Opgeslagen";
-    console.log("kosten:");
-    console.log(kosten);
-
-      kostenlijst.push(kosten);
-      console.log("kostenlijst:");
-      console.log(kostenlijst);
-    // Jordi
-    trainee.kosten = kostenlijst;
-    PutTrainee(trainee);
-
-//POST alleen als het id van kosten 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
-	 	if(tablerow.id == 0){
-          continue;	
-        }
-//PUT alleen als het id van kosten geen 0 is (ofwel, hij staat al in de database "opgeslagen") en als de waarde daadwerkelijk anders is geworden.
-		if(tablerow.id !=0){
-            kosten.status = "Verzonden";
-		 	wijzigkosten(kosten);
-        }
-    }
-   // window.location.reload();
+} // what the fuck is deze indenting >:@
 }
 
 // Loes der ding

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="style.css"></link>
 </head>
 <!-- Jordi: GETTrainee() in onload toegevoegd -->
-<body onload="GETTrainee(), dropkosten(0), setMaxDatum(), maakverzondenkostentabel(), setCurrentDate()"> <!--getKosten()-->
+<body onload="GETTrainee(), maakverzondenkostentabel()"  > <!--getKosten()-->
 	<nav>
 		<a href="index.html"><img id="logo" src="oscar.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -25,6 +25,7 @@
         <h2>OV en Overige Kosten</h2>
         <div id="kostentabelDiv">
 
+            <!-- tabel OV/overige kosten begint hier -->
             <table id="kostenTabel" >
                 <thead>
                     <tr class="KostenHeader">
@@ -35,12 +36,8 @@
                         <th class="tableheader">Bijlage</th>
                     </tr>
                     </thead>
-                    <tr>
-                        </td>
-                    </tr>
-                    <tbody id="urenbody">
-                    <tr id="0">
-                        <td>Open</td>
+                    <!-- <tr id="0"> -->
+                        <!-- <td>Open</td>
                         <td><input type="date" name="datum" id="datum0" max="today" required="required"/></td>                        
                         <td>
                             <select id="select0">
@@ -49,7 +46,7 @@
                         </td>
                         <td><input type="number" name="Bedrag" value="0" id="bedrag0" required="required"/></td>
                     </tr>
-                    </tbody>
+                    </tbody> -->
                 </table>
         </div>
         <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
