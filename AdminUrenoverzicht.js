@@ -33,6 +33,32 @@ var NietingevuldVerlofUren = 0;
 var NietingevuldZiekteUren = 0;
 var NietingevuldTotaalUren = 0;
 
+// Tim - per trainee - Variabelen aanmaken om  een rij te maken
+var klant = "";
+var voornaam = "";
+var achternaam = "";
+var ingediend;
+var goedgekeurd;
+var totaal;
+var dagen;
+var GewerkteUren; 
+var Over100Uren;
+var Over125Uren;
+var VerlofUren;
+var ZiekteUren;
+var TotaalUren;
+
+// Tim - per trainee - Goedgekeurd uren
+var Goedgekeurdpertraineeingediend;
+var Goedgekeurdpertraineegoedgekeurd;
+var Goedgekeurdpertraineetotaal = 0;
+var Goedgekeurdpertraineedagen = 0;
+var GoedgekeurdpertraineeGewerkteUren = 0; 
+var GoedgekeurdpertraineeOver100Uren = 0;
+var GoedgekeurdpertraineeOver125Uren = 0;
+var GoedgekeurdpertraineeVerlofUren = 0;
+var GoedgekeurdpertraineeZiekteUren = 0;
+var GoedgekeurdpertraineeTotaalUren = 0;
 
 // EMIEL - Functie om de pagina op te bouwen bij het inladen
 function AdminUrenoverzichtPageLoad(){
@@ -42,22 +68,32 @@ function AdminUrenoverzichtPageLoad(){
 // EMIEL - tabel opbouwen
 function AdminUrenLijstBuild() {
     var xhttp = new XMLHttpRequest();
- 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4) {
             if (this.status == 200) {
-                document.getElementById("AdminTotaalUrenOverzichtTabel").innerHTML = "";
                 var traineelijst = JSON.parse(this.responseText);
+
+                document.getElementById("AdminTotaalUrenOverzichtTabel").innerHTML = "";
+                document.getElementById("PerTraineeAdminUrenOverzichtTabel").innerHTML = "";
+
                 var table = document.createElement("table");
+                var pertraineetable = document.createElement("table");
 
-                // createNewUrenLijstTableHeader();
+                // Emiel - create totaal TableHeader();
                 addHtmlElement(table,adminUrenTotTableHeader());  
-                var tbody = addHtmlElement(table, document.createElement("tbody"));
+                // Tim - create PerTrainee - headers
+                addHtmlElement(pertraineetable,PerTraineeUrenTableHeader());  
 
-                // Tim - Totale uren
+                // Emiel - create totaal table body
+                var tbody = addHtmlElement(table, document.createElement("tbody"));
+                // Tim - create per trainee table body
+                var pertraineetbody = addHtmlElement(pertraineetable, document.createElement("tbody"));
+
+                // Tim - Totale uren tabel invullen
                     // Tim - Per trainee
                     for(var i = 0; i< traineelijst.length; i++) {
-                        console.log("PER TRAINEE");
+                        //console.log("PER TRAINEE");
+                        
                         // Tim - Per uur van de trainee
                         for(var k = 0; k < traineelijst[i].uren.length; k++){
                             switchTotaalUren(traineelijst[i].uren[k],traineelijst[i].uren[k].waarde);
@@ -66,12 +102,58 @@ function AdminUrenLijstBuild() {
                             switchTotaalNietingevuldUren(traineelijst[i].uren[k],traineelijst[i].uren[k].waarde);
                         }
                     }
+
+                // Tim - per trainee tabel invullen
+                    //Tim - per trainee loop
+                    for(var i = 0; i< traineelijst.length; i++){
+                        console.log("PER TRAINEE");
+                        emptyvariables();
+                        //Tim - reset variables per trainee
+                        voornaam = traineelijst[i].voornaam;
+                        achternaam = traineelijst[i].achternaam;
+
+                        
+
+                        // Tim - per uur van de trainee loop
+                        for(var k = 0; k < traineelijst[i].uren.length; k++){
+                            //console.log("PER UUR");
+                            //console.log(traineelijst[i].uren[k].accordStatus);
+                                switch(traineelijst[i].uren[k].accordStatus){
+                                    case "GOEDGEKEURD": 
+                                    switchPerTraineeGoedgekeurdUren(traineelijst[i].uren[k],traineelijst[i].uren[k].waarde);
+                                    case "TEACCODEREN":
+                                    //console.log("PER TEACCORDEREN");
+                                    case "NIETINGEVULD":
+                                    //console.log("PER NIETINGEVULD");
+                                    case "AFGEKEURD":
+                                    //console.log("PER AFGEKEURD");
+                            }
+                            
+                        }
+                    
+                    console.log(GoedgekeurdpertraineeTotaalUren + "GOED TOTAAL");
+
+                    if(GoedgekeurdpertraineeTotaalUren > 0){
+                    // Tim - per trainee - per uur categorie een rij maken
+                    addHtmlElement(pertraineetbody,PerTraineeGoedgekeurdTableRow(traineelijst));
+                    }
+
+                    }
+
+
+                
+
+
                 //Opbouwen van de body van de tabel
                 addHtmlElement(tbody, adminUrenTotaalTableRow(traineelijst));
                 addHtmlElement(tbody,adminUrentGoedgekeurdTableRow(traineelijst));
                 addHtmlElement(tbody,adminUrenteaccoderenTableRow(traineelijst));
-                addHtmlElement(tbody,adminUrentNietingevuldTableRow(traineelijst));
+                //addHtmlElement(tbody,adminUrentNietingevuldTableRow(traineelijst));
+
+
+
                 document.getElementById("AdminTotaalUrenOverzichtTabel").appendChild(table);
+                document.getElementById("PerTraineeAdminUrenOverzichtTabel").appendChild(pertraineetable);
             } else {
                 alert(this.statusText)
             }
@@ -80,11 +162,46 @@ function AdminUrenLijstBuild() {
     xhttp.open("GET", apiUur, true);
     xhttp.send();
 }
+
+// Tim - per trainee - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
+function switchPerTraineeGoedgekeurdUren(traineelijst,typeUur){
+    
+    
+    if(traineelijst.accordStatus == "GOEDGEKEURD"){
+    console.log("PER GOEDGEKEURD");
+    Goedgekeurdpertraineeingediend = "Ja";
+    Goedgekeurdpertraineegoedgekeurd = "Ja";
+
+        switch(typeUur){
+            case "Gewerkte Uren": 
+            GoedgekeurdpertraineeGewerkteUren += traineelijst.aantal;
+            GoedgekeurdpertraineeTotaalUren += traineelijst.aantal; 
+                return AantalGewerkteUren;
+            case "Overuren 100%": 
+            GoedgekeurdpertraineeOver100Uren += traineelijst.aantal;
+            GoedgekeurdpertraineeTotaalUren += traineelijst.aantal;
+            break
+            case "Overuren 125%": 
+            GoedgekeurdpertraineeOver125Uren += traineelijst.aantal;
+            GoedgekeurdpertraineeTotaalUren += traineelijst.aantal;
+            break
+            case "Verlof Uren": 
+            GoedgekeurdpertraineeVerlofUren += traineelijst.aantal;
+            GoedgekeurdpertraineeTotaalUren += traineelijst.aantal;
+            break
+            case "Ziekte Uren": 
+            GoedgekeurdpertraineeZiekteUren += traineelijst.aantal;
+            GoedgekeurdpertraineeTotaalUren += traineelijst.aantal;
+            break
+        }
+    }
+}
+
 // EMIEL - totaal - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchTotaalUren(traineelijst,typeUur){
     switch(typeUur){
         case "Gewerkte Uren": 
-        console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
+        //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
             AantalGewerkteUren += traineelijst.aantal;
             AantalTotaalUren += traineelijst.aantal; 
             return AantalGewerkteUren;
@@ -111,7 +228,7 @@ function switchTotaalGoegekeurdUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "GOEDGEKEURD"){
         switch(typeUur){
             case "Gewerkte Uren": 
-            console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
+            //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
                 GoedgekeurdGewerkteUren += traineelijst.aantal;
                 GoedgekeurdTotaalUren += traineelijst.aantal; 
                 return AantalGewerkteUren;
@@ -139,7 +256,7 @@ function switchTotaalteaccoderenUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "TEACCODEREN"){
         switch(typeUur){
             case "Gewerkte Uren": 
-            console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
+            //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
                 teaccoderenGewerkteUren += traineelijst.aantal;
                 teaccoderenTotaalUren += traineelijst.aantal; 
                 return AantalGewerkteUren;
@@ -167,7 +284,7 @@ function switchTotaalNietingevuldUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "NIETINGEVULD"){
         switch(typeUur){
             case "Gewerkte Uren": 
-            console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
+            //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
                 NietingevuldGewerkteUren += traineelijst.aantal;
                 NietingevuldTotaalUren += traineelijst.aantal; 
                 return AantalGewerkteUren;
@@ -190,6 +307,27 @@ function switchTotaalNietingevuldUren(traineelijst,typeUur){
         }
     }
 }
+
+// Tim - Per Trainee - Header tabel aanmaken
+function PerTraineeUrenTableHeader() {
+    var tableHeader = document.createElement("thead");
+    var tr = addHtmlElement(tableHeader, document.createElement("tr"));
+    addHtmlElementContent(tr, document.createElement("th"), "Klant");
+    addHtmlElementContent(tr, document.createElement("th"), "Voornaam");
+    addHtmlElementContent(tr, document.createElement("th"), "Achternaam");
+    addHtmlElementContent(tr, document.createElement("th"), "Ingediend");
+    addHtmlElementContent(tr, document.createElement("th"), "Goedgekeurd");
+    addHtmlElementContent(tr, document.createElement("th"), "Totaal Uren");
+    addHtmlElementContent(tr, document.createElement("th"), "Dagen");
+    addHtmlElementContent(tr, document.createElement("th"), "Gewerkt");
+    addHtmlElementContent(tr, document.createElement("th"), "Over 100%");
+    addHtmlElementContent(tr, document.createElement("th"), "Over 125%");
+    addHtmlElementContent(tr, document.createElement("th"), "Verlof");
+    addHtmlElementContent(tr, document.createElement("th"), "Wacht");
+    addHtmlElementContent(tr, document.createElement("th"), "Ziekte");
+    return tableHeader;
+}
+
 // EMIEL - Header tabel aanmaken
 function adminUrenTotTableHeader() {
     var tableHeader = document.createElement("thead");
@@ -205,7 +343,7 @@ function adminUrenTotTableHeader() {
     addHtmlElementContent(tr, document.createElement("th"), "Ziekte");
     return tableHeader;
 }
-// EMIEL - Totaal Rij aanmaken
+// EMIEL - totaal tabel - Totaal Rij aanmaken
 function adminUrenTotaalTableRow(traineelijst) {
     var tr = document.createElement("tr");
     addHtmlElementContent(tr, document.createElement("td"), "Totaal");
@@ -219,7 +357,7 @@ function adminUrenTotaalTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AantalZiekteUren);
     return tr;
 }
-// Tim - Teaccoderen Rij aanmaken
+// Tim - totaal tabel - Teaccoderen Rij aanmaken
 function adminUrenteaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
     addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
@@ -233,7 +371,7 @@ function adminUrenteaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
     return tr;
 }
-// Tim - Goedgekeurd Rij aanmaken
+// Tim - totaal tabel - Goedgekeurd Rij aanmaken
 function adminUrentGoedgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
     addHtmlElementContent(tr, document.createElement("td"), "Goedgekeurd");
@@ -272,3 +410,39 @@ function adminUrentNietingevuldTableRow(traineelijst) {
     child.innerHTML = tekst;
     return child;
 }
+
+// Tim - Per trainee de variable op 0 zetten
+function emptyvariables(){
+    console.log("Empty variables");
+    Goedgekeurdpertraineeingediend = "";
+    Goedgekeurdpertraineegoedgekeurd = "";
+    Goedgekeurdpertraineetotaal = 0;
+    Goedgekeurdpertraineedagen = 0;
+    GoedgekeurdpertraineeGewerkteUren = 0; 
+    GoedgekeurdpertraineeOver100Uren = 0;
+    GoedgekeurdpertraineeOver125Uren = 0;
+    GoedgekeurdpertraineeVerlofUren = 0;
+    GoedgekeurdpertraineeZiekteUren = 0;
+    GoedgekeurdpertraineeTotaalUren = 0;
+
+}
+
+// Tim - Per Trainee - goedgekeurde uren rij aanmaken
+function PerTraineeGoedgekeurdTableRow(traineelijst) {
+    var tr = document.createElement("tr");
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), voornaam);
+    addHtmlElementContent(tr, document.createElement("td"), achternaam);
+    addHtmlElementContent(tr, document.createElement("td"), Goedgekeurdpertraineeingediend);
+    addHtmlElementContent(tr, document.createElement("td"), Goedgekeurdpertraineegoedgekeurd);
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeTotaalUren);
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeGewerkteUren);
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver100Uren);
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver125Uren);
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeVerlofUren);
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeZiekteUren);
+    return tr;
+}
+
