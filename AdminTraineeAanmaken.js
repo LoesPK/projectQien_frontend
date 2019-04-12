@@ -1,20 +1,41 @@
 var api = "http://localhost:8082/api/";
 
+//array waar bedrijven in gezet worden
+var arr = new Array();
+// EMIEL - Opbouwen vd pagina en zn onderdelen
+function setPage(){
+    //dropdown klanten bij trainee
+    getData("klant");
+}
+
+//GET Klant
+function getData(user){
+  var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+				klant = JSON.parse(this.responseText);	
+                console.log(klant);
+                var elm1 = document.getElementById("klantTrainee");
+                for(i=0; i<klant.length; i++){
+                    var option = document.createElement("OPTION"),
+                    txt = document.createTextNode(klant[i].bedrijf);
+                    option.appendChild(txt);
+                    elm1.insertBefore(option,elm1.lastchild);
+                    
+                    arr.push(klant[i].bedrijf);
+
+                }
+
+		}//end 1e if
+	}//end http function;
+      xhttp.open("GET", api + user, true);
+	    xhttp.setRequestHeader("Content-type", "application/json");
+	    xhttp.send();	
+}//end GETTrainee
 
 
-// HIER MOET NOG EEN DROPDOWN VAN GEMAAKT EN INGEVOERD WORDEN
-// // EMIEL - Opbouwen vd pagina en zn onderdelen
-// function setPage(){
-//     var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
-// 	var klantTrainee = document.createElement("select");
-// 	for(var i = 0; i<arr.length; i++){
-// 		var option = document.createElement("OPTION"),
-// 		txt = document.createTextNode(arr[i]);
-//         option.appendChild(txt);
-//     }
-//     var elm1 = document.getElementById("klantTrainee");
-//     elm1.appendChild(klantTrainee);
-// }
+
+
 
 // EMIEL - Afhankelijk van het type user, roep specifieke functies aan die de user maakt
 function UserVersturen(user){
