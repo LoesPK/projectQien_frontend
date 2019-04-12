@@ -250,59 +250,31 @@ function KostenOpslaan(){
 }
 
 function kostenOpslaanJordi(){
-    var kosten;
     var kostenTabel = document.getElementById("kostenTabel");
     var kostenTabelBody = kostenTabel.children[1];
     var aantalChildren = kostenTabelBody.children.length;
-    // console.log("kostenTabelBody.children[0]:");
-    // console.log(kostenTabelBody.children[0]);
-    // console.log("aantal children tabel: " + aantalChildren);
     // voor elke rij
     // rij is het getal van de rij
     // huidigeRij is het object dat alle children van die rij bevat
     for(var rij = 0; rij<aantalChildren; rij++){
         var kost = {};
         var huidigeRij = kostenTabelBody.children[rij];
-        // console.log("huidige rij value: ")
-        // console.log(huidigeRij.value);
-        // console.log("kostenTabel:");
-        // console.log(kostenTabel);
-        // console.log("huidigeRij:");
-        // console.log(huidigeRij);
-
-        if (huidigeRij.id == 0){
-            console.log("rij " + rij + " is een nieuw toegevoegde rij (met id 0 dus)");
-        }else{
-            console.log("rij " + rij + " heeft niet id 0");
+        // als deze rij een kost heeft met status Open
+        if (huidigeRij.children[0].children[0].innerHTML === "Open"){
+            kost.id = rij+100; //test, misschien dom idee
+            kost.status = "Opgeslagen";//huidigeRij.children[0].children[0].innerHTML;
+            kost.factuurDatum = huidigeRij.children[1].children[0].value;
+            kost.soort = huidigeRij.children[2].children[0].value;
+            kost.bedrag = huidigeRij.children[3].children[0].value;
+            trainee.kosten.push(kost);
         }
-        // voor elke cell
-        // for (var cell = 0; cell<huidigeRij.children.length; cell++){
-        //     var huidigeCell = huidigeRij.children[cell];
+    }
+    PutTrainee(trainee);
+}
 
-        //     console.log("huidige cell value: " + huidigeCell.value);
-        //     //stuff
-        // }   
-        kost.id = rij+100; //test, misschien dom idee
-        kost.status = huidigeRij.children[0].children[0].innerHTML;
-        kost.factuurDatum = huidigeRij.children[1].children[0].value;
-        kost.soort = huidigeRij.children[2].children[0].value;
-        kost.bedrag = huidigeRij.children[3].children[0].value;
-        // console.log("KIJK HIER");
-        // console.log(huidigeRij.children[0].children[0].innerHTML);
-        // console.log("kost.id")
-        // console.log(kost.id)
-        // console.log("kost.status")
-        // console.log(kost.status)
-        // console.log("kost.factuurDatum")
-        // console.log(kost.factuurDatum)
-        // console.log("kost.soort")
-        // console.log(kost.soort)
-        // console.log("kost.bedrag")
-        // console.log(kost.bedrag)
-
-        trainee.kosten.push(kost);
-        // console.log("trainee.kosten:");
-        // console.log(trainee.kosten);
+function kostenVerzendenJordi(){
+    for(var aantalOpgeslagenKosten = 0; aantalOpgeslagenKosten < trainee.kosten.length; aantalOpgeslagenKosten++){
+        trainee.kosten[aantalOpgeslagenKosten].status = "Verzonden";
     }
     PutTrainee(trainee);
 }
