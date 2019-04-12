@@ -5,10 +5,13 @@ var dateID = 0;
 var aantalID = 0;
 //Loes: de twee api's
 var apiHour = "http://localhost:8082/api/uur/";
-var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
+var apiUserId = "http://localhost:8082/api/trainee/"+1//+sessionStorage.getItem("storedUserID");
 //trainee variabele 
 var trainee;
+var statusAkkoord;
 
+// EMIEL - de gevraagde maand
+var theMonth = "";
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
 var dd = today.getDate();
@@ -32,14 +35,21 @@ function traineeDropDownMenu(selectID){
 
 // GET trainee
 function GETTrainee(){
+	theMonth = mm;
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-    	trainee = JSON.parse(this.responseText);	
-    	trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
-     	for(var i = 0; i<trainee.uren.length; i++){
-     		GETRowUrenTabel(trainee.uren[i]);
-     	}
+				trainee = JSON.parse(this.responseText);	
+				trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
+				for(var i = 0; i<trainee.uren.length; i++){
+
+					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
+
+					if(uurInDBHemZeMonth <= theMonth && uurInDBHemZeMonth >= (theMonth-1) ) {
+
+					GETRowUrenTabel(trainee.uren[i]);
+					}
+				}
       }
     };
       xhttp.open("GET", apiUserId, true);
@@ -139,7 +149,7 @@ function GETRowUrenTabel(uur){
 	var insertedCell = insertedRow.insertCell(0);
 	console.log(uur.accordStatus);
 	console.log(uur.accordStatus == "NIETINGEVULD");
-	if(uur.accordStatus == "TEACCODEREN"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
 		console.log("in if");
 		insertedCell.innerHTML = uur.factuurDatum.substring(0,10);
 		document.getElementById("addButton").setAttribute("disabled", "disabled");
@@ -158,7 +168,7 @@ function GETRowUrenTabel(uur){
 	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
 	
-	if(uur.accordStatus == "TEACCODEREN"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
 			insertedCell1.innerHTML = uur.waarde;
 		}
 	else{
@@ -180,9 +190,8 @@ function GETRowUrenTabel(uur){
 	
 	//aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);
-	if(uur.accordStatus == "TEACCODEREN"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
 		insertedCell2.innerHTML = uur.aantal;
-
 	}
 	else{
 		var AantalUur = document.createElement("input");
@@ -202,6 +211,17 @@ function GETRowUrenTabel(uur){
   		xhttp.send();});
 	insertedCell2.appendChild(VerwijderKnop);
 	}
+	var insertedCell3 = insertedRow.insertCell(3);
+	if(uur.accordStatus == "NIETINGEVULD"){
+		statusAkkoord = "Opgeslagen";
+	}if(uur.accordStatus == "TEACCODEREN"){
+		statusAkkoord = "Te Accoderen";
+	}if(uur.accordStatus == "GOEDGEKEURD"){
+		statusAkkoord = "Goedgekeurd";
+	}if(uur.accordStatus == "AFGEKEURD"){
+		statusAkkoord = "Afgekeurd";
+	}
+	insertedCell3.innerHTML = statusAkkoord;
 
 }
 
@@ -210,7 +230,7 @@ function addRowUrenTabel(){
 	table = document.getElementById("urenTabel");
 	var insertedRow = table.insertRow(1);
 	insertedRow.id = "0";
-	for(var i = 0; i<3; i++){
+	for(var i = 0; i<4; i++){
 		var insertedCell = insertedRow.insertCell(i);
 		insertedCell.id = IDCell++;
 		//voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
@@ -251,7 +271,10 @@ function addRowUrenTabel(){
 					});
 				insertedCell.appendChild(temp1);
 				insertedCell.appendChild(temp2);		
-			}	
+			}
+			if(i == 3){
+				insertedCell.innerHTML = "Nieuw";
+			}
 	}
 	traineeDropDownMenu(selectID);
 }
