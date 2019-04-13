@@ -2,13 +2,14 @@ var api = "http://localhost:8082/api/";
 
 //array waar bedrijven in gezet worden
 var arr = new Array();
+
 // EMIEL - Opbouwen vd pagina en zn onderdelen
 function setPage(){
     //dropdown klanten bij trainee
     getData("klant");
 }
 
-//GET Klant
+// EMIEL - GET Klant: Het ophalen van alle klanten in de datbase en die invullen in een dropdown menu
 function getData(user){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -20,11 +21,9 @@ function getData(user){
                     txt = document.createTextNode(klant[i].bedrijf);
                     option.appendChild(txt);
                     elm1.insertBefore(option,elm1.lastchild);
-                    
+
                     arr.push(klant[i].bedrijf);
-
-                }
-
+                }//end for
 		}//end 1e if
 	}//end http function;
       xhttp.open("GET", api + user, true);
@@ -36,20 +35,56 @@ function getData(user){
 
 
 
-// EMIEL - Afhankelijk van het type user, roep specifieke functies aan die de user maakt
+// EMIEL - Afhankelijk van het type user, roep specifieke functies aan die de fields vd user invult
+// Vervolgens wordt een POST-functie van de user aangeroepen
 function UserVersturen(user){
 	if(user == "trainee"){		
         trainee = traineeFields();
-        console.log(trainee + "trainee");
+        var nietPosten = 0;
+        Object.keys(trainee).forEach(function(key){
+// console.log(key)
+// console.log(trainee[key])
+// console.log(trainee[key].length)
+// console.log(trainee[key][0])
+            if(trainee[key].length == 0 || trainee[key][0] == " "){
+                nietPosten++;
+                if(confirm("Het veld " + key + " is mogelijk niet correct ingevuld. Vul iets in en let op dat er geen spaties voor staan. Klik op annuleren om te wijzigen of op ok om door te gaan.")){
+                    nietPosten--;
+                }else{
+                }//end ifelse
+            }//end if
+        })//end forEach
+
+        if(nietPosten == 0){
         postData(JSON.stringify(trainee),"trainee");
-            }
+            if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
+             window.location.reload();
+            }//end if
+        }//end if
+    }//end if
+
     if (user == "klant") {
         klant = klantFields();
-        console.log(klant + "klant");
+        var nietPosten = 0;
+        
+        Object.keys(klant).forEach(function(key){
+            if(klant[key].length == 0 || klant[key][0] == " "){
+                nietPosten++;
+                if(confirm("Het veld " + key + " is mogelijk niet correct ingevuld. Vul iets in en let op dat er geen spaties voor staan. Klik op annuleren om te wijzigen of op ok om door te gaan.")){
+                    nietPosten--;
+                }else{
+                }//end ifelse
+            }//end if
+        })//end forEach
+
+        if(nietPosten == 0){
         postData(JSON.stringify(klant),"klant");
-    }
-   
-}
+            if(!alert("Klant "+klant.voornaam + " "+ klant.achternaam + " bij "+ klant.bedrijf + " is aangemaakt!")){
+            window.location.reload();
+            }//end if
+        }//end if
+    }//end if   
+}//end function UserVersturen(user)
 
 
 
@@ -67,9 +102,18 @@ function traineeFields(){
     trainee.emailadres = emailadres;
     trainee.username = username; 
     trainee.wachtwoord = wachtwoord;
-    // trainee.uren = new Array(); 
-    // trainee.klant = new Array();
+    // trainee.klant = ;
+    
     return trainee;
+}
+
+function isEmpty(field, fieldValue){
+    var regex = new RegExp("^[a-zA-Z]+$");
+    if(fieldValue == regex){
+    return field;}
+    else{
+        return "-";
+    }
 }
 
 // Vul fields van de klant in met de ingevoerde velden
@@ -80,7 +124,7 @@ function klantFields(){
       var bedrijf = document.getElementById("bedrijfKlant").value;
       var username = document.getElementById("usernameKlant").value;
       var wachtwoord = document.getElementById("wachtwoordKlant").value;
-      var trainee = document.getElementById("traineeKlant").value;
+//     var trainee = document.getElementById("traineeKlant").value;
       var klant = {}
         klant.voornaam = voornaam;
         klant.achternaam = achternaam;
@@ -88,11 +132,10 @@ function klantFields(){
         klant.username = username; 
         klant.wachtwoord = wachtwoord;
         klant.bedrijf = bedrijf;
-        klant.trainee = new Array(); 
         return klant;
     }
 
-//POST user
+//EMIEL - POST user. Afhankelijk van het type user worden de waarden van de juiste fields in de database aangemaakt en ingevuld
 function postData(data, typeUser){
     console.log("data: " + data);
     console.log("typeUser: " + typeUser);
