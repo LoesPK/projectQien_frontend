@@ -40,9 +40,12 @@ function GETTrainee(){
 				trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
 				for(var i = 0; i<trainee.uren.length; i++){
 					
+					//De dag, maand en jaar van het uur apart in een variabele
 					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
 					var uurInDBHemZeDay = trainee.uren[i].factuurDatum.substring(8,10);
 					var uurInDBHemZeYear = trainee.uren[i].factuurDatum.substring(0,4);
+					
+					//Check op status vd uren zodat alleen de uren die niet ingevuld of teaccorderen zijn worden weergegeven
 					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN") { 
 						GETRowUrenTabel(trainee.uren[i]);
 						
