@@ -5,13 +5,11 @@ var dateID = 0;
 var aantalID = 0;
 //Loes: de twee api's
 var apiHour = "http://localhost:8082/api/uur/";
-var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
+var apiUserId = "http://localhost:8082/api/trainee/1" //+sessionStorage.getItem("storedUserID");
 //trainee variabele 
 var trainee;
 var statusAkkoord;
 
-// EMIEL - de gevraagde maand
-var theMonth = "";
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
 var dd = today.getDate();
@@ -35,26 +33,29 @@ function traineeDropDownMenu(selectID){
 
 // GET trainee
 function GETTrainee(){
-	theMonth = mm;
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
 				trainee = JSON.parse(this.responseText);	
 				trainee.uren.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
 				for(var i = 0; i<trainee.uren.length; i++){
-
+					
 					var uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
 					var uurInDBHemZeDay = trainee.uren[i].factuurDatum.substring(8,10);
-					console.log("Dag: "+uurInDBHemZeDay)
+					var uurInDBHemZeYear = trainee.uren[i].factuurDatum.substring(0,4);
 					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN") { 
 						GETRowUrenTabel(trainee.uren[i]);
 						
-						if(uurInDBHemZeMonth < theMonth-1 || uurInDBHemZeMonth > theMonth || 
-								uurInDBHemZeMonth > theMonth && uurInDBHemZeDay > dd ) {
+						//voorwaarden wanneer een uur toegestaan is: anders wordt het uur roodgekleurd en moet de trainee deze (zelf) verwijderen
+						if(uurInDBHemZeDay <= dd && uurInDBHemZeMonth == mm && uurInDBHemZeYear == yyyy ||
+								uurInDBHemZeMonth == (mm-1) && uurInDBHemZeYear == yyyy || 
+									mm == 1 && uurInDBHemZeMonth == 12 && uurInDBHemZeYear == (yyyy-1)){
+//						console.log("Voorwaarde werkt!")
+								}else{
 							var id = trainee.uren[i].id;
 							document.getElementById(id).style.background = "red";
-							console.log("Datum: " + dd)
-						}//end 3e if
+//						console.log("Datum: " + dd)
+						}//end ifelse
 				}//end 2e if 		
 			}//end for
 		}//end 1e if
