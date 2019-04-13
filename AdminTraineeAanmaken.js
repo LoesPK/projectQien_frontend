@@ -14,7 +14,6 @@ function getData(user){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
 				klant = JSON.parse(this.responseText);	
-                console.log(klant);
                 var elm1 = document.getElementById("klantTrainee");
                 for(i=0; i<klant.length; i++){
                     var option = document.createElement("OPTION"),
