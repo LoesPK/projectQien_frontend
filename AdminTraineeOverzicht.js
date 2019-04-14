@@ -13,6 +13,7 @@ function GETTrainee(){
       var tbody = addHtmlElement(table, document.createElement("tbody"));
       for(var i = 0; i< trainee.length; i++){
         addHtmlElement(tbody, traineeTableRow(trainee[i]));
+       
       }
       document.getElementById("traineelijst").appendChild(table);		
       }
@@ -112,39 +113,45 @@ function changeTrainee(){
     xhttp.send(JSON.stringify(huidigeTrainee));  // kan niet als object worden meegestuurd, moet als string, vandaar stringify
 }
 
-function addHtmlElement(parent, child) {
-  parent.appendChild(child);
-  return child;
-}
-
-function addHtmlElementContent(parent, child, tekst) {
-   parent.appendChild(child);
-   child.innerHTML = tekst;
-   return child;
-}
 function traineeTableHeader() {
    var tableHeader = document.createElement("thead");
    var tr = addHtmlElement(tableHeader, document.createElement("tr"));
-   addHtmlElementContent(tr, document.createElement("th"), "id");
+   //addHtmlElementContent(tr, document.createElement("th"), "id");
    addHtmlElementContent(tr, document.createElement("th"), "Voornaam");
    addHtmlElementContent(tr, document.createElement("th"), "Achternaam");
    addHtmlElementContent(tr, document.createElement("th"), "Username");
-   addHtmlElementContent(tr, document.createElement("th"), "Wachtwoord");
-   addHtmlElementContent(tr, document.createElement("th"), "Loon");
-   addHtmlElementContent(tr, document.createElement("th"), "Uren");
+   addHtmlElementContent(tr, document.createElement("th"), "Klant");
+   addHtmlElementContent(tr, document.createElement("th"), "Aanpassen");
+   addHtmlElementContent(tr, document.createElement("th"), "Verwijderen");
+   
    return tableHeader;
 }
 
 function traineeTableRow(trainee) {
    var tr = document.createElement("tr");
-   addHtmlElementContent(tr, document.createElement("td"), trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.username);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.wachtwoord);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.loon);
-   addHtmlElementContent(tr, document.createElement("td"), "uren trainee hier");
-   return tr;
+    //addHtmlElementContent(tr, document.createElement("td"), trainee.id);
+    addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam);
+    addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam);
+    addHtmlElementContent(tr, document.createElement("td"), trainee.username);
+    addHtmlElementContent(tr, document.createElement("td"), "trainee.klant.bedrijf");
+    addHtmlElementContent(tr, document.createElement("td"), "Aanpassen met PUT");
+    // verwijderknop maken: Maakt een element en geeft aan aan dat er een delete actie op de parent (=rij vd cel) moet worden uitgevoerd
+    var temp2 = document.createElement("span");
+    temp2.className = "fas fa-trash-alt";
+    temp2.addEventListener("click", function(){
+      var td = event.target.parentNode;
+      //var td = tr;
+      console.log(trainee.id)
+      DeleteTrainee(trainee.id)
+      td.parentNode.removeChild(td);
+      
+      });
+      tr.appendChild(temp2);
+      addHtmlElementContent(tr, temp2, "");
+
+
+    
+    return tr;
 }
 
 function addHtmlElement(parent, child) {
