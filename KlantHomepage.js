@@ -16,7 +16,7 @@ function getTrainees(){
           
       }
     };
-      xhttp.open("GET", apiTrainee+"4", true);
+      xhttp.open("GET", apiTrainee+"67", true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -150,7 +150,7 @@ function TraineeHourChange(){
               klantSendAccord(trainee);
       }
     };
-      xhttp.open("GET", apiTrainee+"4", true);
+      xhttp.open("GET", apiTrainee+"67", true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
