@@ -2,6 +2,10 @@ var IDCell = 1;
 var selectID = 0;
 var dateID = 0;
 var aantalID = 0;
+var deleteID = 0;
+
+//Jordi: nieuw idee:
+var negativeRowID = 0;
 //Loes: onderstaande is het javascript datum opject
 var date = new Date();
 //Loes: de twee api's
@@ -94,7 +98,9 @@ var yyyy = maxDate.getFullYear();
 
 //voegt 1 nieuwe rij toe aan de tabel
 function addRowKostenTabel(){
-	console.log("in addRowKostenTabel()")
+    // console.log("in addRowKostenTabel()")
+    console.log("sessionStorage.getItem('storedUserID'):");
+    console.log(sessionStorage.getItem("storedUserID"));
     var table = document.getElementById("kostenTabel");
     console.log("table:");
     console.log(table);
@@ -102,9 +108,11 @@ function addRowKostenTabel(){
     console.log("table.children[1]:");
     console.log(table.children[1]);
     var insertedRow = table.children[1].insertRow(0); //oud: zonder children, en insertRow(1)
-	insertedRow.id = "0";
+
+    insertedRow.id = --negativeRowID;//"0";
+    console.log("inserted row id:" + insertedRow.id);
     // insertedRow.className = "kostenRow";
-	for(var i = 0; i<4; i++){
+	for(var i = 0; i<6; i++){ //oud: i<4, want nu is er een delete knop bij
 		var insertedCell = insertedRow.insertCell(i);
         insertedCell.id = IDCell++;
         
@@ -146,108 +154,143 @@ function addRowKostenTabel(){
             
             insertedCell.appendChild(temp1);
         }
+        if (i==4){
+            console.log("bijlage bla bla");
+        }
+        if (i == 5){
+            deleteID++;
+            var deleteKostButton = document.createElement("input");
+            deleteKostButton.type = "button";
+            deleteKostButton.id = "delete"+deleteID;
+            deleteKostButton.value = "DELETE"+deleteID;
+            deleteKostButton.addEventListener("click", function(){
+                verwijderKost(deleteKostButton.id);
+            })
+            // deleteKostButton.innerHTML = "DELETE";
+            // deleteKostButton.onclick = alert("DELETE EVERYTHING");
+
+            insertedCell.appendChild(deleteKostButton);
+        }
 	}
     dropkosten(selectID);
+}
+
+// Jordi
+function verwijderKost(buttonID){
+    teVerwijderenKost = document.getElementById(buttonID);
+    console.log("dit is de ID van deze kost: " + buttonID);
+    var kostenTabel = document.getElementById("kostenTabel");
+    console.log(teVerwijderenKost.parentNode.parentNode);
+    var rijDieWegMoet = teVerwijderenKost.parentNode.parentNode;
+    var aantalKostenInTabel = kostenTabel.children[0].children.length + kostenTabel.children[1].children.length;
+    // console.log(aantalKostenInTabel);
+    // console.log("rij die weg moet:")
+    // console.log(rijDieWegMoet);
+    console.log("aantal children in body: " + kostenTabel.children[1].children.length);
+    console.log("positie waar een rij verwijderd gaat worden: " + kostenTabel.children[1].children.length);
+    var kostIDNummer = teVerwijderenKost.id.substring(6);
+    console.log(aantalKostenInTabel - kostIDNummer);
+    kostenTabel.deleteRow(aantalKostenInTabel - kostIDNummer); // deleteRow verwacht een number;
 }
 
 // JORDI: bug oplossen START #################################################################################################################
 //POST kosten opslaan functie
 // roept ook PUTTrainee en POSTDataKosten aan
-function KostenOpslaan(){
-    console.log("in kosten opslaan");
-    var kostenlijst = new Array();
-    var table = document.getElementById("kostenTabel");
-    console.log("table:");
-    console.log(table);
-    console.log("table children:");
-    console.log(table.children);
-    // var tablebody = table.children[2];
-    // console.log("tablebody:");
-    // console.log(tablebody);
-    // var aantal = tablebody.children.length; // hij denkt dat alleen de onderste rij bestaat
-    // console.log("aantal:" + aantal);
+// function KostenOpslaan(){
+//     console.log("in kosten opslaan");
+//     var kostenlijst = new Array();
+//     var table = document.getElementById("kostenTabel");
+//     console.log("table:");
+//     console.log(table);
+//     console.log("table children:");
+//     console.log(table.children);
+//     // var tablebody = table.children[2];
+//     // console.log("tablebody:");
+//     // console.log(tablebody);
+//     // var aantal = tablebody.children.length; // hij denkt dat alleen de onderste rij bestaat
+//     // console.log("aantal:" + aantal);
 
-    var nieuwekosten = trainee.kosten;
-    // voor elke rij (i is een rij)
-    for(var rij = 0; rij<2; rij++){
-        console.log("we kijken nu naar rij:" + rij);
-        var kosten = {};
-        var tablerow = table.children[0].children[rij]; //var tablerow = tablebody.children[rij];
-        kosten.id = tablerow.id;
-        var c = tablerow.children;
+//     var nieuwekosten = trainee.kosten;
+//     // voor elke rij (i is een rij)
+//     for(var rij = 0; rij<2; rij++){
+//         console.log("we kijken nu naar rij:" + rij);
+//         var kosten = {};
+//         var tablerow = table.children[0].children[rij]; //var tablerow = tablebody.children[rij];
+//         kosten.id = tablerow.id;
+//         var c = tablerow.children;
 
-        var ch2 = c[3];
-        var chi2 = ch2.children[0];
-        // Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
-        if(chi2.value <= 0){
-            console.log("continue");
-            continue;
-        }
+//         var ch2 = c[3];
+//         var chi2 = ch2.children[0];
+//         // Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
+//         if(chi2.value <= 0){
+//             console.log("continue");
+//             continue;
+//         }
 
-        // ------- datumveld -------//
-        var ch0 = c[1];
-        var chi0 = ch0.children[0];
+//         // ------- datumveld -------//
+//         var ch0 = c[1];
+//         var chi0 = ch0.children[0];
 
-        // ------- soort kosten veld -------//
-        var ch = c[2];
-        var chi = ch.children[0];
-        var chiVal = chi.value;
+//         // ------- soort kosten veld -------//
+//         var ch = c[2];
+//         var chi = ch.children[0];
+//         var chiVal = chi.value;
 
-        // ------- bedrag -------//
-        var ch2 = c[3];
-        var chi2 = ch2.children[0];
+//         // ------- bedrag -------//
+//         var ch2 = c[3];
+//         var chi2 = ch2.children[0];
 
-        kosten.soort = chiVal;
-        kosten.bedrag = chi2.value*100; 
-        var d = new Date(chi0.value);
-        kosten.factuurDatum = d;
-        kosten.status = "Opgeslagen";
-        kostenlijst.push(kosten);
-        console.log("kostenlijst:");
-        console.log(kostenlijst);
+//         kosten.soort = chiVal;
+//         kosten.bedrag = chi2.value*100; 
+//         var d = new Date(chi0.value);
+//         kosten.factuurDatum = d;
+//         kosten.status = "Opgeslagen";
+//         kostenlijst.push(kosten);
+//         console.log("kostenlijst:");
+//         console.log(kostenlijst);
 
-        nieuwekosten.push(kosten)
-        console.log("nieuwe kosten:");
-        console.log(nieuwekosten);
+//         nieuwekosten.push(kosten)
+//         console.log("nieuwe kosten:");
+//         console.log(nieuwekosten);
        
-        //POST alleen als het id van uren 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
-        if(tablerow.id == 0){
-            //console.log(tablerow.id + "tablerow.id");
-            var test = JSON.stringify(kosten),tablerow;
-            //console.log(test + " JSON Test");
-            // PostDataKosten(JSON.stringify(kosten),tablerow);	
-        }
-        //PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
-        // CHANGESTUFFHERE
-        else{
-            if(chi0.value != kosten.factuurDatum){
-                console.log("niet gelijk datum");
-                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk datum");
-                // PUTwijzigkosten(kosten);
-            }
-            if(chiVal != kosten.soort){
-                console.log("niet gelijk kosten soort");
-                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk soort");
-                // PUTwijzigkosten(kosten);
-            }
-            if(chi2.value != kosten.bedrag){
-                console.log("niet gelijk kosten bedrag");
-                console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk bedrag");
-                // PUTwijzigkosten(kosten);
-            }
-        }	
-    }
-    // CHANGESTUFFHERE
-    // Jordi: let op dat je de uiteindelijke nieuwe kosten BUITEN de for loop toewijst (tenzij je het fatsoenlijk weet toe te voegen in elke loop)
+//         //POST alleen als het id van uren 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
+//         if(tablerow.id == 0){
+//             //console.log(tablerow.id + "tablerow.id");
+//             var test = JSON.stringify(kosten),tablerow;
+//             //console.log(test + " JSON Test");
+//             // PostDataKosten(JSON.stringify(kosten),tablerow);	
+//         }
+//         //PUT alleen als het id van uren geen 0 is (ofwel, hij staat al in de database) en als de waarde daadwerkelijk anders is geworden.
+//         // CHANGESTUFFHERE
+//         else{
+//             if(chi0.value != kosten.factuurDatum){
+//                 console.log("niet gelijk datum");
+//                 console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk datum");
+//                 // PUTwijzigkosten(kosten);
+//             }
+//             if(chiVal != kosten.soort){
+//                 console.log("niet gelijk kosten soort");
+//                 console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk soort");
+//                 // PUTwijzigkosten(kosten);
+//             }
+//             if(chi2.value != kosten.bedrag){
+//                 console.log("niet gelijk kosten bedrag");
+//                 console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden - niet gelijk bedrag");
+//                 // PUTwijzigkosten(kosten);
+//             }
+//         }	
+//     }
+//     // CHANGESTUFFHERE
+//     // Jordi: let op dat je de uiteindelijke nieuwe kosten BUITEN de for loop toewijst (tenzij je het fatsoenlijk weet toe te voegen in elke loop)
     
-    // for (var j=0; j<kostenlijst.length; j++){
-    //     console.log("loop " + j);
-    //     // nieuwekosten.push(kostenlijst[i]);
-    // }
-    console.log("nieuwe kosten:");
-    console.log(nieuwekosten);
-    PutTrainee(trainee);
-}
+//     // for (var j=0; j<kostenlijst.length; j++){
+//     //     console.log("loop " + j);
+//     //     // nieuwekosten.push(kostenlijst[i]);
+//     // }
+//     console.log("nieuwe kosten:");
+//     console.log(nieuwekosten);
+//     PutTrainee(trainee);
+// }
 
 function kostenOpslaanJordi(){
     var kostenTabel = document.getElementById("kostenTabel");
@@ -279,75 +322,75 @@ function kostenVerzendenJordi(){
     PutTrainee(trainee);
 }
 
-//VERZENDEN
-function KostenVerzenden(){
-    console.log("in KostenVerzenden()");
-    var kostenlijst = new Array();
-	var table = document.getElementById("kostenTabel");
-	var tablebody = table.children[2];
-	var aantal = tablebody.children.length;
+// //VERZENDEN
+// function KostenVerzenden(){
+//     console.log("in KostenVerzenden()");
+//     var kostenlijst = new Array();
+// 	var table = document.getElementById("kostenTabel");
+// 	var tablebody = table.children[2];
+// 	var aantal = tablebody.children.length;
 
-   for(var i = 0; i<aantal; i++){
- 	var kosten = {}
-   	var tablerow = tablebody.children[i];
-   	kosten.id = tablerow.id;
-    var c = tablerow.children;
+//    for(var i = 0; i<aantal; i++){
+//  	var kosten = {}
+//    	var tablerow = tablebody.children[i];
+//    	kosten.id = tablerow.id;
+//     var c = tablerow.children;
 
-    var ch2 = c[3];
-    var chi2 = ch2.children[0];
+//     var ch2 = c[3];
+//     var chi2 = ch2.children[0];
 
-// Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
-    if(chi2.value <= 0){
-        console.log("continue");
-        continue;
-    }
+// // Als het bedrag <=0 is dan slaat het deze rij over en slaat hem niet op.
+//     if(chi2.value <= 0){
+//         console.log("continue");
+//         continue;
+//     }
 
-    // ------- datumveld -------//
-	var ch0 = c[1];    
-    var chi0 = ch0.children[0];
+//     // ------- datumveld -------//
+// 	var ch0 = c[1];    
+//     var chi0 = ch0.children[0];
     
-	// ------- soort kosten veld -------//
-	var ch = c[2];
-	var chi = ch.children[0];
-    var chiVal = chi.value;
+// 	// ------- soort kosten veld -------//
+// 	var ch = c[2];
+// 	var chi = ch.children[0];
+//     var chiVal = chi.value;
 
-	// ------- bedrag -------//
-    var ch2 = c[3];
-	var chi2 = ch2.children[0];
+// 	// ------- bedrag -------//
+//     var ch2 = c[3];
+// 	var chi2 = ch2.children[0];
 
-    kosten.soort = chiVal;
-	kosten.bedrag = chi2.value*100; 
-	var d = new Date(chi0.value);
-    kosten.factuurDatum = d;
-    kosten.status = "Opgeslagen";
-    console.log("kosten:");
-    console.log(kosten);
+//     kosten.soort = chiVal;
+// 	kosten.bedrag = chi2.value*100; 
+// 	var d = new Date(chi0.value);
+//     kosten.factuurDatum = d;
+//     kosten.status = "Opgeslagen";
+//     console.log("kosten:");
+//     console.log(kosten);
 
-    kostenlijst.push(kosten);
+//     kostenlijst.push(kosten);
 
-    console.log("kostenlijst:");
-    console.log(kostenlijst);
+//     console.log("kostenlijst:");
+//     console.log(kostenlijst);
 
 
-        //POST alleen als het id van kosten 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
-	 	if(tablerow.id == 0){
-          continue;	
-        }
-        //PUT alleen als het id van kosten geen 0 is (ofwel, hij staat al in de database "opgeslagen") en als de waarde daadwerkelijk anders is geworden.
-		if(tablerow.id !=0){
-            kosten.status = "Verzonden";
-            console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden");
-		 	// PUTwijzigkosten(kosten);
-        }
-    }
-    // Jordi
-    // trainee.kosten = kostenlijst;
-    // Put de kosten opnieuw naar de trainee, nu als verzonden kosten
-    PutTrainee(trainee);
-   // window.location.reload();
-}
+//         //POST alleen als het id van kosten 0 is, ofwel, alleen als de uren nieuw zijn toegevoegd. alle id's die hoger zijn dan 0 staan al in de database.
+// 	 	if(tablerow.id == 0){
+//           continue;	
+//         }
+//         //PUT alleen als het id van kosten geen 0 is (ofwel, hij staat al in de database "opgeslagen") en als de waarde daadwerkelijk anders is geworden.
+// 		if(tablerow.id !=0){
+//             kosten.status = "Verzonden";
+//             console.log("Nu zou PUTwijzigkosten(kosten) aangeroepen worden");
+// 		 	// PUTwijzigkosten(kosten);
+//         }
+//     }
+//     // Jordi
+//     // trainee.kosten = kostenlijst;
+//     // Put de kosten opnieuw naar de trainee, nu als verzonden kosten
+//     PutTrainee(trainee);
+//    // window.location.reload();
+// }
 
-//PUT uren
+//PUT trainee (in dit geval met de kosten)
 function PutTrainee(trainee){
     console.log("in PutTrainee");
     var xhttp = new XMLHttpRequest();
@@ -449,6 +492,7 @@ function kostentabelheader(){
  addHtmlElementContent(tr, document.createElement("th"), "Aantal KM");
  addHtmlElementContent(tr, document.createElement("th"), "Bedrag €");
  addHtmlElementContent(tr, document.createElement("th"), "Bijlage");
+ addHtmlElementContent(tr, document.createElement("th"), "Verwijderen");
 
  return tableHeader;
 }
@@ -480,6 +524,7 @@ function autoTableRow(kosten) {
     
     addHtmlElementContent(tr, document.createElement("td"), (kosten.bedrag/100));
     addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), "poepoe"); //JORDI
 
 
   return tr;

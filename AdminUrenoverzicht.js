@@ -107,12 +107,13 @@ function AdminUrenLijstBuild() {
                     //Tim - per trainee loop
                     for(var i = 0; i< traineelijst.length; i++){
                         console.log("PER TRAINEE");
-                        emptyvariables();
+
                         //Tim - reset variables per trainee
+                        emptyvariables();
+                        
+                        klant = traineelijst[i].klant;
                         voornaam = traineelijst[i].voornaam;
                         achternaam = traineelijst[i].achternaam;
-
-                        
 
                         // Tim - per uur van de trainee loop
                         for(var k = 0; k < traineelijst[i].uren.length; k++){
@@ -128,15 +129,14 @@ function AdminUrenLijstBuild() {
                                     case "AFGEKEURD":
                                     //console.log("PER AFGEKEURD");
                             }
-                            
                         }
                     
-                    console.log(GoedgekeurdpertraineeTotaalUren + "GOED TOTAAL");
+                        //console.log(GoedgekeurdpertraineeTotaalUren + "GOED TOTAAL");
 
-                    if(GoedgekeurdpertraineeTotaalUren > 0){
-                    // Tim - per trainee - per uur categorie een rij maken
-                    addHtmlElement(pertraineetbody,PerTraineeGoedgekeurdTableRow(traineelijst));
-                    }
+                        if(GoedgekeurdpertraineeTotaalUren > 0){
+                        // Tim - per trainee - per uur categorie een rij maken
+                        addHtmlElement(pertraineetbody,PerTraineeGoedgekeurdTableRow(traineelijst));
+                        }
 
                     }
 
