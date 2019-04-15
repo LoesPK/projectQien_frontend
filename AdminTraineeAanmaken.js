@@ -46,6 +46,7 @@ function UserVersturen(user){
 // console.log(trainee[key])
             if(trainee[key].length == 0 || trainee[key][0] == " "){
                 nietPosten++;
+                console.log("Check userVersturen")
                 if(confirm("Het veld " + key + " is mogelijk niet correct ingevuld. Vul iets in en let op dat er geen spaties voor staan. Klik op annuleren om te wijzigen of op ok om door te gaan.")){
                     nietPosten--;
                 }else{
@@ -57,16 +58,20 @@ function UserVersturen(user){
             
            
  /////////////////////////////// Nog werkend maken dat een JSON klant wordt toegevoegd.  
-        //var klant = document.getElementById("klantTrainee").value;
-        //trainee.klant = getKlant(klant);
-           
+        var klant = document.getElementById("klantTrainee").value;
+        
+        getKlant(trainee, klant);
+        // console.log(getKlant(klant));
+        // console.log(trainee)
+        // console.log("Check trainee klant: "+trainee.klant)
+    
 
 
 
-            postData(JSON.stringify(trainee),"trainee");
-           if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
-           window.location.reload();
-           }//end if
+        //     postData(JSON.stringify(trainee),"trainee");
+        //    if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
+        //    //window.location.reload();
+        //    }//end if
         }//end if
     }//end if
 
@@ -85,7 +90,7 @@ function UserVersturen(user){
         })//end forEach
 
         if(nietPosten == 0){
-        postData(JSON.stringify(klant),"klant");
+        postData(JSON.stringify(klant),"klant","nietGebruikteKlantID");
            if(!alert("Klant "+klant.voornaam + " "+ klant.achternaam + " bij "+ klant.bedrijf + " is aangemaakt!")){
             window.location.reload();
             }//end if
@@ -108,11 +113,7 @@ function traineeFields(){
     trainee.emailadres = emailadres;
     trainee.username = username; 
     trainee.wachtwoord = wachtwoord;
-   // trainee.klant = klant;
 
-    console.log(trainee.klant)
-    
-    
     return trainee;
     //UserVersturen(trainee);
 }
@@ -136,48 +137,87 @@ function klantFields(){
     }
 
 
-// // EMIEL - GET een specifieke klant
-// function getKlant(bedrijf){
-//     var xhttp = new XMLHttpRequest();
-//         xhttp.onreadystatechange = function() {
-//         if (this.readyState == 4 && this.status == 200) {
-//                     databaseKlant = JSON.parse(this.responseText);
-//                     console.log("Check in getKlant");
-//                     console.log(databaseKlant);
+// EMIEL - GET een specifieke klant
+function getKlant(trainee, bedrijf){
+    var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+                    databaseKlant = JSON.parse(this.responseText);
+                    console.log("Check in getKlant");
+                    console.log(databaseKlant);
                     
-//                     for(i=0; i<databaseKlant.length; i++){
-//                         if(databaseKlant[i].bedrijf == bedrijf){
-//                             var id = databaseKlant[i].id;
-//                             console.log("for loop id in getKlant: " + id)
-//                             console.log(databaseKlant[i]);
-//                             trainee.klant = JSON.stringify(databaseKlant[i]);
-                          
-//                             }//end if
-//                     }//end for    
-//             }//end 1e if
-//         }//end http function;
-//         xhttp.open("GET", api + "klant", true);
-//             xhttp.setRequestHeader("Content-type", "application/json");
-//             xhttp.send();	
-//     }//end GET
+                    for(i=0; i<databaseKlant.length; i++){
+                        console.log("Check getKlant" + databaseKlant.length)
+                        if(databaseKlant[i].bedrijf == bedrijf){
+                            var id = databaseKlant[i].id;
+                            console.log("for loop id in getKlant: " + id)
+                            console.log(databaseKlant[i]);
+                                var klantID = databaseKlant[i].id;
+                                console.log(klantID);
+                                var klanten = new Array();
+                                klanten.push(databaseKlant[i])
+                                trainee.klant = klanten;
+                                
+                                postData(JSON.stringify(trainee),"trainee", klantID);
+                                
+                                if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
+                                //window.location.reload();
+                                }//end if
+                            }//end if
+                    }//end for    
+            }//end 1e if
+        }//end http function;
+        xhttp.open("GET", api + "klant", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send();	
+    }//end GET
 
 
 
 
 
 //EMIEL - POST user. Afhankelijk van het type user worden de waarden van de juiste fields in de database aangemaakt en ingevuld
-function postData(data, typeUser){
+function postData(data, typeUser, klantID){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         console.log("check in postData")
         console.log(this.status)
         if (this.readyState == 4 && this.status == 200) {
             console.log("Check3")
-        console.log(JSON.parse(this.responseText));
+            if(typeUser == "trainee"){
+                var trainee = JSON.parse(this.responseText);
+                console.log("trainee.klant.id "+klantID)
+                putData(klantID, trainee, "klant");
+
+            }
         }
     };
     xhttp.open("POST", api + typeUser, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(data);
 }
+
+//EMIEL - PUT user. Afhankelijk van het type user worden de waarden van de juiste fields in de database aangemaakt en ingevuld
+function putData(id, data,typeUser){
+    var xhttp = new XMLHttpRequest();
+    var klant = {};
+            var trainees = new Array();
+
+            trainees.push(data);
+
+            klant.trainee = trainees;
+
+    xhttp.onreadystatechange = function() {
+       
+        if (this.readyState == 4 && this.status == 200) {
+            
+            console.log("Check3")
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    xhttp.open("PUT", api + typeUser + "/" + id, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(klant));
+}
+
 
