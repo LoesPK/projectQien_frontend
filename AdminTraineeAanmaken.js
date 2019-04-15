@@ -92,7 +92,7 @@ function UserVersturen(user){
         if(nietPosten == 0){
         postData(JSON.stringify(klant),"klant","nietGebruikteKlantID");
            if(!alert("Klant "+klant.voornaam + " "+ klant.achternaam + " bij "+ klant.bedrijf + " is aangemaakt!")){
-            window.location.reload();
+           window.location.reload();
             }//end if
         }//end if
     }//end if   
@@ -154,10 +154,11 @@ function getKlant(trainee, bedrijf){
                             console.log(databaseKlant[i]);
                                 var klantID = databaseKlant[i].id;
                                 console.log(klantID);
-                                var klanten = new Array();
-                                klanten.push(databaseKlant[i])
-                                trainee.klant = klanten;
                                 
+                                trainee.klant = databaseKlant[i];
+
+                                console.log(" De trainee m et de klant")
+                                console.log(trainee);                                
                                 postData(JSON.stringify(trainee),"trainee", klantID);
                                 
                                 if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
@@ -179,6 +180,7 @@ function getKlant(trainee, bedrijf){
 //EMIEL - POST user. Afhankelijk van het type user worden de waarden van de juiste fields in de database aangemaakt en ingevuld
 function postData(data, typeUser, klantID){
     var xhttp = new XMLHttpRequest();
+
     xhttp.onreadystatechange = function() {
         console.log("check in postData")
         console.log(this.status)
@@ -186,8 +188,11 @@ function postData(data, typeUser, klantID){
             console.log("Check3")
             if(typeUser == "trainee"){
                 var trainee = JSON.parse(this.responseText);
+                console.log(" XXXXXXXX")
                 console.log("trainee.klant.id "+klantID)
-                putData(klantID, trainee, "klant");
+                console.log(trainee);
+                
+                putData(klantID, JSON.stringify(trainee), "klant");
 
             }
         }
@@ -201,12 +206,18 @@ function postData(data, typeUser, klantID){
 function putData(id, data,typeUser){
     var xhttp = new XMLHttpRequest();
     var klant = {};
+
             var trainees = new Array();
+        
 
-            trainees.push(data);
-
+            trainees.push(JSON.parse(data));
+            console.log(JSON.parse(data))
+            console.log(trainees);
+            
+           klant.id = id;
+            
             klant.trainee = trainees;
-
+            console.log(klant)
     xhttp.onreadystatechange = function() {
        
         if (this.readyState == 4 && this.status == 200) {
@@ -215,6 +226,16 @@ function putData(id, data,typeUser){
         console.log(JSON.parse(this.responseText));
         }
     };
+
+
+    console.log(api + typeUser + "/" + id);
+    console.log("Data")
+    console.log(data);
+    console.log("Klantobject ");
+    console.log(klant);
+    console.log(" Als TEKST")
+    console.log(JSON.stringify(klant));
+
     xhttp.open("PUT", api + typeUser + "/" + id, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(klant));
