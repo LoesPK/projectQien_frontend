@@ -5,10 +5,7 @@ var dateID = 0;
 var aantalID = 0;
 //Loes: de twee api's
 var apiHour = "http://localhost:8082/api/uur/";
-
-var apiUserId = "http://localhost:8082/api/trainee/2" //+sessionStorage.getItem("storedUserID");
-
-
+var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
 //trainee variabele 
 var trainee;
 var statusAkkoord;
