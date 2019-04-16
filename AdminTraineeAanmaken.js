@@ -1,7 +1,7 @@
 var api = "http://localhost:8082/api/";
 
-// EMIEL - Array waar klant objecten in gezet worden
-var arr = new Array();
+// // EMIEL - Array waar klant objecten in gezet worden
+// var arr = new Array();
 
 
 // EMIEL - Opbouwen vd pagina en zn onderdelen
@@ -23,7 +23,7 @@ function updateDropdownKlanten(user){
                     option.appendChild(txt);
                     elm1.insertBefore(option,elm1.lastchild);
                    
-                    arr.push(klant[i]);
+                    // arr.push(klant[i]);
                 }//end for
 		}//end 1e if
 	}//end http function;
