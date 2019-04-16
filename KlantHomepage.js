@@ -2,7 +2,7 @@
  * 
  */
 
-var apiTrainee = "http://localhost:8082/api/trainee/13";
+var apiKlant = "http://localhost:8082/api/klant/"+sessionStorage.getItem("storedUserID");
 var apiUur = "http://localhost:8082/api/uur/";
 
 //GET trainees voor vullen tabel
@@ -11,20 +11,24 @@ function getTrainees(){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      var trainee = JSON.parse(this.responseText); 
+      var klant = JSON.parse(this.responseText); 
       //onderstaande roept verschillende functies aan om de tabel te maken
       var table = document.createElement("table");
       addHtmlElement(table, traineeTableHeader());
       var body = document.createElement("tbody")
       var tbody = addHtmlElement(table, body);
-      console.log(trainee);
-      console.log(trainee.uren.length);
-      addHtmlElement(tbody, traineeTableRow(trainee));
+      console.log(klant)
+      console.log(klant.trainee);
+      for(var i =0; i<klant.trainee.length; i++){
+      console.log(klant.trainee);
+      console.log(klant.trainee.uren.length);
+    }
+      addHtmlElement(tbody, traineeTableRow(klant.trainee));
       document.getElementById("traineelijst").appendChild(table);
           
       }
     };
-      xhttp.open("GET", apiTrainee, true);
+      xhttp.open("GET", apiKlant, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -53,8 +57,8 @@ function traineeTableRow(trainee) {
    var akkoordstatus = "";
 //   var uren = trainee.uren;
    var aantalUren = 0;
-   console.log(trainee.uren.length);
-   for(var i = 0; i<trainee.uren.length; i++){
+   console.log(klant.trainee.uren.length);
+   for(var i = 0; i<klant.trainee.uren.length; i++){
       console.log(trainee.uren[i].accordStatus);
       if(trainee.uren[i].accordStatus == "TEACCODEREN"){
         akkoordstatus = trainee.uren[i].accordStatus;
