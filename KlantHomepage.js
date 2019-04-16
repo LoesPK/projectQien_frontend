@@ -1,8 +1,13 @@
-var apiTrainee = "http://localhost:8082/api/trainee/";
+/**
+ * 
+ */
+
+var apiTrainee = "http://localhost:8082/api/trainee/13";
 var apiUur = "http://localhost:8082/api/uur/";
 
 //GET trainees voor vullen tabel
 function getTrainees(){
+  console.log("check in gettrainees");
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -10,13 +15,16 @@ function getTrainees(){
       //onderstaande roept verschillende functies aan om de tabel te maken
       var table = document.createElement("table");
       addHtmlElement(table, traineeTableHeader());
-      var tbody = addHtmlElement(table, document.createElement("tbody"));
+      var body = document.createElement("tbody")
+      var tbody = addHtmlElement(table, body);
+      console.log(trainee);
+      console.log(trainee.uren.length);
       addHtmlElement(tbody, traineeTableRow(trainee));
       document.getElementById("traineelijst").appendChild(table);
           
       }
     };
-      xhttp.open("GET", apiTrainee+"67", true);
+      xhttp.open("GET", apiTrainee, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -34,11 +42,6 @@ function traineeTableHeader() {
    return tableHeader;
 }
 
-function addHtmlElement(parent, child) {
-  parent.appendChild(child);
-  return child;
-}
-
 function addHtmlElementContent(parent, child, tekst) {
    parent.appendChild(child);
    child.innerHTML = tekst;
@@ -46,25 +49,29 @@ function addHtmlElementContent(parent, child, tekst) {
 }
 
 function traineeTableRow(trainee) {
-   var tr = document.createElement("tr");
+  var tr = document.createElement("tr");
    var akkoordstatus = "";
-   var uren = trainee.uren;
+//   var uren = trainee.uren;
    var aantalUren = 0;
-   for(var i = 0; i<uren.length; i++){
-      
-      if(trainee.uren[i].accordStatus == "NIETINGEVULD"){
-        akkoordstatus = "-";
-
-      }else{
-      akkoordstatus = trainee.uren[i].accordStatus;
-      aantalUren += trainee.uren[i].aantal ;
-    }
+   console.log(trainee.uren.length);
+   for(var i = 0; i<trainee.uren.length; i++){
+      console.log(trainee.uren[i].accordStatus);
+      if(trainee.uren[i].accordStatus == "TEACCODEREN"){
+        akkoordstatus = trainee.uren[i].accordStatus;
+          aantalUren += trainee.uren[i].aantal ;
+          console.log(akkoordstatus);
+      }
    }
-   addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam,trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), aantalUren, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), akkoordstatus, trainee.id);
-   addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
+   console.log(akkoordstatus);
+   if(akkoordstatus == "TEACCODEREN"){
+     
+     addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam, trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam,trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), aantalUren, trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), akkoordstatus, trainee.id);
+     addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
+     
+   }
    return tr;
 }
 
@@ -150,7 +157,7 @@ function TraineeHourChange(){
               klantSendAccord(trainee);
       }
     };
-      xhttp.open("GET", apiTrainee+"67", true);
+      xhttp.open("GET", apiTrainee, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
