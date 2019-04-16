@@ -6,41 +6,88 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="AdminUrenoverzichtPageLoad()">
+<body onload="selectMonth()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
-			
 			<ul>
 				<li><a href="" >Uitloggen</a></li>
 				<li><a href="AdminBeheer.html" >Beheer</a></li>
 				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
 				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
 				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
-				<li><a href="AdminUrenoverzicht.html" class="active">Uren</a></li>
-				<li><a href="AdminDashboard.html" >Dashboard</a></li>
+				<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
+				<li><a href="AdminDashboard.html" class="active">Dashboard</a></li>
 				<br><br><br> HARDCODED: Ingelogd als admin
 			</ul>
 		</div>
 	</nav>
-		<div class="wrapperAdminUrenOverzicht">
-			<div class="container">
-				<h1>Urenoverzicht</h1>
-				
-				<h2>Totaal</h2>
-				<div id="AdminTotaalUrenOverzichtTabelDiv">
-						<table id="AdminTotaalUrenOverzichtTabel">
-						</table>
-				</div>
 
-				<h2>Per Trainee</h2>
-				<div id="PerTraineeAdminUrenOverzichtTabelDiv">
-					<table id="PerTraineeAdminUrenOverzichtTabel">
-					</table>
-				</div>
-
+	<div class="wrapperAdminDashboard">
+		<div class="container">
+			<h1>Uren</h1>
+			<div id="setMonthDiv">
+				<select id="selectedMonth"
+				onchange = "selectMonth()">
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maart</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Augustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">December</option>
+				  </select>
 			</div>
+            <br>
+            <br>
+
+			<h2>Totaal Uren</h2>
+			<div id="urentabelDiv">
+				<table id="urenTabel" >
+					<thead>
+					<tr class="UrenHeader">
+						<th>Status</a></th>
+						<th>Totaal</a></th>
+						<th>Gewerkt</a></th>
+						<th>Over 100%</a></th>
+						<th>Over 125%</a></th>
+						<th>Verlof</a></th>
+						<th>Wacht</a></th>
+						<th>Ziekte</a></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<br>
+
+			<h2>Uren Per Trainee</h2>
+			<div id="urentabelDiv">
+				<table id="perTraineeTabel" >
+					<thead>
+					<tr class="UrenHeader">
+						<th>Klant</a></th>
+						<th>Voornaam</a></th>
+						<th>Achternaam</a></th>
+						<th>Status</a></th>
+						<th>Totaal</a></th>
+						<th>Gewerkt</a></th>
+						<th>Over 100%</a></th>
+                        <th>Over 125%</a></th>
+                        <th>Verlof</a></th>
+                        <th>Wacht</a></th>
+                        <th>Ziekte</a></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			
 		</div>
+	</div>
 
 
 <script type="text/javascript" src="AdminUrenoverzicht.js"></script>

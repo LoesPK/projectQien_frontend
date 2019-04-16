@@ -41,6 +41,13 @@ var teaccoderenVerlofUren = 0;
 var teaccoderenZiekteUren = 0;
 var teaccoderenTotaalUren = 0;
 
+// Tim Declaraties variables aanmaken
+var OverigeKosten;
+var OpenbaarVervoer;
+var AutoKM;
+var AutoEuro;
+var Totaal;
+
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
 var dd = today.getDate();
@@ -55,9 +62,47 @@ function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
 		theMonth = tableBody[tableBody.selectedIndex].value;
 		//console.log("theMonth: " + theMonth);
-		GETUrenPerMaand(theMonth);
+        GETUrenPerMaand(theMonth);
+        GETKostenPerMaand(theMonth);
 }
+//Tim - GET trainee en alle kosten van
+function GETKostenPerMaand(theMonth){
+    //console.log("Getkosten");
+    var pertraineetable = document. getElementById("declaratieTabel");
+    // Tim - empty table on month selection
+    for(var i = pertraineetable.rows.length - 1; i > 0; i--){
+        pertraineetable.deleteRow(i);
+    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function(){
+        if (this.readyState == 4 && this.status == 200){
+            trainee = JSON.parse(this.responseText);
+            var declaratietbody = addHtmlElement(pertraineetable, document.createElement("tbody"));
+            // Tim - empty variables before the loops begin
+            emptyTotaalKosten();
+            // Tim - per trainee loop
+            for(var i = 0; i < trainee.length; i++){
+                console.log(trainee[i].voornaam + " Per Trainee in Kosten loop");
+                // Tim - per kosten loop
+                for(var k = 0; k < trainee[i].kosten.length; k++){
+                    //console.log("Per kosten in kosten loop");
+                    uurInDBHemZeMonth = trainee[i].kosten[k].factuurDatum.substring(5,7);
 
+                    // Tim - check if it is the right month
+                    if(uurInDBHemZeMonth == theMonth){
+                        //console.log("month in kosten loop");
+                        switchTotaalKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
+                    }
+                }
+            }
+            //Tim - Opbouwen van de body van de tabel
+            addHtmlElement(declaratietbody, TotaalKostenRow(trainee));
+        }
+    }
+    xhttp.open("GET", apiUserId, true);
+	xhttp.setRequestHeader("Content-type", "application/json");
+	xhttp.send();
+}
 // Tim - GET trainees en alle uren van
 function GETUrenPerMaand(theMonth){
     var table = document. getElementById("urenTabel");
@@ -70,9 +115,7 @@ function GETUrenPerMaand(theMonth){
       if (this.readyState == 4 && this.status == 200) {
             trainee = JSON.parse(this.responseText);
             var tbody = addHtmlElement(table, document.createElement("tbody"));
-            
             //trainee.uren.sort(function(a,b){return b.factuurDatum<a.factuurDatum?-1:1});
-
             // Tim - empty variables before the loops begin
             emptyTotaal();
             emptyGoedgekeurd();
@@ -80,15 +123,15 @@ function GETUrenPerMaand(theMonth){
             emptyTeaccoderen();
             // Tim - Per Trainee loop
             for(var i = 0; i < trainee.length; i++){
-                console.log(trainee[i].voornaam);
+                console.log(trainee[i].voornaam + " Per Trainee in Uren loop");
                 // Tim - Per Uur loop
                 for(var k = 0; k < trainee[i].uren.length; k++){
                     //console.log("PER UUR VAN DE TRAINEE");
-                    console.log(trainee[i].uren[k].accordStatus);
+                    //console.log(trainee[i].uren[k].accordStatus);
                     uurInDBHemZeMonth = trainee[i].uren[k].factuurDatum.substring(5,7);
                     //console.log(uurInDBHemZeMonth);
                     if(uurInDBHemZeMonth == theMonth) {
-                        console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
+                        //console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
                         switchTotaalUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
                         switchTotaalGoegekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
                         switchTotaalAfgekeurdeUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
@@ -228,6 +271,25 @@ function switchTotaalteaccoderenUren(traineelijst,typeUur){
         }
     }
 }
+// Tim - Teaccoderen - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
+function switchTotaalKosten(traineelijst,typeKosten){
+    if(traineelijst.status == "Opgeslagen"){
+        switch(typeKosten){
+            case "Overige Kosten":
+                OverigeKosten += traineelijst.bedrag;
+                Totaal += traineelijst.bedrag;
+            case "Openbaar Vervoer":
+                OpenbaarVervoer += traineelijst.bedrag;
+                Totaal += traineelijst.bedrag;
+            case "Auto":
+                AutoKM += traineelijst.aantalKM;
+        }
+    }
+    //console.log(OverigeKosten + "Totaal Overige Kosten");
+    //console.log(OpenbaarVervoer + "Totaal Openbaar Vervoer");
+    //console.log(AutoKM + "Totaal Auto KM");
+    //console.log(Totaal + "Totaal");
+}
 // EMIEL - Totaal Rij aanmaken
 function adminUrenTotaalTableRow(traineelijst) {
     var tr = document.createElement("tr");
@@ -284,6 +346,23 @@ function adminUrenteaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
     return tr;
 }
+// Tim - Kosten Tabel Rij aanmaken
+function TotaalKostenRow(traineelijst) {
+    var tr = document.createElement("tr");
+    addHtmlElementContent(tr, document.createElement("td"), OverigeKosten/100);
+    addHtmlElementContent(tr, document.createElement("td"), OpenbaarVervoer/100);
+    addHtmlElementContent(tr, document.createElement("td"), AutoKM);
+    var autobedragtotaal;
+    autobedragtotaal = AutoKM*19;
+    var autobedrag = AutoKM*19/100;
+    addHtmlElementContent(tr, document.createElement("td"), autobedrag);
+    
+    Totaal += autobedragtotaal;
+    var Totaalweergeven = Totaal/100;
+    addHtmlElementContent(tr, document.createElement("td"), Totaalweergeven);
+
+    return tr;
+}
 // Tim - empty totaal variables before the loops start
 function emptyTotaal(){
     AantalGewerkteUren = 0;
@@ -319,4 +398,12 @@ function emptyAfgekeurd(){
     AfgekeurdVerlofUren = 0;
     AfgekeurdZiekteUren = 0;
     AfgekeurdTotaalUren = 0;
+}
+// Tim - empty totaal kosten
+function emptyTotaalKosten(){
+    OverigeKosten = 0;
+    OpenbaarVervoer = 0;
+    AutoKM = 0;
+    AutoEuro = 0;
+    Totaal = 0;
 }
