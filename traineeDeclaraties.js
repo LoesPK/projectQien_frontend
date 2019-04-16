@@ -50,7 +50,7 @@ function setMaxDatum(){
 }
 
 //Kosten dropdown menu opbouwen
-function dropkosten(selectID){
+function traineeKostenDropDownMenu(selectID){
 	var select = document.getElementById("select"+selectID),
 	arr = ["Overige Kosten"];
 	for(var i = 0; i<arr.length; i++){
@@ -65,16 +65,20 @@ function dropkosten(selectID){
 // Jordi: GET trainee (kosten)
 // Naamgeving zou nog wat beter kunnen
 function GETTrainee(){
+  console.log("in GETTrainee");
+
     var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           trainee = JSON.parse(this.responseText);	
           trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
-           for(var i = 0; i<trainee.kosten.length; i++){
-               console.log("trainee.kosten," + "i = " + i);
-               console.log(trainee.kosten);
-               GETRowKostenTabel(trainee.kosten[i]);
-           }
+          console.log("trainee.kosten.length");
+          // console.log(trainee.kosten.length);
+          for(var i = 0; i<trainee.kosten.length; i++){
+            console.log("trainee.kosten," + "i = " + i);
+            console.log(trainee.kosten);
+            GETRowKostenTabel(trainee.kosten[i]); //Jordi: nieuwe van Loes
+          }
         }
       };
         xhttp.open("GET", apiUserId, true);
@@ -95,9 +99,104 @@ var yyyy = maxDate.getFullYear();
     datumveld.setAttribute("max", maxDate);
     //console.log("setMaxDatum methode");
 }
+// haalt de kosten op uit de database en displayt ze in de tabel
+function GETRowKostenTabelJordi(){
+
+}
+// voegt een nieuwe rij toe aan de tabel
+function addRowKostenTabelJordi(){
+
+}
+
+// Loes der ding
+//GET functie met opbouwen rijen urentabel
+function GETRowKostenTabel(kosten){
+  console.log("in GETRowKostenTabel");
+  var table = document.getElementById("kostenTabel");
+  var insertedRow = table.insertRow(1);
+  insertedRow.id = kosten.id;
+
+  var insertedCell = insertedRow.insertCell(0);
+  insertedCell.innerHTML = kosten.status;
+  //datum
+  var insertedCell = insertedRow.insertCell(1);
+  var Datum = document.createElement("input");
+  Datum.type = "date";
+  Datum.value = kosten.factuurDatum.substring(0,10);
+  Datum.setAttribute("max", today);
+  insertedCell.appendChild(Datum);
+  
+  //soort kosten
+  var insertedCell1 = insertedRow.insertCell(2); 
+  var arr = ["Openbaar Vervoer", "Overige Kosten", "Auto"];
+  var SoortKosten = document.createElement("select");
+    SoortKosten.id = kosten.id;
+  for(var i = 0; i<arr.length; i++){
+    var option = document.createElement("OPTION"),
+    txt = document.createTextNode(arr[i]);
+    option.appendChild(txt);
+    option.value = arr[i];
+    SoortKosten.insertBefore(option,SoortKosten.lastChild);
+    if(arr[i] === kosten.soort){
+      SoortKosten.value = kosten.soort;
+    }
+  insertedCell1.appendChild(SoortKosten);
+
+  // COPY PASTE TEST
+  insertedCell1.addEventListener("change", function(){
+      console.log(SoortKosten[SoortKosten.selectedIndex]);
+      var choice = SoortKosten[SoortKosten.selectedIndex];
+      console.log(choice.innerHTML == "Auto");
+      if(choice.innerHTML == "Auto"){
+        Bedrag.value = 0.19;
+        Bedrag.setAttribute("disabled", "disabled");
+        km.removeAttribute("disabled");
+      }
+      if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){ 
+        km.value = 0;
+        Bedrag.removeAttribute("disabled");
+        km.setAttribute("disabled", "disabled");
+        }
+    })
+  }
+  //bedrag kosten
+  var insertedCell2 = insertedRow.insertCell(3);
+  var Bedrag = document.createElement("input");
+  Bedrag.type = "number";
+  Bedrag.value = kosten.bedrag;
+  insertedCell2.appendChild(Bedrag);
+  var VerwijderKnop = document.createElement("span");
+  VerwijderKnop.className = "fas fa-trash-alt";
+  VerwijderKnop.addEventListener("click", function(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        insertedRow.parentNode.removeChild(insertedRow);
+      }
+    };
+    xhttp.open("DELETE", apikosten+kosten.id, true);
+    xhttp.send();
+  });
+  insertedCell2.appendChild(VerwijderKnop);
+    
+ //aantal KM
+ var insertedCell3 = insertedRow.insertCell(4);
+ var km = document.createElement("input");
+ km.type = "number";
+ km.value = kosten.aantalKM;
+ insertedCell3.appendChild(km);
+ if(kosten.soort == "Auto"){
+     Bedrag.setAttribute("disabled", "disabled");
+     km.removeAttribute("disabled");
+  }if(kosten.soort == "Openbaar Vervoer" || kosten.soort == "Overige Kosten" ){    
+      Bedrag.removeAttribute("disabled");
+      km.setAttribute("disabled", "disabled");
+     }
+}
+
 
 //voegt 1 nieuwe rij toe aan de tabel
-function addRowKostenTabel(){
+function addRowKostenTabelOud(){
     // console.log("in addRowKostenTabel()")
     console.log("sessionStorage.getItem('storedUserID'):");
     console.log(sessionStorage.getItem("storedUserID"));
@@ -112,7 +211,7 @@ function addRowKostenTabel(){
     insertedRow.id = --negativeRowID;//"0";
     console.log("inserted row id:" + insertedRow.id);
     // insertedRow.className = "kostenRow";
-	for(var i = 0; i<6; i++){ //oud: i<4, want nu is er een delete knop bij
+	for(var i = 0; i<4; i++){ 
 		var insertedCell = insertedRow.insertCell(i);
         insertedCell.id = IDCell++;
         
@@ -154,44 +253,112 @@ function addRowKostenTabel(){
             
             insertedCell.appendChild(temp1);
         }
-        if (i==4){
-            console.log("bijlage bla bla");
-        }
-        if (i == 5){
-            deleteID++;
-            var deleteKostButton = document.createElement("input");
-            deleteKostButton.type = "button";
-            deleteKostButton.id = "delete"+deleteID;
-            deleteKostButton.value = "DELETE"+deleteID;
-            deleteKostButton.addEventListener("click", function(){
-                verwijderKost(deleteKostButton.id);
-            })
-            // deleteKostButton.innerHTML = "DELETE";
-            // deleteKostButton.onclick = alert("DELETE EVERYTHING");
+        // if (i==4){
+        //     console.log("bijlage bla bla");
+        // }
+        // if (i == 5){
+        //     deleteID++;
+        //     var deleteKostButton = document.createElement("input");
+        //     deleteKostButton.type = "button";
+        //     deleteKostButton.id = "delete"+deleteID;
+        //     deleteKostButton.value = "DELETE"+deleteID;
+        //     deleteKostButton.addEventListener("click", function(){
+        //         verwijderKost(deleteKostButton.id);
+        //     })
+        //     // deleteKostButton.innerHTML = "DELETE";
+        //     // deleteKostButton.onclick = alert("DELETE EVERYTHING");
 
-            insertedCell.appendChild(deleteKostButton);
-        }
+        //     insertedCell.appendChild(deleteKostButton);
+        // }
 	}
-    dropkosten(selectID);
+  traineeKostenDropDownMenu(selectID);
 }
 
-// Jordi
-function verwijderKost(buttonID){
-    teVerwijderenKost = document.getElementById(buttonID);
-    console.log("dit is de ID van deze kost: " + buttonID);
-    var kostenTabel = document.getElementById("kostenTabel");
-    console.log(teVerwijderenKost.parentNode.parentNode);
-    var rijDieWegMoet = teVerwijderenKost.parentNode.parentNode;
-    var aantalKostenInTabel = kostenTabel.children[0].children.length + kostenTabel.children[1].children.length;
-    // console.log(aantalKostenInTabel);
-    // console.log("rij die weg moet:")
-    // console.log(rijDieWegMoet);
-    console.log("aantal children in body: " + kostenTabel.children[1].children.length);
-    console.log("positie waar een rij verwijderd gaat worden: " + kostenTabel.children[1].children.length);
-    var kostIDNummer = teVerwijderenKost.id.substring(6);
-    console.log(aantalKostenInTabel - kostIDNummer);
-    kostenTabel.deleteRow(aantalKostenInTabel - kostIDNummer); // deleteRow verwacht een number;
+// nieuwe van Loes
+//functie om rijen toe te voegen aan de tabel
+function addRowKostenTabel(){
+    
+  table = document.getElementById("kostenTabel");
+
+  var insertedRow = table.insertRow(1);
+  insertedRow.id = "0";
+          
+//voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
+      var insertedCell0 = insertedRow.insertCell(0);
+      var temp1 = document.createElement("td");
+      temp1.innerHTML = "Open";
+      insertedCell0.appendChild(temp1);
+
+//voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
+      var insertedCell1 = insertedRow.insertCell(1);
+              dateID++;
+              var temp2 = document.createElement("input");
+              temp2.type = "date";
+              temp2.id = "datum"+dateID; 
+              temp2.setAttribute("max", today);
+              temp2.value = today;
+              insertedCell1.appendChild(temp2);
+//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
+          var insertedCell2 = insertedRow.insertCell(2);
+              selectID++;
+              var temp3 = document.createElement("select");
+              temp3.id = "select"+selectID;
+              var temp4 = document.createElement("OPTION");
+              temp4.innerHTML = "Openbaar Vervoer"
+              temp3.appendChild(temp4);
+              insertedCell2.appendChild(temp3);
+      insertedCell2.addEventListener("change", function(){
+        console.log(temp3[temp3.selectedIndex]);
+        var choice = temp3[temp3.selectedIndex];
+        console.log(choice.innerHTML == "Auto");
+        if(choice.innerHTML == "Auto"){
+        
+          temp5.value = 0.19;
+          temp5.setAttribute("disabled", "disabled");
+          temp6.removeAttribute("disabled");
+        }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
+            
+            temp5.value = 0;
+            temp5.removeAttribute("disabled");
+            temp6.setAttribute("disabled", "disabled");
+          }
+      })
+//voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
+          var insertedCell3 = insertedRow.insertCell(3);
+              aantalID++;
+              var temp5 = document.createElement("input");
+              temp5.type = "number";
+              temp5.value = 0;
+              temp5.id = "aantal"+aantalID; 
+              
+              insertedCell3.appendChild(temp5);
+          var insertedCell4 = insertedRow.insertCell(4);
+    var temp6 = document.createElement("input");
+          temp6.type = "number";
+          temp6.value = 0;
+          temp6.setAttribute("disabled", "disabled");
+          insertedCell4.appendChild(temp6);
+  traineeKostenDropDownMenu(selectID);
 }
+
+
+// // Jordi
+// function verwijderKost(buttonID){
+//     teVerwijderenKost = document.getElementById(buttonID);
+//     console.log("dit is de ID van deze kost: " + buttonID);
+//     var kostenTabel = document.getElementById("kostenTabel");
+//     console.log(teVerwijderenKost.parentNode.parentNode);
+//     var rijDieWegMoet = teVerwijderenKost.parentNode.parentNode;
+//     var aantalKostenInTabel = kostenTabel.children[0].children.length + kostenTabel.children[1].children.length;
+//     // console.log(aantalKostenInTabel);
+//     // console.log("rij die weg moet:")
+//     // console.log(rijDieWegMoet);
+//     console.log("aantal children in body: " + kostenTabel.children[1].children.length);
+//     console.log("positie waar een rij verwijderd gaat worden: " + kostenTabel.children[1].children.length);
+//     var kostIDNummer = teVerwijderenKost.id.substring(6);
+//     console.log(aantalKostenInTabel - kostIDNummer);
+//     kostenTabel.deleteRow(aantalKostenInTabel - kostIDNummer); // deleteRow verwacht een number;
+// }
 
 // JORDI: bug oplossen START #################################################################################################################
 //POST kosten opslaan functie
@@ -293,13 +460,17 @@ function verwijderKost(buttonID){
 // }
 
 function kostenOpslaanJordi(){
+    console.log("in kostenOpslaanJordi");
     var kostenTabel = document.getElementById("kostenTabel");
     var kostenTabelBody = kostenTabel.children[1];
     var aantalChildren = kostenTabelBody.children.length;
+    console.log(kostenTabel);
     // voor elke rij
     // rij is het getal van de rij
     // huidigeRij is het object dat alle children van die rij bevat
+    console.log("aantalChildren: " + aantalChildren)
     for(var rij = 0; rij<aantalChildren; rij++){
+      console.log("rij: " + rij)
         var kost = {};
         var huidigeRij = kostenTabelBody.children[rij];
         // als deze rij een kost heeft met status Open
@@ -316,6 +487,7 @@ function kostenOpslaanJordi(){
 }
 
 function kostenVerzendenJordi(){
+  console.log("in kostenVerzendenJordi");
     for(var aantalOpgeslagenKosten = 0; aantalOpgeslagenKosten < trainee.kosten.length; aantalOpgeslagenKosten++){
         trainee.kosten[aantalOpgeslagenKosten].status = "Verzonden";
     }
@@ -453,49 +625,50 @@ function PutTrainee(trainee){
 // }
 // JORDI: bug oplossen STOP #################################################################################################################
 
-// TIM - het maken van de tabel
-function maakverzondenkostentabel(){
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("kostenlijst").innerHTML = "";
-          var kosten = JSON.parse(this.responseText);
+// // TIM - het maken van de tabel
+// function maakverzondenkostentabel(){
+//     var xhttp = new XMLHttpRequest();
+//     xhttp.onreadystatechange = function() {
+//       if (this.readyState == 4 && this.status == 200) {
+//           document.getElementById("kostenlijst").innerHTML = "";
+//           var kosten = JSON.parse(this.responseText);
 
-          var table = document.createElement("table");
-          addHtmlElement(table,kostentabelheader());
+//           var table = document.createElement("table");
+//           addHtmlElement(table,kostentabelheader());
 
-          var tbody = addHtmlElement(table, document.createElement("tbody"));
-          addHtmlElement(tbody, totaalbedrag(kosten));
+//           var tbody = addHtmlElement(table, document.createElement("tbody"));
+//           addHtmlElement(tbody, totaalbedrag(kosten));
             
 
-          for(var i = 0; i< kosten.length; i++) {
-              //console.log(kosten[i].status + "KOSTENSTATUS");
-              if(kosten[i].status == "Verzonden"){
-              addHtmlElement(tbody, autoTableRow(kosten[i]));
-            }
-          }
-          document.getElementById("kostenlijst").appendChild(table);
-      }
-  }
-      xhttp.open("GET", apikosten, true);
-      xhttp.setRequestHeader("Content-type", "application/json");
-      xhttp.send();
-}
+//           for(var i = 0; i< kosten.length; i++) {
+//               //console.log(kosten[i].status + "KOSTENSTATUS");
+//               if(kosten[i].status == "Verzonden"){
+//               addHtmlElement(tbody, autoTableRow(kosten[i]));
+//             }
+//           }
+//           document.getElementById("kostenlijst").appendChild(table);
+//       }
+//   }
+//       xhttp.open("GET", apikosten, true);
+//       xhttp.setRequestHeader("Content-type", "application/json");
+//       xhttp.send();
+// }
 
 //TIM - het maken van de tabel header
-function kostentabelheader(){
-  var tableHeader = document.createElement("thead");
- var tr = addHtmlElement(tableHeader, document.createElement("tr"));
- //addHtmlElementContent(tr, document.createElement("th"), "Id");
- addHtmlElementContent(tr, document.createElement("th"), "Datum");
- addHtmlElementContent(tr, document.createElement("th"), "Kosten Soort");
- addHtmlElementContent(tr, document.createElement("th"), "Aantal KM");
- addHtmlElementContent(tr, document.createElement("th"), "Bedrag €");
- addHtmlElementContent(tr, document.createElement("th"), "Bijlage");
- addHtmlElementContent(tr, document.createElement("th"), "Verwijderen");
+// function kostentabelheader(){
+//   console.log("als je dit ziet kan kostentabelheader() niet weg")
+//   var tableHeader = document.createElement("thead");
+//  var tr = addHtmlElement(tableHeader, document.createElement("tr"));
+//  //addHtmlElementContent(tr, document.createElement("th"), "Id");
+//  addHtmlElementContent(tr, document.createElement("th"), "Datum");
+//  addHtmlElementContent(tr, document.createElement("th"), "Kosten Soort");
+//  addHtmlElementContent(tr, document.createElement("th"), "Aantal KM");
+//  addHtmlElementContent(tr, document.createElement("th"), "Bedrag €");
+//  addHtmlElementContent(tr, document.createElement("th"), "Bijlage");
+// //  addHtmlElementContent(tr, document.createElement("th"), "Verwijderen"); //Jordi
 
- return tableHeader;
-}
+//  return tableHeader;
+// }
 
 function addHtmlElement(parent, child) {
   parent.appendChild(child);
@@ -508,27 +681,27 @@ function addHtmlElementContent(parent, child, tekst) {
   return child;
 }
 
-//TIM - het maken van de tabel body
-function autoTableRow(kosten) {
-  var tr = document.createElement("tr");
-  //addHtmlElementContent(tr, document.createElement("td"), kosten.id);
-    var datum = kosten.factuurDatum.substring(0,10);
-  addHtmlElementContent(tr, document.createElement("td"), datum);
-  addHtmlElementContent(tr, document.createElement("td"), kosten.soort);
-    if(kosten.aantalKM == 0){
-        var leeg = "";
-        addHtmlElementContent(tr, document.createElement("td"), leeg);
-    }else{
-        addHtmlElementContent(tr, document.createElement("td"), kosten.aantalKM);
-    }
+// //TIM - het maken van de tabel body
+// function autoTableRow(kosten) {
+//   var tr = document.createElement("tr");
+//   //addHtmlElementContent(tr, document.createElement("td"), kosten.id);
+//     var datum = kosten.factuurDatum.substring(0,10);
+//   addHtmlElementContent(tr, document.createElement("td"), datum);
+//   addHtmlElementContent(tr, document.createElement("td"), kosten.soort);
+//     if(kosten.aantalKM == 0){
+//         var leeg = "";
+//         addHtmlElementContent(tr, document.createElement("td"), leeg);
+//     }else{
+//         addHtmlElementContent(tr, document.createElement("td"), kosten.aantalKM);
+//     }
     
-    addHtmlElementContent(tr, document.createElement("td"), (kosten.bedrag/100));
-    addHtmlElementContent(tr, document.createElement("td"), "");
-    addHtmlElementContent(tr, document.createElement("td"), "poepoe"); //JORDI
+//     addHtmlElementContent(tr, document.createElement("td"), (kosten.bedrag/100));
+//     addHtmlElementContent(tr, document.createElement("td"), "");
+//     addHtmlElementContent(tr, document.createElement("td"), "poepoe"); //JORDI
 
 
-  return tr;
-}
+//   return tr;
+// }
 
 function addHtmlElementContent(parent, child, tekst) {
   parent.appendChild(child);
@@ -581,123 +754,216 @@ function totaalbedrag(kosten) {
 //     xhttp.send();	
 // };
 
+// ALLE DINGEN IN 1 TABEL VAN LOES =================================================================================================================
+//GET functie met opbouwen rijen urentabel
+function GETRowKostenTabelLoes(kosten){
+  console.log("in GETRowKostenTabelLoes");
+  var table = document.getElementById("kostenTabel");
+  var insertedRow = table.insertRow(1);
+  insertedRow.id = kosten.id;
+
+  var insertedCell = insertedRow.insertCell(0);
+  insertedCell.innerHTML = kosten.status;
+  //datum
+  var insertedCell = insertedRow.insertCell(1);
+  var Datum = document.createElement("input");
+  Datum.type = "date";
+  Datum.value = kosten.factuurDatum.substring(0,10);
+  Datum.setAttribute("max", today);
+  insertedCell.appendChild(Datum);
+  
+  //soort kosten
+  var insertedCell1 = insertedRow.insertCell(2); 
+  var arr = ["Openbaar Vervoer", "Overige Kosten", "Auto"];
+  var SoortKosten = document.createElement("select");
+  SoortKosten.id = kosten.id;
+  for(var i = 0; i<arr.length; i++){
+    var option = document.createElement("OPTION"),
+    txt = document.createTextNode(arr[i]);
+    option.appendChild(txt);
+    option.value = arr[i];
+    SoortKosten.insertBefore(option,SoortKosten.lastChild);
+    console.log(kosten.soort);
+    if(arr[i] === kosten.soort){
+      SoortKosten.value = kosten.soort;
+    }
+    insertedCell1.appendChild(SoortKosten);
+    insertedCell1.addEventListener("change", function(){
+        console.log(SoortKosten[SoortKosten.selectedIndex]);
+        var choice = SoortKosten[SoortKosten.selectedIndex];
+        console.log(choice.innerHTML == "Auto");
+        if(choice.innerHTML == "Auto"){
+        
+          Bedrag.value = 0.19;
+          Bedrag.setAttribute("disabled", "disabled");
+          km.removeAttribute("disabled");
+        }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
+            
+            km.value = 0;
+            Bedrag.removeAttribute("disabled");
+            km.setAttribute("disabled", "disabled");
+          }
+      })
+  }
+  
+  
+  //bedrag kosten
+  var insertedCell2 = insertedRow.insertCell(3);
+  var Bedrag = document.createElement("input");
+  Bedrag.type = "number";
+  Bedrag.value = kosten.bedrag;
+  insertedCell2.appendChild(Bedrag);
+  var VerwijderKnop = document.createElement("span");
+  VerwijderKnop.className = "fas fa-trash-alt";
+  VerwijderKnop.addEventListener("click", function(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        insertedRow.parentNode.removeChild(insertedRow);
+      }
+    };
+    xhttp.open("DELETE", apikosten+kosten.id, true);
+    xhttp.send();});
+  insertedCell2.appendChild(VerwijderKnop);
+    
+  //aantal KM
+  var insertedCell3 = insertedRow.insertCell(4);
+  var km = document.createElement("input");
+  km.type = "number";
+  km.value = kosten.aantalKM;
+  insertedCell3.appendChild(km);
+  if(kosten.soort == "Auto"){
+      Bedrag.setAttribute("disabled", "disabled");
+      km.removeAttribute("disabled");
+  }
+  if(kosten.soort == "Openbaar Vervoer" || kosten.soort == "Overige Kosten" ){    
+        Bedrag.removeAttribute("disabled");
+        km.setAttribute("disabled", "disabled");
+  }
+} 
+
+//functie om rijen toe te voegen aan de tabel
+function addRowKostenTabelLoes(){
+  console.log("in addRowKostenTabelLoes");
+  table = document.getElementById("kostenTabel");
+  var insertedRow = table.insertRow(1);
+  insertedRow.id = "0";
+          
+//voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
+  var insertedCell0 = insertedRow.insertCell(0);
+  var temp1 = document.createElement("td");
+  temp1.innerHTML = "Open";
+  insertedCell0.appendChild(temp1);
+
+//voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
+  var insertedCell1 = insertedRow.insertCell(1);
+  dateID++;
+  var temp2 = document.createElement("input");
+  temp2.type = "date";
+  temp2.id = "datum"+dateID; 
+  temp2.setAttribute("max", today);
+  temp2.value = today;
+  insertedCell1.appendChild(temp2);
+//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
+  var insertedCell2 = insertedRow.insertCell(2);
+  selectID++;
+  var temp3 = document.createElement("select");
+  temp3.id = "select"+selectID;
+  var temp4 = document.createElement("OPTION");
+  temp4.innerHTML = "Openbaar Vervoer"
+  temp3.appendChild(temp4);
+  insertedCell2.appendChild(temp3);
+  insertedCell2.addEventListener("change", function(){
+    console.log(temp3[temp3.selectedIndex]);
+    var choice = temp3[temp3.selectedIndex];
+    console.log(choice.innerHTML == "Auto");
+    if(choice.innerHTML == "Auto"){
+      temp5.value = 0.19;
+      temp5.setAttribute("disabled", "disabled");
+      temp6.removeAttribute("disabled");
+    }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
+      temp5.value = 0;
+      temp5.removeAttribute("disabled");
+      temp6.setAttribute("disabled", "disabled");
+    }
+  })
+//voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
+  var insertedCell3 = insertedRow.insertCell(3);
+  aantalID++;
+  var temp5 = document.createElement("input");
+  temp5.type = "number";
+  temp5.value = 0;
+  temp5.id = "aantal"+aantalID; 
+  
+  insertedCell3.appendChild(temp5);
+  var insertedCell4 = insertedRow.insertCell(4);
+  var temp6 = document.createElement("input");
+  temp6.type = "number";
+  temp6.value = 0;
+  temp6.setAttribute("disabled", "disabled");
+  insertedCell4.appendChild(temp6);
+  traineeKostenDropDownMenu(selectID);
+}
+// ==========================================================================================================================================
+
 // oud
 // //GET functie met opbouwen rijen kostentabel
-function GETRowKostenTabel(kosten){
-    //console.log(kosten.status + "KOSTEN>STATUS");
-    if(kosten.status != "Verzonden"){
-        if(kosten.waarde != "Auto"){
+// function GETRowKostenTabelWTF(kosten){
+//     //console.log(kosten.status + "KOSTEN>STATUS");
+//     if(kosten.status != "Verzonden"){
+//         if(kosten.waarde != "Auto"){
 
-	var table = document.getElementById("kostenTabel");
-	var insertedRow = table.insertRow(3);
-    insertedRow.id = kosten.id;
+// 	var table = document.getElementById("kostenTabel");
+// 	var insertedRow = table.insertRow(3);
+//     insertedRow.id = kosten.id;
     
-    //status
-	var insertedCell2 = insertedRow.insertCell(0);
-	var emp3 = document.createElement("td");
-    emp3.innerHTML = kosten.status;
-    //console.log(emp3 + "emp3");
-	insertedCell2.appendChild(emp3);
+//     //status
+// 	var insertedCell2 = insertedRow.insertCell(0);
+// 	var emp3 = document.createElement("td");
+//     emp3.innerHTML = kosten.status;
+//     //console.log(emp3 + "emp3");
+// 	insertedCell2.appendChild(emp3);
 
-	//datum
-	var insertedCell = insertedRow.insertCell(1);
-	var elm = document.createElement("input");
-	elm.type = "date";
-	//console.log(kosten.factuurDatum);
-	elm.value = kosten.factuurDatum.substring(0,10);
-	elm.setAttribute("max", maxDate);
-	//console.log(elm);
-    insertedCell.appendChild(elm);
+// 	//datum
+// 	var insertedCell = insertedRow.insertCell(1);
+// 	var elm = document.createElement("input");
+// 	elm.type = "date";
+// 	//console.log(kosten.factuurDatum);
+// 	elm.value = kosten.factuurDatum.substring(0,10);
+// 	elm.setAttribute("max", maxDate);
+// 	//console.log(elm);
+//     insertedCell.appendChild(elm);
     
-	//soort kosten
-	var insertedCell1 = insertedRow.insertCell(2);
-	var elm1 = document.createElement("select");
-	elm1.id = kosten.id;
-	var arr = ["Openbaar Vervoer", "Overige Kosten"];
-	for(var i = 0; i<arr.length; i++){
-		var option = document.createElement("OPTION"),
-		txt = document.createTextNode(arr[i]);
-		option.appendChild(txt);
-		option.value = arr[i];
-		elm1.insertBefore(option,elm1.lastChild);
-		    if(arr[i] === kosten.waarde){
-			    elm1.value = kosten.waarde;
-		    }
-	}
-	//console.log(elm1.value);
-    insertedCell1.appendChild(elm1);
+// 	//soort kosten
+// 	var insertedCell1 = insertedRow.insertCell(2);
+// 	var elm1 = document.createElement("select");
+// 	elm1.id = kosten.id;
+// 	var arr = ["Openbaar Vervoer", "Overige Kosten"];
+// 	for(var i = 0; i<arr.length; i++){
+// 		var option = document.createElement("OPTION"),
+// 		txt = document.createTextNode(arr[i]);
+// 		option.appendChild(txt);
+// 		option.value = arr[i];
+// 		elm1.insertBefore(option,elm1.lastChild);
+// 		    if(arr[i] === kosten.waarde){
+// 			    elm1.value = kosten.waarde;
+// 		    }
+// 	}
+// 	//console.log(elm1.value);
+//     insertedCell1.appendChild(elm1);
     
-	//bedrag
-	var insertedCell2 = insertedRow.insertCell(3);
-	var emp3 = document.createElement("input");
-	emp3.type = "number";
-	emp3.value = kosten.bedrag/100;
-	insertedCell2.appendChild(emp3);
-    //console.log(insertedCell1);
-    }
-} // what the fuck is deze indenting >:@
-}
+// 	//bedrag
+// 	var insertedCell2 = insertedRow.insertCell(3);
+// 	var emp3 = document.createElement("input");
+// 	emp3.type = "number";
+// 	emp3.value = kosten.bedrag/100;
+// 	insertedCell2.appendChild(emp3);
+//     //console.log(insertedCell1);
+//     }
+// } // what the fuck is deze indenting >:@
+// }
 
-// Loes der ding
-//GET functie met opbouwen rijen urentabel
-function GETRowKostenTabel(kosten){
-    var table = document.getElementById("kostenTabel");
-    var insertedRow = table.insertRow(1);
-    insertedRow.id = kosten.id;
-  
-    var insertedCell = insertedRow.insertCell(0);
-    insertedCell.innerHTML = kosten.status;
-    //datum
-    var insertedCell = insertedRow.insertCell(1);
-      var Datum = document.createElement("input");
-      Datum.type = "date";
-      Datum.value = kosten.factuurDatum.substring(0,10);
-      Datum.setAttribute("max", today);
-      insertedCell.appendChild(Datum);
-    
-    //soort kosten
-    var insertedCell1 = insertedRow.insertCell(2); 
-    var arr = ["Openbaar Vervoer", "Overige Kosten", "Auto"];
-    var SoortKosten = document.createElement("select");
-      SoortKosten.id = kosten.id;
-    for(var i = 0; i<arr.length; i++){
-      var option = document.createElement("OPTION"),
-      txt = document.createTextNode(arr[i]);
-      option.appendChild(txt);
-      option.value = arr[i];
-      SoortKosten.insertBefore(option,SoortKosten.lastChild);
-      if(arr[i] === kosten.soort){
-        SoortKosten.value = kosten.soort;
-      }
-    insertedCell1.appendChild(SoortKosten);
-    }
-    
-    //bedrag kosten
-    var insertedCell2 = insertedRow.insertCell(3);
-      var Bedrag = document.createElement("input");
-      Bedrag.type = "number";
-      Bedrag.value = kosten.bedrag;
-      insertedCell2.appendChild(Bedrag);
-      var VerwijderKnop = document.createElement("span");
-      VerwijderKnop.className = "fas fa-trash-alt";
-      VerwijderKnop.addEventListener("click", function(){
-      var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            insertedRow.parentNode.removeChild(insertedRow);
-          }
-      };
-        xhttp.open("DELETE", apikosten+kosten.id, true);
-        xhttp.send();});
-    insertedCell2.appendChild(VerwijderKnop);
-    //aantalKM
-    var insertedCell3 = insertedRow.insertCell(4);
-    var aantalkm = document.createElement("input");
-    aantalkm.value = kosten.aantalKM;
-    insertedCell3.appendChild(aantalkm);
-  
-    }
-  
+
   // oud bla bla
 //   //functie om rijen toe te voegen aan de tabel
 //   function addRowKostenTabel(){
