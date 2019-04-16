@@ -1,22 +1,37 @@
-var apiTrainee = "http://localhost:8082/api/trainee/";
+/**
+ * 
+ */
+
+var apiKlant = "http://localhost:8082/api/klant/"+sessionStorage.getItem("storedUserID");
 var apiUur = "http://localhost:8082/api/uur/";
 
 //GET trainees voor vullen tabel
 function getTrainees(){
+  console.log("check in gettrainees");
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      var trainee = JSON.parse(this.responseText); 
+      var klant = JSON.parse(this.responseText); 
       //onderstaande roept verschillende functies aan om de tabel te maken
       var table = document.createElement("table");
       addHtmlElement(table, traineeTableHeader());
-      var tbody = addHtmlElement(table, document.createElement("tbody"));
-      addHtmlElement(tbody, traineeTableRow(trainee));
-      document.getElementById("traineelijst").appendChild(table);
-          
+      var body = document.createElement("tbody")
+      var tbody = addHtmlElement(table, body);
+      console.log(tbody)
+      console.log(klant)
+      console.log(klant.trainee.length);
+      for(var i =0; i<klant.trainee.length; i++){
+      console.log(klant.trainee[i]);
+      console.log(klant.trainee[i].uren);
+    
+      addHtmlElement(tbody, traineeTableRow(klant.trainee[i]));
+      
+    }
+    document.getElementById("traineelijst").appendChild(table);   
+
       }
     };
-      xhttp.open("GET", apiTrainee+"67", true);
+      xhttp.open("GET", apiKlant, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -34,11 +49,6 @@ function traineeTableHeader() {
    return tableHeader;
 }
 
-function addHtmlElement(parent, child) {
-  parent.appendChild(child);
-  return child;
-}
-
 function addHtmlElementContent(parent, child, tekst) {
    parent.appendChild(child);
    child.innerHTML = tekst;
@@ -46,25 +56,30 @@ function addHtmlElementContent(parent, child, tekst) {
 }
 
 function traineeTableRow(trainee) {
-   var tr = document.createElement("tr");
+  var tr = document.createElement("tr");
    var akkoordstatus = "";
-   var uren = trainee.uren;
+//   var uren = trainee.uren;
    var aantalUren = 0;
-   for(var i = 0; i<uren.length; i++){
-      
-      if(trainee.uren[i].accordStatus == "NIETINGEVULD"){
-        akkoordstatus = "-";
-
-      }else{
-      akkoordstatus = trainee.uren[i].accordStatus;
-      aantalUren += trainee.uren[i].aantal ;
-    }
+   console.log(trainee.uren.length);
+   for(var i = 0; i<trainee.uren.length; i++){
+      console.log(trainee.uren[i].accordStatus);
+      if(trainee.uren[i].accordStatus == "TEACCODEREN"){
+        akkoordstatus = trainee.uren[i].accordStatus;
+          aantalUren += trainee.uren[i].aantal ;
+          console.log(akkoordstatus);
+      }
    }
-   addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam,trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), aantalUren, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), akkoordstatus, trainee.id);
-   addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
+   console.log(akkoordstatus);
+   if(akkoordstatus == "TEACCODEREN"){
+     
+     addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam, trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam,trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), aantalUren, trainee.id);
+     addHtmlElementContent(tr, document.createElement("td"), akkoordstatus, trainee.id);
+     addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
+     
+   }
+
    return tr;
 }
 
@@ -125,6 +140,7 @@ function PUTHourAccordStatus(uur, rij){
        if (this.readyState == 4) {
                   console.log(uur);
                     console.log(uur.accordStatus);
+                    location.reload();
            if (this.status == 200) {
 
            } else {
@@ -145,12 +161,13 @@ function TraineeHourChange(){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
       console.log(this.responseText);
-      var trainee = JSON.parse(this.responseText); 
-      console.log(trainee.uren.length);
-              klantSendAccord(trainee);
+      var klant = JSON.parse(this.responseText); 
+      // console.log(trainee.uren.length);
+      for(var i = 0; i<klant.trainee.length; i++)
+              klantSendAccord(klant.trainee[i]);
       }
     };
-      xhttp.open("GET", apiTrainee+"67", true);
+      xhttp.open("GET", apiKlant, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
