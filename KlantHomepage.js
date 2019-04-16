@@ -17,15 +17,18 @@ function getTrainees(){
       addHtmlElement(table, traineeTableHeader());
       var body = document.createElement("tbody")
       var tbody = addHtmlElement(table, body);
+      console.log(tbody)
       console.log(klant)
-      console.log(klant.trainee);
+      console.log(klant.trainee.length);
       for(var i =0; i<klant.trainee.length; i++){
-      console.log(klant.trainee);
-      console.log(klant.trainee.uren.length);
+      console.log(klant.trainee[i]);
+      console.log(klant.trainee[i].uren);
+    
+      addHtmlElement(tbody, traineeTableRow(klant.trainee[i]));
+      
     }
-      addHtmlElement(tbody, traineeTableRow(klant.trainee));
-      document.getElementById("traineelijst").appendChild(table);
-          
+    document.getElementById("traineelijst").appendChild(table);   
+
       }
     };
       xhttp.open("GET", apiKlant, true);
@@ -57,8 +60,8 @@ function traineeTableRow(trainee) {
    var akkoordstatus = "";
 //   var uren = trainee.uren;
    var aantalUren = 0;
-   console.log(klant.trainee.uren.length);
-   for(var i = 0; i<klant.trainee.uren.length; i++){
+   console.log(trainee.uren.length);
+   for(var i = 0; i<trainee.uren.length; i++){
       console.log(trainee.uren[i].accordStatus);
       if(trainee.uren[i].accordStatus == "TEACCODEREN"){
         akkoordstatus = trainee.uren[i].accordStatus;
@@ -76,6 +79,7 @@ function traineeTableRow(trainee) {
      addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
      
    }
+
    return tr;
 }
 
@@ -136,6 +140,7 @@ function PUTHourAccordStatus(uur, rij){
        if (this.readyState == 4) {
                   console.log(uur);
                     console.log(uur.accordStatus);
+                    location.reload();
            if (this.status == 200) {
 
            } else {
@@ -156,12 +161,13 @@ function TraineeHourChange(){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
       console.log(this.responseText);
-      var trainee = JSON.parse(this.responseText); 
-      console.log(trainee.uren.length);
-              klantSendAccord(trainee);
+      var klant = JSON.parse(this.responseText); 
+      // console.log(trainee.uren.length);
+      for(var i = 0; i<klant.trainee.length; i++)
+              klantSendAccord(klant.trainee[i]);
       }
     };
-      xhttp.open("GET", apiTrainee, true);
+      xhttp.open("GET", apiKlant, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }

@@ -1,6 +1,6 @@
 
 //Loes: de api's
-var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");;//+sessionStorage.getItem("storedUserID");
+var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");//+sessionStorage.getItem("storedUserID");
 //trainee variabele 
 var trainee;
 
