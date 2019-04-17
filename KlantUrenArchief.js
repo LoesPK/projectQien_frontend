@@ -18,7 +18,8 @@ if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
 
-
+var uurInDBHemZeMonth;
+var theMonth;
 
 // EMIEL - De maand selecteren
 function selectMonth(){
@@ -28,8 +29,8 @@ function selectMonth(){
 		GETUrenPerMaand(theMonth);
 		}
 
-var akkoordstatus = "";
-var aantalUren = 0;
+
+
 
 // EMIEL - GET Uren per maand
 function GETUrenPerMaand(theMonth){
@@ -46,23 +47,31 @@ function GETUrenPerMaand(theMonth){
             klant = JSON.parse(this.responseText);	
 //            trainee.uren.sort(function(a,b){return b.factuurDatum<a.factuurDatum?-1:1});
 			for(var j = 0; j<klant.trainee.length; j++){
-            for(var i = 0; i<klant.trainee[j].uren.length; i++){
+				var akkoordstatus = "";
+				var aantalUren = 0;
+            	for(var i = 0; i<klant.trainee[j].uren.length; i++){
                 uurInDBHemZeMonth = klant.trainee[j].uren[i].factuurDatum.substring(5,7);
-                    
+                    		if(klant.trainee[j].uren[i].accordStatus == "NIETINGEVULD"){
+                    			console.log("niet 1");
+                    		}
+                    		// console.log(klant.trainee[j].uren[i].accordStatus)
                          if(klant.trainee[j].uren[i].accordStatus == "TEACCODEREN" || klant.trainee[j].uren[i].accordStatus == "GOEDGEKEURD" || klant.trainee[j].uren[i].accordStatus == "AFGEKEURD" ){
                        	  akkoordstatus = klant.trainee[j].uren[i].accordStatus;
+                       	  if(uurInDBHemZeMonth == theMonth){
                              aantalUren += klant.trainee[j].uren[i].aantal ;
+                          }
                              console.log(akkoordstatus);
+
                          }
-                      
-                    	
-                        
-                    	
-            }
-      		if(uurInDBHemZeMonth == theMonth) {
-            GETRowUrenTabel(klant.trainee[j]);
-      		}
-            }
+                      if(klant.trainee[j].uren[i].accordStatus == "NIETINGEVULD"){
+                    			console.log("niet 2");
+                    			akkoordstatus = "NIETINGEVULD";
+                    		}
+                    }//forloop uren
+	      		if(uurInDBHemZeMonth == theMonth && akkoordstatus != "NIETINGEVULD") {
+	            	GETRowUrenTabel(theMonth, akkoordstatus, klant.trainee[j]);
+	      		}
+            }//end forloop trainees
         }
 
     };
@@ -72,7 +81,13 @@ function GETUrenPerMaand(theMonth){
 }
 
 //GET functie met opbouwen rijen urentabel
-function GETRowUrenTabel(trainee){
+function GETRowUrenTabel(theMonth, akkoordstatus, trainee){
+	//get de maand uit selectie: per uur: het aantal + de maand. en daar een rij van maken.
+	var uur = new array();
+	uur.push(trainee.uren());
+	
+	if(uur.factuurDatum.substring(5,7) == theMonth);
+
 	var table = document.getElementById("traineelijst");
 	var insertedRow = table.insertRow(1);
 	insertedRow.id = trainee.id;
@@ -117,7 +132,7 @@ function Userlogout(){
 }
 
 //EMIEL - de geselecteerde maand
-var theMonth = "";
+
 //EMIEL - de maand van het uur in database
-var uurInDBHemZeMonth;
+
 
