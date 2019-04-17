@@ -91,24 +91,28 @@ function klantSendAccord(trainee){
 console.log(trainee.uren);
 var row = document.getElementById(trainee.id);
   var uren = trainee.uren;
-  console.log("in klantSendAccord")
-  
    for(var i = 0; i<uren.length; i++){
+    console.log(uren[i].accordStatus);
+    if(uren[i].accordStatus == "TEACCODEREN"){
          var uur = {}
     uur.id = uren[i].id;
+    console.log(uur.id);
     console.log(row);
     var cellA = row.children[4];
     console.log(cellA);
       // for(var i = 0; i<aantal; i++){
       
       var cellAInhoud = cellA.children[0];
+      console.log(cellAInhoud);
       if(cellAInhoud.value == "goedkeuren"){
         uur.accordStatus = "GOEDGEKEURD";
       }
       if(cellAInhoud.value == "afkeuren"){
         uur.accordStatus = "AFGEKEURD";
       }
+
       PUTHourAccordStatus(uur, uur.id);
+    }
   }
 
 }
