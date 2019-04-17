@@ -110,24 +110,24 @@ function klantSendAccord(trainee){
   var uren = trainee.uren;
   
    for(var i = 0; i<uren.length; i++){
-  var table = document.getElementById("traineelijst");
-  var table = table.children[0];
-  var body = table.children[1];
-  var rows = body.children;
-  var aantal = rows.length;
-  // for(var i = 0; i<aantal; i++){
-    var uur = {}
-    uur.id = uren[i].id;
-    var row = rows[0];
-    var cellA = row.children[4];
-    var cellAInhoud = cellA.children[0];
-    if(cellAInhoud.value == "goedkeuren"){
-      uur.accordStatus = 2;
-    }
-    if(cellAInhoud.value == "afkeuren"){
-      uur.accordStatus = 3;
-    }
-    PUTHourAccordStatus(uur, uur.id);
+      var table = document.getElementById("traineelijst");
+      var table = table.children[0];
+      var body = table.children[1];
+      var rows = body.children;
+      var aantal = rows.length;
+      // for(var i = 0; i<aantal; i++){
+      var uur = {}
+      uur.id = uren[i].id;
+      var row = rows[0];
+      var cellA = row.children[4];
+      var cellAInhoud = cellA.children[0];
+      if(cellAInhoud.value == "goedkeuren"){
+        uur.accordStatus = "GOEDGEKEURD";
+      }
+      if(cellAInhoud.value == "afkeuren"){
+        uur.accordStatus = "AFGEKEURD";
+      }
+      PUTHourAccordStatus(uur, uur.id);
   }
 
 }
