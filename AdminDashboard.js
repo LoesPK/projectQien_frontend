@@ -3,11 +3,35 @@ var apiUserId = "http://localhost:8082/api/trainee/"; //+sessionStorage.getItem(
 //trainee variabele 
 var trainee;
 
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+//                                                                                          //
+//    Tim -DIKKE COMMENT - hij gaat nu door de OPGESLAGEN declaraties niet verzonden!!!     //
+//                                                                                          //
+//////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //As January is 0.
+var yyyy = today.getFullYear();
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+today = yyyy+'-'+mm+'-'+dd ;
+
 // EMIEL - de geselecteerde maand
 var theMonth = "";
 
+// Tim - de geselecteerde jaa
+var theYear = yyyy;
+console.log(theYear + " theYear");
+
 // EMIEL - de maand van het uur in database
 var uurInDBHemZeMonth;
+
+// Tim - de jaar 
+var uurInDBHemZeYear;
 
 // Tim - Variabelen aanmaken om de totale uren in bij elkaar op te tellen
 var AantalGewerkteUren = 0;
@@ -24,6 +48,14 @@ var GoedgekeurdOver125Uren = 0;
 var GoedgekeurdVerlofUren = 0;
 var GoedgekeurdZiekteUren = 0;
 var GoedgekeurdTotaalUren = 0;
+
+// Tim - Variabelen aanmaken om de Percentages van uren 
+var PercentageGewerkteUren = 0; 
+var PercentageOver100Uren = 0;
+var PercentageOver125Uren = 0;
+var PercentageVerlofUren = 0;
+var PercentageZiekteUren = 0;
+var PercentageTotaalUren = 0;
 
 // Tim - Variabelen aanmaken om de totale afgekeurde uren in bij elkaar op te tellen
 var AfgekeurdGewerkteUren = 0; 
@@ -48,14 +80,6 @@ var AutoKM;
 var AutoEuro;
 var Totaal;
 
-//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //As January is 0.
-var yyyy = today.getFullYear();
-if(dd<10) dd='0'+dd;
-if(mm<10) mm='0'+mm;
-today = yyyy+'-'+mm+'-'+dd ;
 
 // Tim - De maand selecteren
 function selectMonth(){
@@ -64,6 +88,15 @@ function selectMonth(){
 		//console.log("theMonth: " + theMonth);
         GETUrenPerMaand(theMonth);
         GETKostenPerMaand(theMonth);
+}
+
+//Tim - De jaar selecteren
+function selectYear(){
+    var tablebodyYear = document.getElementById("selectedYear");
+    theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
+    console.log(theYear + "SELECT YEAR");
+    GETUrenPerMaand(theMonth);
+    GETKostenPerMaand(theMonth);
 }
 //Tim - GET trainee en alle kosten van
 function GETKostenPerMaand(theMonth){
@@ -87,10 +120,14 @@ function GETKostenPerMaand(theMonth){
                 for(var k = 0; k < trainee[i].kosten.length; k++){
                     //console.log("Per kosten in kosten loop");
                     uurInDBHemZeMonth = trainee[i].kosten[k].factuurDatum.substring(5,7);
+                    uurInDBHemZeYear = trainee[i].kosten[k].factuurDatum.substring(0,4);
+                    //console.log(uurInDBHemZeYear + " DE Jaar per kosten");
+                    //console.log(theYear + " TheYear in loop");
+                    //uurInDBHemZeYear = trainee[i].kosten[k].factuurDatum.substring(5,7);
 
                     // Tim - check if it is the right month
-                    if(uurInDBHemZeMonth == theMonth){
-                        //console.log("month in kosten loop");
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear){
+                        console.log(" maand en jaar kloppen");
                         switchTotaalKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
                     }
                 }
@@ -123,24 +160,28 @@ function GETUrenPerMaand(theMonth){
             emptyTeaccoderen();
             // Tim - Per Trainee loop
             for(var i = 0; i < trainee.length; i++){
-                console.log(trainee[i].voornaam + " Per Trainee in Uren loop");
+                //console.log(trainee[i].voornaam + " Per Trainee in Uren loop");
                 // Tim - Per Uur loop
                 for(var k = 0; k < trainee[i].uren.length; k++){
                     //console.log("PER UUR VAN DE TRAINEE");
                     //console.log(trainee[i].uren[k].accordStatus);
                     uurInDBHemZeMonth = trainee[i].uren[k].factuurDatum.substring(5,7);
+                    uurInDBHemZeYear = trainee[i].uren[k].factuurDatum.substring(0,4);
                     //console.log(uurInDBHemZeMonth);
-                    if(uurInDBHemZeMonth == theMonth) {
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear) {
                         //console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
                         switchTotaalUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
                         switchTotaalGoegekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
                         switchTotaalAfgekeurdeUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
                         switchTotaalteaccoderenUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                        
                     }
                 }
             }
+            percantagesGoegekeurdUren();
             //Tim - Opbouwen van de body van de tabel
-            addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
+            //addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
+            addHtmlElement(tbody, adminPercentagesTableRow(trainee));
             addHtmlElement(tbody, adminUrentGoedgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrenteaccoderenTableRow(trainee));
@@ -215,7 +256,7 @@ function switchTotaalGoegekeurdUren(traineelijst,typeUur){
         }
     }
 }
-// Tim - Goedgekeurd - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
+// Tim - Afgekeurd - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchTotaalAfgekeurdeUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "AFGEKEURD"){
         switch(typeUur){
@@ -290,6 +331,19 @@ function switchTotaalKosten(traineelijst,typeKosten){
     //console.log(AutoKM + "Totaal Auto KM");
     //console.log(Totaal + "Totaal");
 }
+// Tim - percentages rekenen
+function percantagesGoegekeurdUren(){
+    PercentageGewerkteUren = GoedgekeurdGewerkteUren/GoedgekeurdTotaalUren; 
+    PercentageOver100Uren = GoedgekeurdOver100Uren/GoedgekeurdTotaalUren;
+    PercentageOver125Uren = GoedgekeurdOver125Uren/GoedgekeurdTotaalUren;
+    PercentageVerlofUren = GoedgekeurdVerlofUren/GoedgekeurdTotaalUren;
+    PercentageZiekteUren = GoedgekeurdZiekteUren/GoedgekeurdTotaalUren;
+    //console.log(PercentageGewerkteUren + "PERCENTAGES");
+    //console.log(PercentageOver100Uren + "PERCENTAGES");
+    //console.log(PercentageOver125Uren + "PERCENTAGES");
+    //console.log(PercentageVerlofUren + "PERCENTAGES");
+    //console.log(PercentageZiekteUren + "PERCENTAGES");
+}
 // EMIEL - Totaal Rij aanmaken
 function adminUrenTotaalTableRow(traineelijst) {
     var tr = document.createElement("tr");
@@ -316,6 +370,73 @@ function adminUrentGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdVerlofUren);
     addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdZiekteUren);
+    return tr;
+}
+// Tim - Percentages Rij aanmaken
+function adminPercentagesTableRow(traineelijst) {
+    var tr = document.createElement("tr");
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    //addHtmlElementContent(tr, document.createElement("td"), "Datum");
+
+    // Tim - reken de percentage en geef maximaal 4 cijfers op het scherm
+    PGewerkt = PercentageGewerkteUren * 100;
+    weergevenGewerkt = JSON.stringify(PGewerkt);
+        if(PGewerkt < 10){
+            PercentageWeergevenGewerkt = weergevenGewerkt.substring(0,4) + "%";
+        } else {
+            PercentageWeergevenGewerkt = weergevenGewerkt.substring(0,5) + "%";
+        }
+        //console.log(PercentageWeergevenGewerkt + "PERCENTAGE DING");
+
+        // Tim - geen uren = lege rij
+        if(PercentageWeergevenGewerkt == "null%"){
+            addHtmlElementContent(tr, document.createElement("td"), "");
+            addHtmlElementContent(tr, document.createElement("td"), "");
+            addHtmlElementContent(tr, document.createElement("td"), "");
+            addHtmlElementContent(tr, document.createElement("td"), "");
+            addHtmlElementContent(tr, document.createElement("td"), "");
+            addHtmlElementContent(tr, document.createElement("td"), "");
+        }else{
+        addHtmlElementContent(tr, document.createElement("td"), PercentageWeergevenGewerkt);
+    //    
+    POver = PercentageOver100Uren * 100;
+    weergevenOver100 = JSON.stringify(POver);
+        if(POver < 10){
+            PercentageWeergevenOver100 = weergevenOver100.substring(0,4) + "%";
+        } else {
+            PercentageWeergevenOver100 = weergevenOver100.substring(0,5) + "%";
+        }
+    addHtmlElementContent(tr, document.createElement("td"), PercentageWeergevenOver100);
+    //
+    POver125 = PercentageOver125Uren *100;
+    weergevenOver125 = JSON.stringify(POver125);
+        if(POver125 < 10){
+            PercentrageWeergevenOver125 = weergevenOver125.substring(0,4) + "%";
+        } else {
+            PercentrageWeergevenOver125 = weergevenOver125.substring(0,5) + "%";
+        }
+    addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenOver125);
+    //
+    PVerlof = PercentageVerlofUren * 100;
+    weergevenVerlof = JSON.stringify(PVerlof);
+        if(PVerlof < 10){
+            PercentrageWeergevenVerlof = weergevenVerlof.substring(0,4) + "%";
+        } else {
+            PercentrageWeergevenVerlof = weergevenVerlof.substring(0,5) + "%";
+        }
+    addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenVerlof);
+    addHtmlElementContent(tr, document.createElement("td"), "");
+    //
+    PZiekte = PercentageZiekteUren * 100;
+    weergevenZiekte = JSON.stringify(PZiekte);
+        if(PZiekte < 10){
+            PercentrageWeergevenZiekte = weergevenZiekte.substring(0,4) + "%";
+        } else {
+            PercentrageWeergevenZiekte = weergevenZiekte.substring(0,5) + "%";
+        }
+    addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenZiekte);
+        }
     return tr;
 }
 // Tim - Afgekeurd Rij aanmaken
