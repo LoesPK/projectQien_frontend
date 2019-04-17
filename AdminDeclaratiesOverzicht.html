@@ -6,7 +6,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body>
+<body onload="selectMonth()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -25,8 +25,59 @@
 	</nav>
 		<div class="wrapperAdminDeclaratiesOverzicht">
 			<div class="container">
-				<h1>Declaratiesoverzicht</h1>
-					<h2>Work in progress...</h2>
+				<h1>Declaraties</h1>
+				<div id="setMonthDiv">
+					<select id="selectedMonth"
+					onchange = "selectMonth()">
+							<option value="01">Januari</option>
+							<option value="02">Februari</option>
+							<option value="03">Maart</option>
+							<option value="04">April</option>
+							<option value="05">Mei</option>
+							<option value="06">Juni</option>
+							<option value="07">Juli</option>
+							<option value="08">Augustus</option>
+							<option value="09">September</option>
+							<option value="10">Oktober</option>
+							<option value="11">November</option>
+							<option value="12">December</option>
+					  </select>
+				</div>
+				<br>
+				<br>
+
+				<h2>Totaal Declaraties</h2>
+				<div id="urentabelDiv">
+					<table id="declaratieTabel" >
+						<thead>
+						<tr class="UrenHeader">
+							<th>Overige Kosten €</a></th>
+							<th>Openbaar Vervoer €</a></th>
+							<th>Auto KM</a></th>
+							<th>Auto €</a></th>
+							<th>Totaal €</a></th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				<br>
+
+				<h2>Declaraties Per Trainee</h2>
+				<div id="urentabelDiv">
+					<table id="perTraineeTabel" >
+						<thead>
+						<tr class="UrenHeader">
+							<th>Voornaam</a></th>
+							<th>Achternaam</a></th>
+							<th>Soort</a></th>
+							<th>Auto KM</a></th>
+							<th>Bedrag €</a></th>
+							<th>Bijlage</a></th>
+						</tr>
+						</thead>
+					</table>
+				</div>
+				
 			</div>
 		</div>
 

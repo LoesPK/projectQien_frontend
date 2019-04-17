@@ -1,135 +1,110 @@
-var apiTrainee = "http://localhost:8082/api/trainee/";
-var apiUur = "http://localhost:8082/api/uur/";
+/**
+ * 
+ */
 
-//GET trainees voor vullen tabel
-function getTrainees(){
+//Loes: de api's
+var apiKlant = "http://localhost:8082/api/klant/"+sessionStorage.getItem("storedUserID");
+var apiUur = "http://localhost:8082/api/uur/";
+var apiTrainee = "http://localhost:8082/api/trainee/";
+//trainee variabele 
+var klant;
+
+// EMIEL - De maand selecteren
+
+// EMIEL - GET Uren per maand
+function GETUrenPerTrainee(){
+  var table = document. getElementById("traineelijst");
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      // console.log(this.responseText);
-      var trainee = JSON.parse(this.responseText); 
-      //onderstaande roept verschillende functies aan om de tabel te maken
-      var table = document.createElement("table");
-      addHtmlElement(table, traineeTableHeader());
-      var tbody = addHtmlElement(table, document.createElement("tbody"));
-      for (var i=0; i<trainee.length; i++){ 
-        addHtmlElement(tbody, traineeTableRow(trainee[i]));
-      }
-      document.getElementById("traineelijst").appendChild(table);
-          
-      }
+            klant = JSON.parse(this.responseText);  
+//            trainee.uren.sort(function(a,b){return b.factuurDatum<a.factuurDatum?-1:1});
+
+            for(var i=0; i<klant.trainee.length; i++){
+              GETRowUrenTabel(klant.trainee[i]);
+            }
+
+    }
     };
-      xhttp.open("GET", apiTrainee, true); // hardcoded nu
+      xhttp.open("GET", apiKlant, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
 
-
-//tabelmaken
-function traineeTableHeader() {
-   var tableHeader = document.createElement("thead");
-   var tr = addHtmlElement(tableHeader, document.createElement("tr"));
-   addHtmlElementContent(tr, document.createElement("th"), "Voornaam");
-   addHtmlElementContent(tr, document.createElement("th"), "Achternaam");
-   addHtmlElementContent(tr, document.createElement("th"), "Aantal uren");
-   addHtmlElementContent(tr, document.createElement("th"), "Akkoordstatus");
-      addHtmlElementContent(tr, document.createElement("th"), "Accoderen");
-   return tableHeader;
-}
-
-function addHtmlElement(parent, child) {
-  parent.appendChild(child);
-  return child;
-}
-
-function addHtmlElementContent(parent, child, tekst) {
-   parent.appendChild(child);
-   child.innerHTML = tekst;
-   return child;
-}
-
-function traineeTableRow(trainee) {
-   var tr = document.createElement("tr");
-   var akkoordstatus = "";
-   var uren = trainee.uren;
-   console.log(trainee);
-   var aantalUren = 0;
-   for(var i = 0; i<uren.length; i++){
-      
-      if(trainee.uren[i].accordStatus == "NIETINGEVULD"){
-        akkoordstatus = "-";
-
-      }else{
-      akkoordstatus = trainee.uren[i].accordStatus;
-      aantalUren += trainee.uren[i].aantal ;
+//GET functie met opbouwen rijen urentabel
+function GETRowUrenTabel(trainee){
+  console.log(trainee);
+  var akkoordstatus = "";
+  var aantalUren = 0;
+  for(var i=0;i<trainee.uren.length;i++){
+      console.log(trainee.uren[i].accordStatus);
+      if(trainee.uren[i].accordStatus == "TEACCODEREN"){
+        akkoordstatus = "Te Accoderen";
+          aantalUren += trainee.uren[i].aantal ;
+          console.log(akkoordstatus);
     }
-   }
-   addHtmlElementContent(tr, document.createElement("td"), trainee.voornaam, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam,trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), aantalUren, trainee.id);
-   addHtmlElementContent(tr, document.createElement("td"), akkoordstatus, trainee.id);
-   addButton(tr, document.createElement("td"), document.createElement("select"), document.createElement("OPTION"), document.createElement("OPTION"), trainee.id);
-   return tr;
-}
+  }
+  if(akkoordstatus == "Te Accoderen"){
+  var table = document.getElementById("traineelijst");
+  var insertedRow = table.insertRow(0);
+  insertedRow.id = trainee.id;
+    
+    //datum
+  var insertedCell = insertedRow.insertCell(0); 
+  insertedCell.innerHTML = trainee.voornaam;
+  
+    
+    //soort uren
+  var insertedCell1 = insertedRow.insertCell(1); 
+    insertedCell1.innerHTML = trainee.achternaam;
+    
 
-function addHtmlElement(parent, child) {
-   parent.appendChild(child);
-   return child;
-}
+    //aantal uren
+  var insertedCell2 = insertedRow.insertCell(2);   
+    insertedCell2.innerHTML = aantalUren;
+     
 
-function addHtmlElementContent(parent, child, tekst, id) {
-  parent.id = id
-   parent.appendChild(child);
-   child.innerHTML = tekst;
-   return child;
-}
+    //akkoordstatus
+  var insertedCell3 = insertedRow.insertCell(3);   
+  var status = document.createElement("td");
+  insertedCell3.innerHTML = akkoordstatus;
+  insertedCell3.appendChild(status);
 
-function addButton(parent, child, select, option1, option2, id){
-  parent.id = id;
-  parent.appendChild(child);
+  var insertedCell4 = insertedRow.insertCell(4);
+  var select = document.createElement("select"); 
+  var option1 = document.createElement("OPTION"); 
   select.appendChild(option1);
   option1.innerHTML = "goedkeuren";
+  var option2 = document.createElement("OPTION"); 
   select.appendChild(option2);
-  option2.innerHTML = "afkeuren";
-  child.appendChild(select);
-   return child;
+   option2.innerHTML = "afkeuren";  
+   insertedCell4.appendChild(select); 
+}
 }
 
+
 function klantSendAccord(trainee){
+console.log(trainee.uren);
+var row = document.getElementById(trainee.id);
   var uren = trainee.uren;
   console.log("in klantSendAccord")
   
    for(var i = 0; i<uren.length; i++){
-    var table = document.getElementById("traineelijst");
-    var table = table.children[0];
-    var body = table.children[1];
-    var rows = body.children;
-    var aantal = rows.length;
-    // Jordi: voor elke row:
-    for(var r = 0; r<aantal; r++){
-      console.log("r = " + r)
-      var uur = {}
-      uur.id = uren[i].id;
-      var row = rows[i];
-      // console.log("rows:")
-      // console.log(rows);
-      var cellA = row.children[4];
-      console.log("cellA:")
-      console.log(cellA);
+         var uur = {}
+    uur.id = uren[i].id;
+    console.log(row);
+    var cellA = row.children[4];
+    console.log(cellA);
+      // for(var i = 0; i<aantal; i++){
+      
       var cellAInhoud = cellA.children[0];
-      // console.log("cellAInhoud");
-      // console.log(cellAInhoud);
       if(cellAInhoud.value == "goedkeuren"){
-        uur.accordStatus = 2;
+        uur.accordStatus = "GOEDGEKEURD";
       }
       if(cellAInhoud.value == "afkeuren"){
-        uur.accordStatus = 3;
-        // console.log("afgekeurd")
+        uur.accordStatus = "AFGEKEURD";
       }
-      // console.log("uur");
-      // console.log(uur);
       PUTHourAccordStatus(uur, uur.id);
-    }
   }
 
 }
@@ -140,8 +115,9 @@ function PUTHourAccordStatus(uur, rij){
 
    xhttp.onreadystatechange = function () {
        if (this.readyState == 4) {
-                  // console.log(uur);
-                  //   console.log(uur.accordStatus);
+                  console.log(uur);
+                    console.log(uur.accordStatus);
+                    // location.reload();
            if (this.status == 200) {
 
            } else {
@@ -155,21 +131,42 @@ function PUTHourAccordStatus(uur, rij){
    xhttp.send(JSON.stringify(uur));  
 }
 
-
 //GET uren voor tabel
 function TraineeHourChange(){
+  var body = document.getElementById("traineelijst");
+  var rows = body.children;
+  console.log(rows);
+
+  var aantal = rows.length;
+  for(var i = 0; i<aantal; i++){
+      var row = rows[i];
+    var trainee = {}
+    console.log(row.id);
+    trainee.id = row.id;
+    GETtrainee(trainee.id);
+  }
+}
+
+function GETtrainee(traineeID){
+  console.log(apiTrainee + traineeID);
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-        // console.log(this.responseText);
-        var trainee = JSON.parse(this.responseText); 
-        // console.log(trainee.uren.length);
-        for (var i=0; i<trainee.length; i++){
-          klantSendAccord(trainee[i]);
+      console.log(this.responseText);
+      var trainee = JSON.parse(this.responseText); 
+      console.log(trainee.uren.length);
+      
+              klantSendAccord(trainee);
         }
-      }
     };
-      xhttp.open("GET", apiTrainee, true);
+      xhttp.open("GET", apiTrainee + traineeID, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
+
+
+
+function Userlogout(){
+  sessionStorage.clear();
+}
+

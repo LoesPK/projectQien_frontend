@@ -5,17 +5,40 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
+	<script type="text/javascript" src="KlantHomepage.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
-<body onload="getTrainees()">
+<body onload="GETUrenPerTrainee()">
 	<nav>
-		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<a href="dashboardKlant"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+		<div class="nav">
+			<ul>
+				<li><a href="login.html" >Uitloggen</a></li>
+				<li><a href="dashboardKlant.html" class ="active">Dashboard</a></li>
+				<li><a href="KlantUrenArchief.html" >UrenArchief</a></li>
+			</ul>
+		</div>
 	</nav>
 	<div class="wrapperKlant">
 		  <h1>Trainees</h1>
-			<div id="traineelijst"></div>
+		  <table >
+				<thead>
+				<tr class="UrenHeader">
+				<th>Voornaam</a></th>
+					<th>Achternaam</a></th>
+					<th>Aantal uren</a></th>
+					<th>Akkoordstatus</a></th>
+					<th>Accoderen</a></th>
+				</tr>
+				</thead>
+				<tbody id="traineelijst">
+					
+
+				</tbody>
+			</table>
 			<button onclick="TraineeHourChange()">Versturen naar Qien</button>
 	</div>
 
-	<script type="text/javascript" src="KlantHomepage.js"></script>
+	
 </body>
 </html>
