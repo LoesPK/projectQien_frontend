@@ -1,5 +1,5 @@
 var api = "http://localhost:8082/api/trainee/";
-var apiKlant = "http://localhost:8082/api/klant";
+var apiKlant = "http://localhost:8082/api/klant/";
 var IDteWijzigenTrainee;
 
 
@@ -186,46 +186,8 @@ function updateDropdownKlanten(row){
 
 
 
-
-
-
-
-// var huidigeTrainee;
-// function voegTraineeToe(element, trainee){
-//   huidigeTrainee = trainee;
-//   var tID = trainee.id;
-//   var e = document.getElementById(element);
-//   var t = document.createElement("input");
-//   t.value = trainee.voornaam;
-//   t.id = "voornaam"+tID;
-//   e.appendChild(t);
-//   t = document.createElement("input");
-//   t.value = trainee.achternaam;
-//   t.id = "achternaam"+tID;
-//   e.appendChild(t);
-//   t = document.createElement("input");
-//   t.value = trainee.username;
-//   t.id = "emailadres"+tID;
-//   e.appendChild(t);
-//   t = document.createElement("input");
-//   t.value = trainee.type;
-//   t.id = "username"+tID;
-//   e.appendChild(t);
-//   t = document.createElement("input");
-//   t.value = trainee.wachtwoord;
-//   t.id = "wachtwoord"+tID;
-//   e.appendChild(t);
-//   t = document.createElement("input");
-//   t.value = trainee.loon;
- //changeTrainee();
-// }
-
-
-
-
-
 // // EMIEL - ophalen van nieuwe fieldwaarden en een PUT xhttp-request naar de database 
-// function changeTrainee(id){
+// function changetheTrainee(id){
 //   nieuweTrainee = GETTrainee(id);  
   
 //   var xhttp = new XMLHttpRequest();
@@ -242,29 +204,114 @@ function updateDropdownKlanten(row){
 //     xhttp.send(JSON.stringify(nieuweTrainee));  // kan niet als object worden meegestuurd, moet als string, vandaar stringify
 //  }
 
-//  // EMIEL - Ophalen van een trainee
-// function changeTrainee(id){
-//   var xhttp = new XMLHttpRequest();
-//     xhttp.onreadystatechange = function() {
-//       if (this.readyState == 4 && this.status == 200) {
-//         var nieuweTrainee = JSON.parse(this.responseText);	
-//         console.log(nieuweTrainee);
-
+ // EMIEL - Ophalen van een trainee
+function changeTrainee(id){
+  var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var nieuweTrainee = JSON.parse(this.responseText);	
         
-//         nieuweTrainee.voornaam = document.getElementById("NieuwVoornaamInDB" + id).value;
-//         nieuweTrainee.achternaam = document.getElementById("NieuwAchternaamInDB" + id).value;
-//         nieuweTrainee.wachtwoord = document.getElementById("NieuwEmailadresInDB" + id).value;
-//         nieuweTrainee.username = document.getElementById("NieuwUsernameInDB" + id).value;
-//         nieuweTrainee.klant = document.getElementById("NieuwKlantInDB" + id).value;
-//         console.log(nieuweTrainee);
+        nieuweTrainee.voornaam = document.getElementById("NieuwVoornaamInDB" + id).value;
+        nieuweTrainee.achternaam = document.getElementById("NieuwAchternaamInDB" + id).value;
+        nieuweTrainee.wachtwoord = document.getElementById("NieuwEmailadresInDB" + id).value;
+        nieuweTrainee.username = document.getElementById("NieuwUsernameInDB" + id).value;
+        
+        nieuwKlantBedrijf = document.getElementById("NieuwKlantInDB" + id).value;
+        
+        getKlant(nieuweTrainee,nieuwKlantBedrijf);
 
-//         }// end if
-//     };//end xhttp function
+        }// end if
+    };//end xhttp function
 
-//     xhttp.open("GET", api+id, true);
-//     xhttp.setRequestHeader("Content-type", "application/json");
-//     xhttp.send();	
-// }
+    xhttp.open("GET", api+id, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();	
+}
+
+
+// EMIEL - GET een specifieke klant die geselecteerd is in het drop down menu
+function getKlant(trainee, bedrijf){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+     
+      if (this.readyState == 4 && this.status == 200) {
+          databaseKlant = JSON.parse(this.responseText);
+          
+          // Zoekt de database na op een klant die het geselecteerde bedrijf heeft. 
+          for(i=0; i<databaseKlant.length; i++){
+//              console.log("Check getKlant" + databaseKlant.length)
+              if(databaseKlant[i].bedrijf == bedrijf){
+                console.log("for loop id in getKlant: ")
+                console.log(databaseKlant[i]);
+                var klant= databaseKlant[i];
+
+                var klantID= databaseKlant[i].id;
+//                        console.log(klantID);
+                trainee.klant = databaseKlant[i];
+//                  console.log(" De trainee m et de klant")
+//                  console.log(trainee);                                
+              putTrainee(klant,klantID, trainee);  
+             
+               
+              }//end if
+            }//end for    
+        }//end 1e if
+    }//end http function;
+
+  xhttp.open("GET", apiKlant, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send();	
+  }//end GET
+
+
+// EMIEL - PUT trainee met de nieuwe waarden
+function putTrainee(klant,klantID, trainee){
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    traineeID = trainee.id;
+    console.log(trainee.id)
+
+      if (this.readyState == 4 && this.status == 200) {
+       var gewijzigdeTrainee = (this.responseText);
+       putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID);
+        
+        
+            //if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
+              // window.location.reload();
+              // }//end if
+        }//end if
+    }//end http function;
+
+  xhttp.open("PUT", api +trainee.id, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send(JSON.stringify(trainee));	
+  }//end PUT
+
+// EMIEL - PUT klant met de nieuwe waarden
+function putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID){
+  trainee = JSON.parse(gewijzigdeTrainee)
+  console.log(traineeID)
+  console.log(klant);
+  console.log(klantID);
+  console.log(gewijzigdeTrainee);
+  klant.trainee = gewijzigdeTrainee;
+  console.log("Klant met trainee: ")
+  console.log(klant);
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+     console.log(this.status)
+      if (this.readyState == 4 && this.status == 200) {
+        console.log("Klant geput: " + klantID)
+        }//end if
+    }//end http function;
+
+  xhttp.open("PUT", apiKlant + "min/" +klantID +"/"+traineeID, true);
+  console.log(apiKlant + "min/" +klantID +"/"+traineeID);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send(klant);	
+  }//end PUT
+
+
 
 
 ////////////////////////////////////////////////////////////
