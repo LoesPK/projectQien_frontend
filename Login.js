@@ -21,7 +21,7 @@ function POSTTrainee(currentUser){
       console.log(user);
       sessionStorage.setItem("storedUserID", user.id);
       console.log(user.id);
-      // window.location.href = 'KlantHomepage.html';
+      //window.location.href = 'KlantHomepage.html';
       window.location.href = 'TraineeUrenoverzicht.html';
     }
   };
