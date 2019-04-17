@@ -13,6 +13,8 @@ var klant;
 
 // EMIEL - GET Uren per maand
 function GETUrenPerTrainee(){
+  console.log ("huidige ingelogde user:")
+  console.log(sessionStorage.getItem("storedUserID"));
   var table = document. getElementById("traineelijst");
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -33,9 +35,11 @@ function GETUrenPerTrainee(){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(trainee){
+  console.log("trainee:")
   console.log(trainee);
   var akkoordstatus = "";
   var aantalUren = 0;
+  console.log(trainee.uren.length);
   for(var i=0;i<trainee.uren.length;i++){
       console.log(trainee.uren[i].accordStatus);
       if(trainee.uren[i].accordStatus == "TEACCODEREN"){
@@ -148,6 +152,7 @@ function TraineeHourChange(){
 }
 
 function GETtrainee(traineeID){
+  console.log("apiTrainee + traineeID:");
   console.log(apiTrainee + traineeID);
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
