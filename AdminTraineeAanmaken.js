@@ -144,9 +144,9 @@ function getKlant(trainee, bedrijf){
 //                        console.log(trainee);                                
                         postData(JSON.stringify(trainee),"trainee", klantID);
                         
-                        if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
-                       // window.location.reload();
-                        }//end if
+                    //     if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
+                    //    // window.location.reload();
+                    //     }//end if
                     }//end if
             }//end for    
         }//end 1e if
@@ -196,6 +196,10 @@ function putData(id, data,typeUser){
 //            console.log(klant)
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
+                if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is aangemaakt!")){
+                     window.location.reload();
+                }
+                     
 //        console.log("Check3")
 //        console.log(JSON.parse(this.responseText));
         }

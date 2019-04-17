@@ -3,7 +3,7 @@ var apiKlant = "http://localhost:8082/api/klant/";
 var IDteWijzigenTrainee;
 
 
-//GET Haal alle trainees op en bouw een tabel op met deze trainees
+// EMIEL - GET Haal alle trainees op en bouw een tabel op met deze trainees
 function GETTrainees(){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -14,9 +14,9 @@ function GETTrainees(){
         var tbody = addHtmlElement(table, document.createElement("tbody"));
       
         for(var i = 0; i< trainee.length; i++){
-        addHtmlElement(tbody, traineeTableRow(trainee[i])); 
+          addHtmlElement(tbody, traineeTableRow(trainee[i])); 
         }// end for
-      document.getElementById("traineelijst").appendChild(table);		
+        document.getElementById("traineelijst").appendChild(table);		
       }// end if
     };//end xhttp function
 
@@ -29,14 +29,11 @@ function GETTrainees(){
 function traineeTableHeader() {
    var tableHeader = document.createElement("thead");
    var tr = addHtmlElement(tableHeader, document.createElement("tr"));
-   //addHtmlElementContent(tr, document.createElement("th"), "id");
    addHtmlElementContent(tr, document.createElement("th"), "Voornaam", "voornaam");
    addHtmlElementContent(tr, document.createElement("th"), "Achternaam", "achternaam");
    addHtmlElementContent(tr, document.createElement("th"), "Emailadres", "emailadres");
    addHtmlElementContent(tr, document.createElement("th"), "Username", "username");
    addHtmlElementContent(tr, document.createElement("th"), "Klant", "klant");
-  
-  //  addHtmlElementContent(tr, document.createElement("th"), "Verwijderen");
    
    return tableHeader;
 }
@@ -57,29 +54,23 @@ function traineeTableRow(trainee) {
   temp1.className = "fas fa-pencil-alt";
   temp1.addEventListener("click", function(){
     var td = event.target.parentNode;
-//  console.log("trainee.id: "+trainee.id)
-
+    
     GETTraineeById(trainee.id)
     td.parentNode.appendChild(td);    
     });//end EventListener
-  tr.appendChild(temp1);
-  addHtmlElementContent(tr, temp1, "", "wijzig");
 
-
-
-
-
+    tr.appendChild(temp1);
+    addHtmlElementContent(tr, temp1, "", "wijzig");
 
     // Verwijderknop: Maakt een element en geeft aan aan dat er een delete actie op de parent (=rij vd cel) moet worden uitgevoerd
     // trainee wordt ook verwijderd uit de database
     var temp2 = document.createElement("span");
     temp2.className = "fas fa-trash-alt";
     temp2.addEventListener("click", function(){
-      var td = event.target.parentNode;
-//    console.log(trainee.id)
-      DeleteTrainee(trainee.id)
-      td.parentNode.removeChild(td);    
-      });//end EventListener
+    var td = event.target.parentNode;
+    DeleteTrainee(trainee.id)
+    td.parentNode.removeChild(td);    
+    });//end EventListener
     tr.appendChild(temp2);
     addHtmlElementContent(tr, temp2, "", "verwijder");
 
@@ -115,14 +106,6 @@ function DeleteTrainee(numb) {
   xhttp.send();
 }
 
-///////////////////////////////////////////////////////////
-
-// //PUT
-// function AdminShowTrainee(){
-//   var numberChange = document.getElementById("numberToChange").value;
-//   GETTraineeById(numberChange);
-//   return numberChange;
-// }
 //GET by id
 function GETTraineeById(id){
   var xhttp = new XMLHttpRequest();
@@ -185,25 +168,6 @@ function updateDropdownKlanten(row){
 }//end updateDropdownKlanten
 
 
-
-// // EMIEL - ophalen van nieuwe fieldwaarden en een PUT xhttp-request naar de database 
-// function changetheTrainee(id){
-//   nieuweTrainee = GETTrainee(id);  
-  
-//   var xhttp = new XMLHttpRequest();
-//    xhttp.onreadystatechange = function() {
-//     if (this.readyState == 4 && this.status == 200) {
-//       alert("trainee is gewijzigd!");
-//       // document.location.reload(true)  
-//     }
-//   };
-//   xhttp.open("PUT", api+id, true); // let op dat je achter users zet welk element je wil hebben hier
-//     console.log(api+id);
-//     xhttp.setRequestHeader("Content-type", "application/json"); // moet bij PUT er altijd bij staan, bij GET hoeft het niet
-
-//     xhttp.send(JSON.stringify(nieuweTrainee));  // kan niet als object worden meegestuurd, moet als string, vandaar stringify
-//  }
-
  // EMIEL - Ophalen van een trainee
 function changeTrainee(id){
   var xhttp = new XMLHttpRequest();
@@ -215,7 +179,6 @@ function changeTrainee(id){
         nieuweTrainee.achternaam = document.getElementById("NieuwAchternaamInDB" + id).value;
         nieuweTrainee.wachtwoord = document.getElementById("NieuwEmailadresInDB" + id).value;
         nieuweTrainee.username = document.getElementById("NieuwUsernameInDB" + id).value;
-        
         nieuwKlantBedrijf = document.getElementById("NieuwKlantInDB" + id).value;
         
         getKlant(nieuweTrainee,nieuwKlantBedrijf);
@@ -241,8 +204,8 @@ function getKlant(trainee, bedrijf){
           for(i=0; i<databaseKlant.length; i++){
 //              console.log("Check getKlant" + databaseKlant.length)
               if(databaseKlant[i].bedrijf == bedrijf){
-                console.log("for loop id in getKlant: ")
-                console.log(databaseKlant[i]);
+// console.log("for loop id in getKlant: ")
+// console.log(databaseKlant[i]);
                 var klant= databaseKlant[i];
 
                 var klantID= databaseKlant[i].id;
@@ -269,16 +232,11 @@ function putTrainee(klant,klantID, trainee){
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     traineeID = trainee.id;
-    console.log(trainee.id)
+// console.log(trainee.id)
 
       if (this.readyState == 4 && this.status == 200) {
        var gewijzigdeTrainee = (this.responseText);
        putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID);
-        
-        
-            //if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
-              // window.location.reload();
-              // }//end if
         }//end if
     }//end http function;
 
@@ -290,34 +248,29 @@ function putTrainee(klant,klantID, trainee){
 // EMIEL - PUT klant met de nieuwe waarden
 function putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID){
   trainee = JSON.parse(gewijzigdeTrainee)
-  console.log(traineeID)
-  console.log(klant);
-  console.log(klantID);
-  console.log(gewijzigdeTrainee);
+// console.log(traineeID)
+// console.log(klant);
+// console.log(klantID);
+// console.log(gewijzigdeTrainee);
   klant.trainee = gewijzigdeTrainee;
-  console.log("Klant met trainee: ")
-  console.log(klant);
+// console.log("Klant met trainee: ")
+// console.log(klant);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-     console.log(this.status)
+//  console.log(this.status)
       if (this.readyState == 4 && this.status == 200) {
-        console.log("Klant geput: " + klantID)
+// console.log("Klant geput: " + klantID)
+        // if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
+        //       window.location.reload();
+        //       }//end if
         }//end if
     }//end http function;
 
   xhttp.open("PUT", apiKlant + "min/" +klantID +"/"+traineeID, true);
-  console.log(apiKlant + "min/" +klantID +"/"+traineeID);
+// console.log(apiKlant + "min/" +klantID +"/"+traineeID);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(klant);	
   }//end PUT
-
-
-
-
-////////////////////////////////////////////////////////////
-
-
-
 
 
 
