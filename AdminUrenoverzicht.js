@@ -9,6 +9,22 @@ var theMonth = "";
 // EMIEL - de maand van het uur in database
 var uurInDBHemZeMonth;
 
+// Tim - de jaar 
+var uurInDBHemZeYear;
+
+//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //As January is 0.
+var yyyy = today.getFullYear();
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+today = yyyy+'-'+mm+'-'+dd ;
+
+// Tim - de geselecteerde jaar
+var theYear = yyyy;
+console.log(theYear + " theYear");
+
 // Tim - Variabelen aanmaken om de totale uren in bij elkaar op te tellen
 var AantalGewerkteUren = 0;
 var AantalOver100Uren = 0;
@@ -100,21 +116,19 @@ var NietingediendpertraineeVerlofUren = "-";
 var NietingediendpertraineeZiekteUren = "-";
 var NietingediendpertraineeTotaalUren = "-";
 
-//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //As January is 0.
-var yyyy = today.getFullYear();
-if(dd<10) dd='0'+dd;
-if(mm<10) mm='0'+mm;
-today = yyyy+'-'+mm+'-'+dd ;
-
 // Tim - De maand selecteren
 function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
 		theMonth = tableBody[tableBody.selectedIndex].value;
         //console.log("theMonth: " + theMonth);
 		GETUrenPerMaand(theMonth);
+}
+//Tim - De jaar selecteren
+function selectYear(){
+    var tablebodyYear = document.getElementById("selectedYear");
+    theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
+    console.log(theYear + "SELECT YEAR");
+    GETUrenPerMaand(theMonth);
 }
 
 // Tim - GET trainees en alle uren van
@@ -161,8 +175,10 @@ function GETUrenPerMaand(theMonth){
                     //console.log("PER UUR VAN DE TRAINEE");
                     //console.log(trainee[i].uren[k].accordStatus);
                     uurInDBHemZeMonth = trainee[i].uren[k].factuurDatum.substring(5,7);
+                    uurInDBHemZeYear = trainee[i].uren[k].factuurDatum.substring(0,4);
                     //console.log(uurInDBHemZeMonth);
-                    if(uurInDBHemZeMonth == theMonth) {
+                    // Tim - vergekijk maand en jaar
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear) {
                         // console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
                         // Tim - Totaal tabel variables pakken
                         switchTotaalUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
@@ -199,19 +215,19 @@ function GETUrenPerMaand(theMonth){
                     //console.log("TEACCODEREN");
                     addHtmlElement(pertraineetbody,PerTraineeTeaccoderenTableRow(trainee));
                 }
-                console.log(GoedgekeurdpertraineeTotaalUren + " GoedgekeurdpertraineeTotaalUren");
-                console.log(AfgekeurdpertraineeTotaalUren + " AfgekeurdpertraineeTotaalUren");
-                console.log(TeaccoderenpertraineeTotaalUren + " TeaccoderenpertraineeTotaalUren");
+                //console.log(GoedgekeurdpertraineeTotaalUren + " GoedgekeurdpertraineeTotaalUren");
+                //console.log(AfgekeurdpertraineeTotaalUren + " AfgekeurdpertraineeTotaalUren");
+                //console.log(TeaccoderenpertraineeTotaalUren + " TeaccoderenpertraineeTotaalUren");
 
 
                 //Tim - als de trainee geen uren heeft ingediend
                 if(TeaccoderenpertraineeTotaalUren == 0 && AfgekeurdpertraineeTotaalUren == 0 && GoedgekeurdpertraineeTotaalUren == 0){
-                    console.log("NIKS INGEDIEND");
+                    //console.log("NIKS INGEDIEND");
                     addHtmlElement(pertraineetbody,PerTraineeNietingediendTableRow(trainee));
                 }
             }
             //Tim - Totaal table - Opbouwen van de body van de tabel
-            addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
+            //addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
             addHtmlElement(tbody, adminUrentGoedgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrenteaccoderenTableRow(trainee));
@@ -352,7 +368,7 @@ function switchPerTraineeGoedgekeurdUren(traineelijst,typeUur){
             case "Gewerkte Uren": 
                 GoedgekeurdpertraineeGewerkteUren += traineelijst.aantal;
                 GoedgekeurdpertraineeTotaalUren += traineelijst.aantal; 
-                return AantalGewerkteUren;
+                return AantalGewerkteUren; // break
             case "Overuren 100%": 
                 GoedgekeurdpertraineeOver100Uren += traineelijst.aantal;
                 GoedgekeurdpertraineeTotaalUren += traineelijst.aantal;
@@ -431,13 +447,13 @@ function switchPerTraineeTeaccoderenUren(traineelijst,typeUur){
                 TeaccoderenpertraineeTotaalUren += traineelijst.aantal;
             break
         }
-        console.log(AfgekeurdpertraineeTotaalUren);
+        //console.log(AfgekeurdpertraineeTotaalUren);
     }
 }
 // Tim - per trainee - Nietingediend uren - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchPerTraineeNietingediendUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "NIETINGEDIEND"){
-    console.log("PER NIETINGEDIEND");
+    //console.log("PER NIETINGEDIEND");
     Teaccoderenpertraineestatus = "-";
 
         switch(typeUur){
@@ -462,7 +478,7 @@ function switchPerTraineeNietingediendUren(traineelijst,typeUur){
                 NietingediendpertraineeTotaalUren += traineelijst.aantal;
             break
         }
-        console.log(AfgekeurdpertraineeTotaalUren);
+        //console.log(AfgekeurdpertraineeTotaalUren);
     }
 }
 // EMIEL - Totaal Rij aanmaken
