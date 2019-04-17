@@ -89,16 +89,13 @@ var row = document.getElementById(trainee.id);
   var uren = trainee.uren;
   
    for(var i = 0; i<uren.length; i++){
-      var table = document.getElementById("traineelijst");
-      var table = table.children[0];
-      var body = table.children[1];
-      var rows = body.children;
-      var aantal = rows.length;
+         var uur = {}
+    uur.id = uren[i].id;
+    console.log(row);
+    var cellA = row.children[4];
+    console.log(cellA);
       // for(var i = 0; i<aantal; i++){
-      var uur = {}
-      uur.id = uren[i].id;
-      var row = rows[0];
-      var cellA = row.children[4];
+      
       var cellAInhoud = cellA.children[0];
       if(cellAInhoud.value == "goedkeuren"){
         uur.accordStatus = "GOEDGEKEURD";
