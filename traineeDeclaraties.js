@@ -99,9 +99,11 @@ var yyyy = maxDate.getFullYear();
     datumveld.setAttribute("max", maxDate);
     //console.log("setMaxDatum methode");
 }
+
 // haalt de kosten op uit de database en displayt ze in de tabel
 function GETRowKostenTabelJordi(){
-
+  var table = document.getElementById("kostenTabel");
+  
 }
 // voegt een nieuwe rij toe aan de tabel
 function addRowKostenTabelJordi(){
@@ -177,6 +179,7 @@ function GETRowKostenTabel(kosten){
     xhttp.open("DELETE", apikosten+kosten.id, true);
     xhttp.send();
   });
+  // voegt de knop toe aan elke rij
   insertedCell2.appendChild(VerwijderKnop);
     
  //aantal KM

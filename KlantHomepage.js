@@ -6,17 +6,20 @@ function getTrainees(){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
+      // console.log(this.responseText);
       var trainee = JSON.parse(this.responseText); 
       //onderstaande roept verschillende functies aan om de tabel te maken
       var table = document.createElement("table");
       addHtmlElement(table, traineeTableHeader());
       var tbody = addHtmlElement(table, document.createElement("tbody"));
-      addHtmlElement(tbody, traineeTableRow(trainee));
+      for (var i=0; i<trainee.length; i++){ 
+        addHtmlElement(tbody, traineeTableRow(trainee[i]));
+      }
       document.getElementById("traineelijst").appendChild(table);
           
       }
     };
-      xhttp.open("GET", apiTrainee+"59", true);
+      xhttp.open("GET", apiTrainee, true); // hardcoded nu
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -49,6 +52,7 @@ function traineeTableRow(trainee) {
    var tr = document.createElement("tr");
    var akkoordstatus = "";
    var uren = trainee.uren;
+   console.log(trainee);
    var aantalUren = 0;
    for(var i = 0; i<uren.length; i++){
       
@@ -93,26 +97,39 @@ function addButton(parent, child, select, option1, option2, id){
 
 function klantSendAccord(trainee){
   var uren = trainee.uren;
+  console.log("in klantSendAccord")
   
    for(var i = 0; i<uren.length; i++){
-  var table = document.getElementById("traineelijst");
-  var table = table.children[0];
-  var body = table.children[1];
-  var rows = body.children;
-  var aantal = rows.length;
-  // for(var i = 0; i<aantal; i++){
-    var uur = {}
-    uur.id = uren[i].id;
-    var row = rows[0];
-    var cellA = row.children[4];
-    var cellAInhoud = cellA.children[0];
-    if(cellAInhoud.value == "goedkeuren"){
-      uur.accordStatus = 2;
+    var table = document.getElementById("traineelijst");
+    var table = table.children[0];
+    var body = table.children[1];
+    var rows = body.children;
+    var aantal = rows.length;
+    // Jordi: voor elke row:
+    for(var r = 0; r<aantal; r++){
+      console.log("r = " + r)
+      var uur = {}
+      uur.id = uren[i].id;
+      var row = rows[i];
+      // console.log("rows:")
+      // console.log(rows);
+      var cellA = row.children[4];
+      console.log("cellA:")
+      console.log(cellA);
+      var cellAInhoud = cellA.children[0];
+      // console.log("cellAInhoud");
+      // console.log(cellAInhoud);
+      if(cellAInhoud.value == "goedkeuren"){
+        uur.accordStatus = 2;
+      }
+      if(cellAInhoud.value == "afkeuren"){
+        uur.accordStatus = 3;
+        // console.log("afgekeurd")
+      }
+      // console.log("uur");
+      // console.log(uur);
+      PUTHourAccordStatus(uur, uur.id);
     }
-    if(cellAInhoud.value == "afkeuren"){
-      uur.accordStatus = 3;
-    }
-    PUTHourAccordStatus(uur, uur.id);
   }
 
 }
@@ -123,8 +140,8 @@ function PUTHourAccordStatus(uur, rij){
 
    xhttp.onreadystatechange = function () {
        if (this.readyState == 4) {
-                  console.log(uur);
-                    console.log(uur.accordStatus);
+                  // console.log(uur);
+                  //   console.log(uur.accordStatus);
            if (this.status == 200) {
 
            } else {
@@ -144,13 +161,15 @@ function TraineeHourChange(){
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
-      var trainee = JSON.parse(this.responseText); 
-      console.log(trainee.uren.length);
-              klantSendAccord(trainee);
+        // console.log(this.responseText);
+        var trainee = JSON.parse(this.responseText); 
+        // console.log(trainee.uren.length);
+        for (var i=0; i<trainee.length; i++){
+          klantSendAccord(trainee[i]);
+        }
       }
     };
-      xhttp.open("GET", apiTrainee+"59", true);
+      xhttp.open("GET", apiTrainee, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }

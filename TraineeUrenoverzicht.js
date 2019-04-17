@@ -46,7 +46,7 @@ function GETTrainee(){
 					var uurInDBHemZeYear = trainee.uren[i].factuurDatum.substring(0,4);
 					
 					//Check op status vd uren zodat alleen de uren die niet ingevuld of teaccorderen zijn worden weergegeven
-					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN") { 
+					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN" || trainee.uren[i].accordStatus == "AFGEKEURD") { 
 						GETRowUrenTabel(trainee.uren[i]);
 						
 						//voorwaarden wanneer een uur toegestaan is: anders wordt het uur roodgekleurd en moet de trainee deze (zelf) verwijderen
@@ -117,7 +117,8 @@ function HourSave(){
 	var chiVal = chi.value;
 	// ------- datumveld -------//
 	var ch0 = c[0];
-	var chi0 = ch0.children[0];
+	var chi0 = ch0.children[0]
+	console.log(c);
 	// ------- aantal urenveld -------//
 	var ch2 = c[2];
 	var chi2 = ch2.children[0];
@@ -150,6 +151,18 @@ function PutTrainee(trainee){
 	xhttp.send(JSON.stringify(trainee));
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
 	var table = document.getElementById("urenTabel");
@@ -160,7 +173,7 @@ function GETRowUrenTabel(uur){
 	var insertedCell = insertedRow.insertCell(0);
 	console.log(uur.accordStatus);
 	console.log(uur.accordStatus == "NIETINGEVULD");
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" /* || uur.accordStatus == "AFGEKEURD" */ ){
 		console.log("in if");
 		insertedCell.innerHTML = uur.factuurDatum.substring(0,10);
 		document.getElementById("addButton").setAttribute("disabled", "disabled");
@@ -168,19 +181,32 @@ function GETRowUrenTabel(uur){
 		document.getElementById("sendHours").setAttribute("disabled", "disabled");
 		var but = document.getElementsByClassName("fas fa-trash-alt");
 		console.log(but);
-
-	}else{
+		// Jordi
+	}else if (uur.accordStatus == "AFGEKEURD"){
+		// insertedCell.innerHTML = uur.factuurDatum.substring(0,10);
+		document.getElementById("addButton").setAttribute("disabled", "disabled");
+		// document.getElementById("buttonopslaan").setAttribute("disabled", "disabled");
+		// document.getElementById("sendHours").setAttribute("disabled", "disabled");
 		var Datum = document.createElement("input");
 		Datum.type = "date";
 		Datum.value = uur.factuurDatum.substring(0,10);
 		Datum.setAttribute("max", today);
 		insertedCell.appendChild(Datum);
+
+	}else{
+		// Jordi: tijdelijk weggehaald
+		// var Datum = document.createElement("input");
+		// Datum.type = "date";
+		// Datum.value = uur.factuurDatum.substring(0,10);
+		// Datum.setAttribute("max", today);
+		// insertedCell.appendChild(Datum);
 	}
 	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
 	
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" /* || uur.accordStatus == "AFGEKEURD" */){ //Jordi: edited
 			insertedCell1.innerHTML = uur.waarde;
+			// ???
 		}
 	else{
 	var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
@@ -201,7 +227,7 @@ function GETRowUrenTabel(uur){
 	
 	//aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" || uur.accordStatus == "AFGEKEURD"){
+	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD" /* || uur.accordStatus == "AFGEKEURD" */){ //Jordi: edited
 		insertedCell2.innerHTML = uur.aantal;
 	}
 	else{
@@ -235,6 +261,17 @@ function GETRowUrenTabel(uur){
 	insertedCell3.innerHTML = statusAkkoord;
 
 }
+
+
+
+
+
+
+
+
+
+
+
 
 //functie om rijen toe te voegen aan de tabel
 function addRowUrenTabel(){

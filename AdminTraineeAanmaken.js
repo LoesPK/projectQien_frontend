@@ -37,6 +37,7 @@ function updateDropdownKlanten(user){
 // EMIEL - Afhankelijk van het type user, roep specifieke functies aan die de fields vd user invult
 // Vervolgens wordt een POST-functie van de user aangeroepen
 function UserVersturen(user){
+    console.log("in UserVersturen");
 	if(user == "trainee"){		
         trainee = traineeFields();
         
