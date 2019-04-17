@@ -52,7 +52,7 @@ function setMaxDatum(){
 //Kosten dropdown menu opbouwen
 function traineeKostenDropDownMenu(selectID){
 	var select = document.getElementById("select"+selectID),
-	arr = ["Overige Kosten"];
+	arr = ["Overige Kosten", "Auto"];
 	for(var i = 0; i<arr.length; i++){
 		var option = document.createElement("OPTION"),
 		txt = document.createTextNode(arr[i]);
@@ -72,11 +72,11 @@ function GETTrainee(){
         if (this.readyState == 4 && this.status == 200) {
           trainee = JSON.parse(this.responseText);	
           trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
-          console.log("trainee.kosten.length");
+          // console.log("trainee.kosten.length");
           // console.log(trainee.kosten.length);
           for(var i = 0; i<trainee.kosten.length; i++){
-            console.log("trainee.kosten," + "i = " + i);
-            console.log(trainee.kosten);
+            // console.log("trainee.kosten," + "i = " + i);
+            // console.log(trainee.kosten);
             GETRowKostenTabel(trainee.kosten[i]); //Jordi: nieuwe van Loes
           }
         }
@@ -132,8 +132,12 @@ function GETRowKostenTabel(kosten){
   var insertedCell1 = insertedRow.insertCell(2); 
   var arr = ["Openbaar Vervoer", "Overige Kosten", "Auto"];
   var SoortKosten = document.createElement("select");
-    SoortKosten.id = kosten.id;
+  SoortKosten.id = kosten.id;
+  
+  // loop over de soorten kosten (zie arr)
   for(var i = 0; i<arr.length; i++){
+    console.log("i = " + i);
+   
     var option = document.createElement("OPTION"),
     txt = document.createTextNode(arr[i]);
     option.appendChild(txt);
@@ -142,10 +146,9 @@ function GETRowKostenTabel(kosten){
     if(arr[i] === kosten.soort){
       SoortKosten.value = kosten.soort;
     }
-  insertedCell1.appendChild(SoortKosten);
-
+    insertedCell1.appendChild(SoortKosten);
   // COPY PASTE TEST
-  insertedCell1.addEventListener("change", function(){
+    insertedCell1.addEventListener("change", function(){ //Jordi: "change"
       console.log(SoortKosten[SoortKosten.selectedIndex]);
       var choice = SoortKosten[SoortKosten.selectedIndex];
       console.log(choice.innerHTML == "Auto");
@@ -183,6 +186,7 @@ function GETRowKostenTabel(kosten){
   insertedCell2.appendChild(VerwijderKnop);
     
  //aantal KM
+ console.log("km deel");
  var insertedCell3 = insertedRow.insertCell(4);
  var km = document.createElement("input");
  km.type = "number";
@@ -465,8 +469,8 @@ function addRowKostenTabel(){
 function kostenOpslaanJordi(){
     console.log("in kostenOpslaanJordi");
     var kostenTabel = document.getElementById("kostenTabel");
-    var kostenTabelBody = kostenTabel.children[1];
-    var aantalChildren = kostenTabelBody.children.length;
+    var kostenTabelHead = kostenTabel.children[0];
+    var aantalChildren = kostenTabelHead.children.length;
     console.log(kostenTabel);
     // voor elke rij
     // rij is het getal van de rij
@@ -475,15 +479,19 @@ function kostenOpslaanJordi(){
     for(var rij = 0; rij<aantalChildren; rij++){
       console.log("rij: " + rij)
         var kost = {};
-        var huidigeRij = kostenTabelBody.children[rij];
+        var huidigeRij = kostenTabelHead.children[rij];
         // als deze rij een kost heeft met status Open
+        console.log("huidigeRij.children");
+        console.log(huidigeRij.children);
         if (huidigeRij.children[0].children[0].innerHTML === "Open"){
+          console.log("open");
             kost.id = rij+100; //test, misschien dom idee
             kost.status = "Opgeslagen";//huidigeRij.children[0].children[0].innerHTML;
             kost.factuurDatum = huidigeRij.children[1].children[0].value;
             kost.soort = huidigeRij.children[2].children[0].value;
             kost.bedrag = huidigeRij.children[3].children[0].value;
             trainee.kosten.push(kost);
+            console.log(trainee.kosten);
         }
     }
     PutTrainee(trainee);
