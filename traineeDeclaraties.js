@@ -10,7 +10,7 @@ var aantalID = 0;
 var date = new Date();
 //Loes: de twee api's
 var apiCosts = "http://localhost:8082/api/kosten/";
-var apiUserId = "http://localhost:8082/api/trainee/";
+var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
 // var tijdsform = getData();
 var lijst = new Array();
 //bedrag per kiloter
@@ -51,7 +51,7 @@ function GETTrainee(){
       }
       }
     };
-      xhttp.open("GET", apiUserId+"1", true);
+      xhttp.open("GET", apiUserId, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
@@ -101,7 +101,7 @@ function GETRowKostenTabel(kosten){
             
             km.value = 0;
             Bedrag.removeAttribute("disabled");
-       	 km.setAttribute("disabled", "disabled");
+         km.setAttribute("disabled", "disabled");
           }
       })
   }
@@ -113,18 +113,8 @@ function GETRowKostenTabel(kosten){
     Bedrag.type = "number";
     Bedrag.value = kosten.bedrag/100;
     insertedCell2.appendChild(Bedrag);
-    var VerwijderKnop = document.createElement("span");
-    VerwijderKnop.className = "fas fa-trash-alt";
-    VerwijderKnop.addEventListener("click", function(){
-    var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-          insertedRow.parentNode.removeChild(insertedRow);
-        }
-    };
-      xhttp.open("DELETE", apiCosts+kosten.id, true);
-      xhttp.send();});
-  insertedCell2.appendChild(VerwijderKnop);
+    
+    
     
     
   //aantal KM
@@ -137,22 +127,33 @@ function GETRowKostenTabel(kosten){
         Bedrag.setAttribute("disabled", "disabled");
         km.removeAttribute("disabled");
      }if(kosten.soort == "Openbaar Vervoer" || kosten.soort == "Overige Kosten" ){    
-    	 Bedrag.removeAttribute("disabled");
-    	 km.setAttribute("disabled", "disabled");
+       Bedrag.removeAttribute("disabled");
+       km.setAttribute("disabled", "disabled");
         }
-     
-     
+    var VerwijderKnop  = document.createElement("span");
+    VerwijderKnop.className = "fas fa-trash-alt";
+    VerwijderKnop.addEventListener("click", function(){
+    var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          insertedRow.parentNode.removeChild(insertedRow);
+        }
+    };
+      xhttp.open("DELETE", apiCosts+kosten.id, true);
+      xhttp.send();});
+  insertedCell3.appendChild(VerwijderKnop);
+  
      
 
 }
 //functie om rijen toe te voegen aan de tabel
 function addRowKostenTabel(){
-	
-	table = document.getElementById("kostenTabel");
+  
+  table = document.getElementById("kostenTabel");
 
     var insertedRow = table.insertRow(1);
-	insertedRow.id = "0";
-	        
+  insertedRow.id = "0";
+          
 //voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
         var insertedCell0 = insertedRow.insertCell(0);
         var temp1 = document.createElement("td");
@@ -161,22 +162,22 @@ function addRowKostenTabel(){
 
 //voor de eerste cel (cel 0(i=0)): voeg het datum inputveld toe
         var insertedCell1 = insertedRow.insertCell(1);
-				dateID++;
-				var temp2 = document.createElement("input");
-				temp2.type = "date";
-				temp2.id = "datum"+dateID; 
-				temp2.setAttribute("max", today);
-				temp2.value = today;
-				insertedCell1.appendChild(temp2);
+        dateID++;
+        var temp2 = document.createElement("input");
+        temp2.type = "date";
+        temp2.id = "datum"+dateID; 
+        temp2.setAttribute("max", today);
+        temp2.value = today;
+        insertedCell1.appendChild(temp2);
 //voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
-			var insertedCell2 = insertedRow.insertCell(2);
-				selectID++;
-				var temp3 = document.createElement("select");
-				temp3.id = "select"+selectID;
-				var temp4 = document.createElement("OPTION");
-				temp4.innerHTML = "Openbaar Vervoer"
-				temp3.appendChild(temp4);
-				insertedCell2.appendChild(temp3);
+      var insertedCell2 = insertedRow.insertCell(2);
+        selectID++;
+        var temp3 = document.createElement("select");
+        temp3.id = "select"+selectID;
+        var temp4 = document.createElement("OPTION");
+        temp4.innerHTML = "Openbaar Vervoer"
+        temp3.appendChild(temp4);
+        insertedCell2.appendChild(temp3);
         insertedCell2.addEventListener("change", function(){
           console.log(temp3[temp3.selectedIndex]);
           var choice = temp3[temp3.selectedIndex];
@@ -194,20 +195,29 @@ function addRowKostenTabel(){
             }
         })
 //voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
-			var insertedCell3 = insertedRow.insertCell(3);
-				aantalID++;
-				var temp5 = document.createElement("input");
-				temp5.type = "number";
-				temp5.value = 0;
-				temp5.id = "aantal"+aantalID; 
-				
-				insertedCell3.appendChild(temp5);
-			var insertedCell4 = insertedRow.insertCell(4);
+      var insertedCell3 = insertedRow.insertCell(3);
+        aantalID++;
+        var temp5 = document.createElement("input");
+        temp5.type = "number";
+        temp5.value = 0;
+        temp5.id = "aantal"+aantalID; 
+        
+        insertedCell3.appendChild(temp5);
+      var insertedCell4 = insertedRow.insertCell(4);
       var temp6 = document.createElement("input");
             temp6.type = "number";
             temp6.value = 0;
             temp6.setAttribute("disabled", "disabled");
             insertedCell4.appendChild(temp6);
+    var VerwijderKnop  = document.createElement("span");
+    VerwijderKnop.className = "fas fa-trash-alt";
+    VerwijderKnop.addEventListener("click", function(){
+
+          insertedRow.parentNode.removeChild(insertedRow);
+});
+  insertedCell4.appendChild(VerwijderKnop);
+  
+
     traineeKostenDropDownMenu(selectID);
 }
 
@@ -215,34 +225,34 @@ function addRowKostenTabel(){
 function KostenOpslaan(){
   var kostenlijst = new Array();
   console.log("in kostenopslaan");
-	var table = document.getElementById("kostenTabel");
-	var tablebody = table.children[0]; 
+  var table = document.getElementById("kostenTabel");
+  var tablebody = table.children[0]; 
   console.log(table);
   console.log(tablebody);
-	var aantal = tablebody.children.length;
+  var aantal = tablebody.children.length;
   console.log(aantal);
    for(var i = 1; i<aantal; i++){
- 	  var kosten = {}
-   	var tablerow = tablebody.children[i];
-   	kosten.id = tablerow.id;
+    var kosten = {}
+    var tablerow = tablebody.children[i];
+    kosten.id = tablerow.id;
     var c = tablerow.children;
     console.log(c);
     var ch2 = c[3];
     var chi2 = ch2.children[0];
 
     // ------- datumveld -------//
-	var ch0 = c[1];
-	var chi0 = ch0.children[0];
-	
-	// ------- soort kosten veld -------//
-	var ch = c[2];
-	var chi = ch.children[0];
+  var ch0 = c[1];
+  var chi0 = ch0.children[0];
+  
+  // ------- soort kosten veld -------//
+  var ch = c[2];
+  var chi = ch.children[0];
   var chiVal = chi.value;
 
-	// ------- bedrag -------//
+  // ------- bedrag -------//
     var ch2 = c[3];
 
-	var chi2 = ch2.children[0];
+  var chi2 = ch2.children[0];
 
   // ------ aantal KM ------//
     var ch3 = c[4];
@@ -252,8 +262,8 @@ function KostenOpslaan(){
 
 
     kosten.waarde = chiVal;
-	  kosten.bedrag = chi2.value*100; 
-	  var d = new Date(chi0.value);
+    kosten.bedrag = chi2.value*100; 
+    var d = new Date(chi0.value);
     kosten.factuurDatum = d;
     kosten.status = "Opgeslagen";
     kosten.aantalKM = ch3input.value;
@@ -281,7 +291,7 @@ function PUTTrainee(trainee){
           alert("HELP!" + this.status);
         }
   };
-  xhttp.open("PUT", apiUserId+"1", true);
+  xhttp.open("PUT", apiUserId, true);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify(trainee));
 }
