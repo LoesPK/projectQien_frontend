@@ -4,6 +4,7 @@
 	<title>Admin | Urenoverzicht</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
 <body onload="selectMonth()">
@@ -18,7 +19,7 @@
 				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
 				<li><a href="AdminUrenoverzicht.html" class="active">Uren</a></li>
 				<li><a href="AdminDashboard.html" >Dashboard</a></li>
-				<br><br><br> HARDCODED: Ingelogd als admin
+
 			</ul>
 		</div>
 	</nav>
@@ -86,23 +87,24 @@
 
 			<h2>Uren Per Trainee</h2>
 			<div id="urentabelDiv">
-				<table id="perTraineeTabel" >
+				<table id="perTraineeTabel" class="pertraineeUren" >
 					<thead>
 					<tr class="UrenHeader">
-						<th>Klant</a></th>
-						<th>Voornaam</a></th>
-						<th>Achternaam</a></th>
-						<th>Status</a></th>
-						<th>Totaal</a></th>
-						<th>Gewerkt</a></th>
-						<th>Over 100%</a></th>
-                        <th>Over 125%</a></th>
-                        <th>Verlof</a></th>
-                        <th>Wacht</a></th>
-                        <th>Ziekte</a></th>
+						<th onclick="sortTable()">Klant</th>
+						<th>Voornaam</th>
+						<th>Achternaam</th>
+						<th>Status</th>
+						<th>Totaal</th>
+						<th>Gewerkt</th>
+						<th>Over 100%</th>
+                        <th>Over 125%</th>
+                        <th>Verlof</th>
+                        <th>Wacht</th>
+                        <th>Ziekte</th>
 					</tr>
 					</thead>
 				</table>
+				<button id="exporting" onclick="export_table_to_csv('Uren_per_Trainee.csv')">Export tabel</button>
 			</div>
 			
 		</div>
