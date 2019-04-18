@@ -5,8 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 </head>
-<body>
+<body onload="GETKlanten()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -23,12 +25,22 @@
 			</ul>
 		</div>
 	</nav>
-		<div class="wrapperAdminBeheer">
-			<div class="container">
-				<h1>Klantenoverzicht</h1>
-					<h2>Work in progress...</h2>
-			</div>
-		</div>
+
+	
+
+
+	<div class="wrapperAdminBeheer">
+		<div class="container">
+				
+				<div id="klantIndividu"></div>
+				<div id="klantlijst"></div>	
+				<button onclick="changeKlant(IDteWijzigenKlant)">Bevestig gewijzigde Klant</button>
+		
+		<button id="exporting" onclick="export_table_to_csv('Klanten.csv')">Export tabel</button>
+		
+			
+			</div>	
+	</div>
 
 
 <script type="text/javascript" src="AdminKlantenOverzicht.js"></script>
