@@ -248,19 +248,13 @@ function putTrainee(klant,klantID, trainee){
 // EMIEL - PUT klant met de nieuwe waarden
 function putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID){
   trainee = JSON.parse(gewijzigdeTrainee)
-// console.log(traineeID)
-// console.log(klant);
-// console.log(klantID);
-// console.log(gewijzigdeTrainee);
   klant.trainee = gewijzigdeTrainee;
-// console.log("Klant met trainee: ")
-// console.log(klant);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
 //  console.log(this.status)
       if (this.readyState == 4 && this.status == 200) {
 
-// console.log("Klant geput: " + klantID)
+console.log("Klant geput: " + klantID)
         if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
               window.location.reload();
               }//end if
@@ -268,7 +262,6 @@ function putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID){
     }//end http function;
 
   xhttp.open("PUT", apiKlant + "min/" +klantID +"/"+traineeID, true);
-// console.log(apiKlant + "min/" +klantID +"/"+traineeID);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(klant);	
   }//end PUT

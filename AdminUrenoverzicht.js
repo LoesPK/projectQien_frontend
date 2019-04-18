@@ -147,6 +147,9 @@ function GETUrenPerMaand(theMonth){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
             trainee = JSON.parse(this.responseText);
+
+            
+           
             var tbody = addHtmlElement(table, document.createElement("tbody"));
             var pertraineetbody = addHtmlElement(pertraineetable, document.createElement("tbody"));
 
@@ -166,7 +169,7 @@ function GETUrenPerMaand(theMonth){
                 emptyPerTraineeAfgekeurdVariables();
                 emptyPerTraineeTeaccoderenVariables();
 
-                klant = trainee[i].klant;
+                klant = trainee[i].klant.bedrijf;
                 voornaam = trainee[i].voornaam;
                 achternaam = trainee[i].achternaam;
 
@@ -540,7 +543,7 @@ function adminUrenteaccoderenTableRow(traineelijst) {
 // Tim - Per Trainee - goedgekeurde uren rij aanmaken
 function PerTraineeGoedgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Goedgekeurdpertraineestatus);
@@ -556,7 +559,7 @@ function PerTraineeGoedgekeurdTableRow(traineelijst) {
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Afgekeurdpertraineestatus);
@@ -572,7 +575,7 @@ function PerTraineeAfgekeurdTableRow(traineelijst) {
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeTeaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Teaccoderenpertraineestatus);
@@ -588,7 +591,7 @@ function PerTraineeTeaccoderenTableRow(traineelijst) {
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeNietingediendTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Nietingediendpertraineestatus);
@@ -679,3 +682,80 @@ function emptyPerTraineeTeaccoderenVariables(){
     TeaccoderenpertraineeTotaalUren = 0;
 }
 
+//Downloaden CSV
+function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    
+    downloadLink.click();
+}
+
+function export_table_to_csv(filename) {
+  var csv = [];
+  var table = document.getElementById("pertraineeUren");
+  var rows = document.querySelectorAll(".pertraineeUren tr");
+  
+    for (var i = 0; i < rows.length; i++) {
+    var row = [], cols = rows[i].querySelectorAll("td, th");
+    
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+    csv.push(row.join(","));    
+  }
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+document.querySelector("#exporting").addEventListener("click", function () {
+    var html = document.querySelector(".pertraineeUren").outerHTML;
+  export_table_to_csv(html, "table.csv");
+});
+
+
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("perTraineeTabel");
+  switching = true;
+  /* Make a loop that will continue until
+  no switching has been done: */
+  while (switching) {
+    // Start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /* Loop through all table rows (except the
+    first, which contains table headers): */
+    for (i = 1; i < (rows.length - 1); i++) {
+      // Start by saying there should be no switching:
+      shouldSwitch = false;
+      /* Get the two elements you want to compare,
+      one from current row and one from the next: */
+      x = rows[i].getElementsByTagName("TD")[0];
+      y = rows[i + 1].getElementsByTagName("TD")[0];
+      // Check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        // If so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /* If a switch has been marked, make the switch
+      and mark that a switch has been done: */
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
