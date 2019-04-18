@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Trainee Declaraties</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="style.css"></link>
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <title>Trainee Declaraties</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css"></link>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body onload="GETTrainee()">
-	<nav>
-		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-		<div class="nav">
-			<ul>
-				<li><a href="login">uitloggen</a></li>
-				<li><a href="TraineeDeclaraties" class="active">Declaraties</a></li>
-  				<li><a href="dashboardTrainee" >Uren</a></li>
-  				<li><a href="TraineeUrenArchief" >UrenArchief</a></li>
-			</ul>
-		</div>
+    <nav>
+        <a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
+        <div class="nav">
+            <ul>
+                <li><a href="login.html">uitloggen</a></li>
+                <li><a href="TraineeDeclaraties.html" class="active">Declaraties</a></li>
+                <li><a href="TraineeUrenoverzicht.html">Uren</a></li>
+                <li><a href="TraineeUrenArchief.html" >UrenArchief</a></li>
+            </ul>
+        </div>
     </nav>
 <div class="wrapperK">
     <div class="container">
@@ -39,14 +40,14 @@
                 </table>
         </div>
         <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
-        <button onclick="KostenVerzenden()">Verzenden</button>
+        <!-- <button onclick="KostenVerzenden()">Verzenden</button> -->
 
         
     </div>
 </div>
 
 
-<script type="text/javascript" src="TraineeDeclaraties.js"></script>
+<script type="text/javascript" src="traineeDeclaraties.js"></script>
 
 </body>
 </html>
