@@ -54,7 +54,7 @@ function traineeTableRow(trainee) {
   temp1.className = "fas fa-pencil-alt";
   temp1.addEventListener("click", function(){
     var td = event.target.parentNode;
-    
+
     GETTraineeById(trainee.id)
     td.parentNode.appendChild(td);    
     });//end EventListener
@@ -259,10 +259,11 @@ function putKlantDeleteTrainee(klant, klantID, gewijzigdeTrainee,traineeID){
   xhttp.onreadystatechange = function() {
 //  console.log(this.status)
       if (this.readyState == 4 && this.status == 200) {
+
 // console.log("Klant geput: " + klantID)
-        // if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
-        //       window.location.reload();
-        //       }//end if
+        if(!alert("Trainee "+trainee.voornaam + " "+ trainee.achternaam + " is gewijzigd!")){
+              window.location.reload();
+              }//end if
         }//end if
     }//end http function;
 
