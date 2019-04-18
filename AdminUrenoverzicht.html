@@ -16,8 +16,8 @@
 				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
 				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
 				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
-				<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
-				<li><a href="AdminDashboard.html" class="active">Dashboard</a></li>
+				<li><a href="AdminUrenoverzicht.html" class="active">Uren</a></li>
+				<li><a href="AdminDashboard.html" >Dashboard</a></li>
 				<br><br><br> HARDCODED: Ingelogd als admin
 			</ul>
 		</div>
@@ -26,6 +26,25 @@
 	<div class="wrapperAdminDashboard">
 		<div class="container">
 			<h1>Uren</h1>
+
+			<div id="setYearDiv">
+					<select id="selectedYear"
+					onchange = "selectYear()">
+							<option value="2019">2019</option>
+							<option value="2018">2018</option>
+							<option value="2020">2020</option>
+							<option value="2021">2021</option>
+							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>
+							<option value="2025">2025</option>
+							<option value="2026">2026</option>
+							<option value="2027">2027</option>
+							<option value="2028">2028</option>
+							<option value="2029">2029</option>
+					  </select>
+				</div>
+				<br>
 			<div id="setMonthDiv">
 				<select id="selectedMonth"
 				onchange = "selectMonth()">
@@ -46,7 +65,7 @@
             <br>
             <br>
 
-			<h2>Totaal Uren</h2>
+			<h2>Uren Per Maand</h2>
 			<div id="urentabelDiv">
 				<table id="urenTabel" >
 					<thead>

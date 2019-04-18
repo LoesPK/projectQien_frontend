@@ -3,11 +3,27 @@ var apiUserId = "http://localhost:8082/api/trainee/"; //+sessionStorage.getItem(
 //trainee variabele 
 var trainee;
 
+//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //As January is 0.
+var yyyy = today.getFullYear();
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+today = yyyy+'-'+mm+'-'+dd ;
+
 // EMIEL - de geselecteerde maand
 var theMonth = "";
 
+// Tim - de geselecteerde jaar
+var theYear = yyyy;
+console.log(theYear + " theYear");
+
 // EMIEL - de maand van het uur in database
 var uurInDBHemZeMonth;
+
+// Tim - de jaar 
+var uurInDBHemZeYear;
 
 // Tim - heeft kosten variable
 var heeftkosten = 0;
@@ -27,14 +43,7 @@ var PerTraineeAutoKM = "";
 var PerTraineeBedrag;
 var AutoKMBedrag;
 
-//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
-var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //As January is 0.
-var yyyy = today.getFullYear();
-if(dd<10) dd='0'+dd;
-if(mm<10) mm='0'+mm;
-today = yyyy+'-'+mm+'-'+dd ;
+
 
 // Tim - De maand selecteren
 function selectMonth(){
@@ -43,6 +52,14 @@ function selectMonth(){
 		//console.log("theMonth: " + theMonth);
         GETKostenPerMaand(theMonth);
         GETKostenPerTrainee(theMonth);
+}
+//Tim - De jaar selecteren
+function selectYear(){
+    var tablebodyYear = document.getElementById("selectedYear");
+    theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
+    console.log(theYear + "SELECT YEAR");
+    GETKostenPerMaand(theMonth);
+    GETKostenPerTrainee(theMonth);
 }
 // Tim - GET alle kosten per trainee
 function GETKostenPerTrainee(){
@@ -64,10 +81,15 @@ function GETKostenPerTrainee(){
                 console.log(trainee[i].voornaam + " Trainee per loop");
                 // Tim - Per kosten loop
                 for(var k = 0; k < trainee[i].kosten.length; k++){
-                    console.log("Per kosten");
+                    //console.log("Per kosten");
                     emptyPerTraineeVariables();
                     uurInDBHemZeMonth = trainee[i].kosten[k].factuurDatum.substring(5,7);
-                    if(uurInDBHemZeMonth == theMonth && trainee[i].kosten[k].status == "Opgeslagen"){
+                    uurInDBHemZeYear = trainee[i].kosten[k].factuurDatum.substring(0,4);
+                    console.log(trainee[i].kosten[k].factuurDatum + " factuurDatum");
+                    console.log(uurInDBHemZeYear + " uurInDBHemZeYear");
+                    console.log(theYear + " the year");
+                    // Tim - vergelijk de maand, jaar en status
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear){
                         heeftkosten += 1;
                         console.log( heeftkosten + " HEEFT KOSTEN")
                         PerTraineeVoornaam = trainee[i].voornaam;
@@ -114,8 +136,9 @@ function GETKostenPerMaand(theMonth){
                 for(var k = 0; k < trainee[i].kosten.length; k++){
                     //console.log("Per kosten in kosten loop");
                     uurInDBHemZeMonth = trainee[i].kosten[k].factuurDatum.substring(5,7);
-                    // Tim - check if it is the right month
-                    if(uurInDBHemZeMonth == theMonth){
+                    uurInDBHemZeYear = trainee[i].kosten[k].factuurDatum.substring(0,4);
+                    // Tim - check if it is the right month and yea
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear){
                         //console.log("month in kosten loop");
                         switchTotaalKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
                     }
@@ -157,11 +180,14 @@ function switchTotaalKosten(traineelijst,typeKosten){
             case "Overige Kosten":
                 OverigeKosten += traineelijst.bedrag;
                 Totaal += traineelijst.bedrag;
+                break
             case "Openbaar Vervoer":
                 OpenbaarVervoer += traineelijst.bedrag;
                 Totaal += traineelijst.bedrag;
+                break
             case "Auto":
                 AutoKM += traineelijst.aantalKM;
+                break
         }
     }
     //console.log(OverigeKosten + "Totaal Overige Kosten");

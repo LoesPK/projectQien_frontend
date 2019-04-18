@@ -4,6 +4,7 @@
 	<title>Admin | Dashboard</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
 <body onload="selectMonth()">
@@ -44,6 +45,24 @@
 				  </select>
 			</div>
 			<br>
+			<h2>Jaar Overzicht</h2>
+			<div id="urentabelDiv">
+				<table id="YearTabel" >
+					<thead>
+					<tr class="UrenHeader">
+						<th>Gewerkt</a></th>
+						<th>Over 100%</a></th>
+						<th>Over 125%</a></th>
+						<th>Verlof</a></th>
+						<th>Wacht</a></th>
+						<th>Ziekte</a></th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+			<br>
+			<br>
+
 			<div id="setMonthDiv">
 				<select id="selectedMonth"
 				onchange = "selectMonth()">
@@ -61,9 +80,8 @@
 						<option value="12">December</option>
 				  </select>
 			</div>
-			<br>
 
-			<h2>Totaal Uren</h2>
+			<h2>Uren Per Maand</h2>
 			<div id="urentabelDiv">
 				<table id="urenTabel" >
 					<thead>
@@ -83,7 +101,7 @@
 			<br>
 			<br>
 
-			<h2>Totaal Declaraties</h2>
+			<h2>Declaraties Per Maand</h2>
 			<div id="urentabelDiv">
 				<table id="declaratieTabel" >
 					<thead>
@@ -97,8 +115,6 @@
 					</thead>
 				</table>
 			</div>
-
-
 		</div>
 	</div>
 
