@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Trainee Declaraties New</title>
+	<title>Trainee Declaraties</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css"></link>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
-<!-- Jordi: GETTrainee() in onload toegevoegd -->
-<body onload="GETTrainee(), maakverzondenkostentabel()"  > <!--getKosten()-->
+<body onload="GETTrainee()">
 	<nav>
-		<a href="index.html"><img id="logo" src="oscar.jpg"style="height: 70px;"></a>
+		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
 			<ul>
-				<li><a href="login.html" onclick="Userlogout()">uitloggen</a></li>
-				<li><a href="traineeDeclaraties.html">Declaraties</a></li>
-  				<li><a href="TraineeUrenoverzicht.html" class="active">Uren</a></li>
+				<li><a href="login">uitloggen</a></li>
+				<li><a href="TraineeDeclaraties" class="active">Declaraties</a></li>
+  				<li><a href="dashboardTrainee" >Uren</a></li>
+  				<li><a href="TraineeUrenArchief" >UrenArchief</a></li>
 			</ul>
 		</div>
     </nav>
@@ -25,77 +26,27 @@
         <h2>OV en Overige Kosten</h2>
         <div id="kostentabelDiv">
 
-            <!-- tabel OV/overige kosten begint hier -->
             <table id="kostenTabel" >
                 <thead>
                     <tr class="KostenHeader">
-                        <th><a href="javascript:SortTable(1,'T');" class="tableheader">Status</a></th>
-                        <th><a href="javascript:SortTable(0,'D','dmy');" class="tableheader">Datum</a></th>
-                        <th><a href="javascript:SortTable(1,'T');" class="tableheader">Kosten Soort</a></th>
-                        <th><a href="javascript:SortTable(2,'N');" class="tableheader">Bedrag €</a></th>
-                        <th class="tableheader">Bijlage</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- tbody wordt met de [+] knop aangevuld -->
-                    <!-- <tr> FOR TESTING
-                        <td>td item 1 in de tbody</td>
-                        <td>td item 2 in de tbody</td>
-                        <td>td item 3 in de tbody</td>
-                    </tr> -->
-                </tbody>
-            </table>
-        </div>
-        <button type ="submit" value="opslaan" onclick="kostenOpslaanJordi()">Opslaan</button> <!--Jordi: edited-->
-        <button onclick="kostenVerzendenJordi()">Verzenden</button>
-
-        <!-- leegte -->
-
-        <div><button id="addButton" onclick="addRowAutoKostenTabel()">+</button></div>
-        <h2>Auto</h2>
-        <div id="autokostentabelDiv">
-
-            <table id="AutoKostenTabel" >
-                <thead>
-                    <tr class="AutoKostenTabelHeader">
-                        <th><a href="javascript:SortTable(1,'T');" class="tableheader">Status</a></th>
-                        <th><a href="javascript:SortTable(0,'D','dmy');" class="tableheader">Datum</a></th>
-                        <th><a href="javascript:SortTable(1,'T');" class="tableheader">Kosten Soort</a></th>
-                        <th><a href="javascript:SortTable(2,'N');" class="tableheader">Aantal KM</a></th>
-                        <th><a href="javascript:SortTable(2,'N');" class="tableheader">Bedrag €</a></th>
+                        <th class="tableheader">Status</th>
+                        <th class="tableheader">Datum</th>
+                        <th class="tableheader">Kosten Soort</th>
+                        <th class="tableheader">Bedrag €</th>
+                        <th class="tableheader">KM</th>
                     </tr>
                     </thead>
-                    <tr>
-                        </td>
-                    </tr>
-                    <tbody id="AutoKostenTabelBody">
-                    <tr id="0">
-                        <td>Open</td>
-                        <td><input type="date" name="datum" id="datum1" max="today" required="required"/></td> 
-                        <td>Auto</td>
-                        <td><input type="number" name="AantalKM" value="0" id="aantalkm0" required="required"/></td>
-                        <td></td>
-                    </tr>
-                    </tbody>
                 </table>
         </div>
-        <button type ="submit" value="opslaan" onclick="AutoKostenOpslaan()">Opslaan</button>
-        <button onclick="AutoKostenVerzenden()">Verzenden</button>
+        <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
+        <button onclick="KostenVerzenden()">Verzenden</button>
 
-        <br>
-        <br>
-        <br>
-        <br>
-        <h2>Verzonden Declaraties</h2>
-        <div id="kostenlijst"></div>
+        
     </div>
 </div>
 
 
-
-<script type="text/javascript" src="traineeDeclaraties.js"></script>
-<!-- Jordi: toegevoegd om bij de functie PutTrainee() te kunnen -->
-<!-- <script type="text/javascript" src="traineeUrenoverzicht.js"></script> -->
+<script type="text/javascript" src="TraineeDeclaraties.js"></script>
 
 </body>
 </html>
