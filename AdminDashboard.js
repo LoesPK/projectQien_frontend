@@ -110,7 +110,6 @@ function selectMonth(){
 function selectYear(){
     var tablebodyYear = document.getElementById("selectedYear");
     theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
-    console.log(theYear + "SELECT YEAR");
     GETUrenPerMaand(theMonth);
     GETKostenPerMaand(theMonth);
 }
@@ -236,6 +235,17 @@ function addHtmlElementContent(parent, child, tekst) {
     child.innerHTML = tekst;
     return child;
 }
+
+function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
+    icon.className = "fas fa-exclamation-triangle";
+    parent.appendChild(icon)
+    icon.appendChild(child);
+    child.style.display="inline-block";
+    child.style.color="red";
+    child.innerHTML = tekst;
+    return icon;
+}
+
 // EMIEL - totaal - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchTotaalUren(traineelijst,typeUur){
     switch(typeUur){
@@ -293,6 +303,7 @@ function switchTotaalGoegekeurdUren(traineelijst,typeUur){
 // Tim - Afgekeurd - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchTotaalAfgekeurdeUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "AFGEKEURD"){
+
         switch(typeUur){
             case "Gewerkte Uren": 
             //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
@@ -571,7 +582,15 @@ function PercentagesYearTableRow(traineelijst){
 // Tim - Afgekeurd Rij aanmaken
 function adminUrentAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
+    // <i class="fas fa-exclamation-triangle">
+    var toDo = document.createElement("span");
+    if(AfgekeurdTotaalUren>0){        
+    // var bla = toDo;
+    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Afgekeurd");
+    }
+    else{
+     addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
+    }
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdTotaalUren);
     //addHtmlElementContent(tr, document.createElement("td"), "Datum");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdGewerkteUren);
@@ -585,7 +604,14 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
 // Tim - Teaccoderen Rij aanmaken
 function adminUrenteaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
+    var toDo = document.createElement("span");
+    if(teaccoderenTotaalUren>0){        
+    // var bla = toDo;
+    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Ingediend");
+    }
+    else{
     addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
+    }
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenTotaalUren);
     //addHtmlElementContent(tr, document.createElement("td"), "Datum");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenGewerkteUren);
