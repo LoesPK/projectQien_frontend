@@ -114,6 +114,8 @@ function addRowKostenTabelJordi(){
 //GET functie met opbouwen rijen urentabel
 function GETRowKostenTabel(kosten){
   console.log("in GETRowKostenTabel");
+  console.log("huidige ingelogde user: ");
+  console.log(sessionStorage.getItem("storedUserID"));
   var table = document.getElementById("kostenTabel");
   var insertedRow = table.insertRow(1);
   insertedRow.id = kosten.id;
@@ -466,6 +468,8 @@ function addRowKostenTabel(){
 //     PutTrainee(trainee);
 // }
 
+
+// kapot, klopt niet meer...........
 function kostenOpslaanJordi(){
     console.log("in kostenOpslaanJordi");
     var kostenTabel = document.getElementById("kostenTabel");
@@ -481,15 +485,17 @@ function kostenOpslaanJordi(){
         var kost = {};
         var huidigeRij = kostenTabelHead.children[rij];
         // als deze rij een kost heeft met status Open
-        console.log("huidigeRij.children");
-        console.log(huidigeRij.children);
-        if (huidigeRij.children[0].children[0].innerHTML === "Open"){
+        console.log("huidigeRij.children[3]");
+        console.log(huidigeRij.children[3]);
+        if (huidigeRij.children[0].innerHTML === "Open"){
           console.log("open");
             kost.id = rij+100; //test, misschien dom idee
             kost.status = "Opgeslagen";//huidigeRij.children[0].children[0].innerHTML;
             kost.factuurDatum = huidigeRij.children[1].children[0].value;
             kost.soort = huidigeRij.children[2].children[0].value;
             kost.bedrag = huidigeRij.children[3].children[0].value;
+            console.log("kost.bedrag");
+            console.log(kost.bedrag);
             trainee.kosten.push(kost);
             console.log(trainee.kosten);
         }
@@ -578,17 +584,19 @@ function PutTrainee(trainee){
     console.log("in PutTrainee");
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-      if (this.readyState == 4)
-          if(this.status == 200) {
-                  console.log("PutTrainee, this.responseText:"); 
-                  console.log(this.responseText); 
-          trainee = JSON.parse(this.responseText);
-        //   document.location.reload(true); tijdelijk geuitcomment
-          }
-          else{
-              alert("HELP! status:" + this.status);
-          }
+    if (this.readyState == 4){  
+      // console.log("readystate 4");
+      if(this.status == 200) {
+              console.log("PutTrainee, this.responseText:"); 
+              console.log(this.responseText); 
+      trainee = JSON.parse(this.responseText);
+    //   document.location.reload(true); tijdelijk geuitcomment
+      }
+      else{
+          alert("HELP! status:" + this.status);
+      }
     };
+  }
     xhttp.open("PUT", apiUserId, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(JSON.stringify(trainee));
