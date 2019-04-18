@@ -303,4 +303,3 @@ function addRowUrenTabel(){
 function Userlogout(){
 	sessionStorage.clear();
 }
-
