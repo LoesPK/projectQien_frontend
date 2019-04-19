@@ -219,12 +219,23 @@ function GETUrenPerMaand(theMonth){
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrenteaccoderenTableRow(trainee));
             //addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
+
+            console.log("Na GETUrenPerMaand")
+console.log(YearGewerktUren)
+console.log(YearOver100Uren)
+console.log(YearOver125Uren)
+console.log(YearVerlofUren)
+console.log(YearZiekteUren)
+
         }
     };
     xhttp.open("GET", apiUserId, true);
 	xhttp.setRequestHeader("Content-type", "application/json");
 	xhttp.send();	
 }
+
+
+
 // EMIEL - elementen toevoegen in tabel
 function addHtmlElement(parent, child) {
     parent.appendChild(child);
@@ -409,6 +420,7 @@ function switchYearUren(traineelijst,typeUur){
         }
     }
 }
+
 // Tim - percentages rekenen
 function percantagesGoegekeurdUren(){
     PercentageGewerkteUren = GoedgekeurdGewerkteUren/GoedgekeurdTotaalUren; 
@@ -424,6 +436,8 @@ function yearPercentagesRekenen(){
     YearPercentageOver125Uren = YearOver125Uren/YearTotaalUren;
     YearPercentageVerlofUren = YearVerlofUren/YearTotaalUren;
     YearPercentageZiekteUren = YearZiekteUren/YearTotaalUren;
+
+    
 }
 // EMIEL - Totaal Rij aanmaken
 function adminUrenTotaalTableRow(traineelijst) {
@@ -572,7 +586,16 @@ function PercentagesYearTableRow(traineelijst){
         }
     addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenZiekte);
         }
+
+    //EMIEL - Elementen toevoegen om grafiek op te bouwen
+    addChartElement(PGewerkt);
+    addChartElement(POver);
+    addChartElement(POver125);
+    addChartElement(PVerlof);
+    addChartElement(PZiekte);
+
     return tr;
+    
 }
 // Tim - Afgekeurd Rij aanmaken
 function adminUrentAfgekeurdTableRow(traineelijst) {
@@ -642,6 +665,67 @@ function YearTableRow(traineelijst){
     addHtmlElementContent(tr, document.createElement("td"), YearZiekteUren);
     return tr;
 }
+
+
+// EMIEL - Grafiek opbouwen
+var chartElements = new Array();
+function addChartElement(yearPercentage){
+    yearPercentage = Math.round(yearPercentage * 100) / 100;
+    chartElements.push(yearPercentage);
+    console.log("chartElements");
+    
+    console.log(chartElements);
+    if(chartElements.length == 5){
+        buildChart(chartElements);
+    }
+}
+//YearPercentageGewerkteUren,YearPercentageOver100Uren,YearPercentageOver125Uren,YearPercentageVerlofUren,YearPercentageZiekteUren
+
+function buildChart(chartElements){
+
+var ctx = document.getElementById('myChart').getContext('2d');
+console.log(YearPercentageGewerkteUren);
+var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'pie',
+
+    // The data for our dataset
+    data: {
+        labels: ['Gewerkt', 'Over 100%', 'Over 125%', 'Verlof', 'Ziekte'],
+        datasets: [{
+            // label: 'My First dataset',
+            backgroundColor: [
+                'rgba(0, 250, 0, 0.2)',
+                'rgba(0, 0, 255, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(0, 255, 255, 0.2)',
+                'rgba(255, 128, 64, 0.2)',
+                
+                
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+   
+            ],
+            
+            data: chartElements
+            
+        }]//end datasets
+    },//end data
+
+    // Configuration options go here
+    options: {
+    }//end options
+});//end chart
+}//end buildChart
+
+
+
+
 // Tim - empty totaal variables before the loops start
 function emptyTotaal(){
     AantalGewerkteUren = 0;
