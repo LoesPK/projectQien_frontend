@@ -503,7 +503,6 @@ function adminPercentagesTableRow(traineelijst) {
             PercentrageWeergevenVerlof = weergevenVerlof.substring(0,5) + "%";
         }
     addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenVerlof);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     //
     PZiekte = PercentageZiekteUren * 100;
     weergevenZiekte = JSON.stringify(PZiekte);
@@ -562,7 +561,6 @@ function PercentagesYearTableRow(traineelijst){
             PercentrageWeergevenVerlof = weergevenVerlof.substring(0,5) + "%";
         }
     addHtmlElementContent(tr, document.createElement("td"), PercentrageWeergevenVerlof);
-    addHtmlElementContent(tr, document.createElement("td"), "");
 
     PZiekte = YearPercentageZiekteUren * 100;
     weergevenZiekte = JSON.stringify(PZiekte);
