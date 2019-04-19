@@ -201,6 +201,7 @@ function GETUrenPerMaand(theMonth){
                     // Tim - checked alleen de jaar
                     if(uurInDBHemZeYear == theYear){
                         switchYearUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                        
                     }
                 }
             }
