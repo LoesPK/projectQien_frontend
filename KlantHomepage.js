@@ -20,8 +20,6 @@ function GETUrenPerTrainee(){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
             klant = JSON.parse(this.responseText);  
-//            trainee.uren.sort(function(a,b){return b.factuurDatum<a.factuurDatum?-1:1});
-
             for(var i=0; i<klant.trainee.length; i++){
               GETRowUrenTabel(klant.trainee[i]);
             }
@@ -125,7 +123,7 @@ function PUTHourAccordStatus(uur, rij){
        if (this.readyState == 4) {
                   console.log(uur);
                     console.log(uur.accordStatus);
-                    // location.reload();
+                    location.reload();
            if (this.status == 200) {
 
            } else {
