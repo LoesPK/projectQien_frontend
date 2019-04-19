@@ -157,8 +157,8 @@ function GETKostenPerMaand(theMonth){
 }
 // Tim - GET trainees en alle uren van
 function GETUrenPerMaand(theMonth){
-    var table = document. getElementById("urenTabel");
-    var Yeartable = document. getElementById("YearTabel");
+    var table = document.getElementById("urenTabel");
+    var Yeartable = document.getElementById("YearTabel");
         // Tim - empty table on month selection
         for(var i = table.rows.length - 1; i > 0; i--){
             table. deleteRow(i);
@@ -434,7 +434,6 @@ function adminUrenTotaalTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AantalOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AantalZiekteUren);
     return tr;
 }
@@ -448,7 +447,6 @@ function adminUrentGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdZiekteUren);
     return tr;
 }
@@ -475,8 +473,7 @@ function adminPercentagesTableRow(traineelijst) {
             addHtmlElementContent(tr, document.createElement("td"), "");
             addHtmlElementContent(tr, document.createElement("td"), "");
             addHtmlElementContent(tr, document.createElement("td"), "");
-            addHtmlElementContent(tr, document.createElement("td"), "");
-            addHtmlElementContent(tr, document.createElement("td"), "");
+            // addHtmlElementContent(tr, document.createElement("td"), "");
         }else{
         addHtmlElementContent(tr, document.createElement("td"), PercentageWeergevenGewerkt);
     //    
@@ -531,7 +528,6 @@ function PercentagesYearTableRow(traineelijst){
         }
         // Tim - geen uren = lege rij
         if(PercentageWeergevenGewerkt == "null%"){
-            addHtmlElementContent(tr, document.createElement("td"), "");
             addHtmlElementContent(tr, document.createElement("td"), "");
             addHtmlElementContent(tr, document.createElement("td"), "");
             addHtmlElementContent(tr, document.createElement("td"), "");
@@ -597,7 +593,6 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdZiekteUren);
     return tr;
 }
@@ -618,7 +613,6 @@ function adminUrenteaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
     return tr;
 }
@@ -646,7 +640,6 @@ function YearTableRow(traineelijst){
     addHtmlElementContent(tr, document.createElement("td"), YearOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), YearOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), YearVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), YearZiekteUren);
     return tr;
 }

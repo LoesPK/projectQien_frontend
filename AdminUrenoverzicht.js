@@ -494,7 +494,6 @@ function adminUrenTotaalTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AantalOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AantalZiekteUren);
     return tr;
 }
@@ -508,7 +507,6 @@ function adminUrentGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdZiekteUren);
     return tr;
 }
@@ -523,7 +521,6 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdZiekteUren);
     return tr;
 }
@@ -538,7 +535,6 @@ function adminUrenteaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
     return tr;
 }
@@ -554,7 +550,6 @@ function PerTraineeGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeZiekteUren);
     return tr;
 }
@@ -580,7 +575,6 @@ function PerTraineeAfgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeZiekteUren);
     return tr;
 }
@@ -606,7 +600,6 @@ function PerTraineeTeaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeZiekteUren);
     return tr;
 }
@@ -622,7 +615,6 @@ function PerTraineeNietingediendTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeZiekteUren);
     return tr;
 }
