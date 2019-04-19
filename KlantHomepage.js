@@ -1,15 +1,8 @@
-/**
- * 
- */
-
-//Loes: de api's
 var apiKlant = "http://localhost:8082/api/klant/"+sessionStorage.getItem("storedUserID");
 var apiUur = "http://localhost:8082/api/uur/";
 var apiTrainee = "http://localhost:8082/api/trainee/";
 //trainee variabele 
 var klant;
-
-// EMIEL - De maand selecteren
 
 // EMIEL - GET Uren per maand
 function GETUrenPerTrainee(){
@@ -33,8 +26,6 @@ function GETUrenPerTrainee(){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(trainee){
-  console.log("trainee:")
-  console.log(trainee);
   var akkoordstatus = "";
   var aantalUren = 0;
   console.log(trainee.uren.length);
@@ -50,7 +41,7 @@ function GETRowUrenTabel(trainee){
   var table = document.getElementById("traineelijst");
   var insertedRow = table.insertRow(0);
   insertedRow.id = trainee.id;
-    
+  
     //datum
   var insertedCell = insertedRow.insertCell(0); 
   insertedCell.innerHTML = trainee.voornaam;
@@ -118,17 +109,12 @@ var row = document.getElementById(trainee.id);
 //PUT uren
 function PUTHourAccordStatus(uur, rij){
   var xhttp = new XMLHttpRequest();
-
    xhttp.onreadystatechange = function () {
-       if (this.readyState == 4) {
-                  console.log(uur);
-                    console.log(uur.accordStatus);
-                    location.reload();
-           if (this.status == 200) {
-
-           } else {
-             
-           }
+       if (this.readyState == 4) {  
+       location.reload();     
+           if (this.status == 200) { 
+           
+         }
        }
    };
 
@@ -141,37 +127,27 @@ function PUTHourAccordStatus(uur, rij){
 function TraineeHourChange(){
   var body = document.getElementById("traineelijst");
   var rows = body.children;
-  console.log(rows);
-
   var aantal = rows.length;
   for(var i = 0; i<aantal; i++){
       var row = rows[i];
     var trainee = {}
-    console.log(row.id);
     trainee.id = row.id;
     GETtrainee(trainee.id);
   }
 }
 
 function GETtrainee(traineeID){
-  console.log("apiTrainee + traineeID:");
-  console.log(apiTrainee + traineeID);
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
-      var trainee = JSON.parse(this.responseText); 
-      console.log(trainee.uren.length);
-      
-              klantSendAccord(trainee);
-        }
+        var trainee = JSON.parse(this.responseText);    
+        klantSendAccord(trainee);
+      }
     };
       xhttp.open("GET", apiTrainee + traineeID, true);
       xhttp.setRequestHeader("Content-type", "application/json");
       xhttp.send(); 
 }
-
-
 
 function Userlogout(){
   sessionStorage.clear();

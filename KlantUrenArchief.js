@@ -6,7 +6,6 @@ var theMonth;
 function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
 		theMonth = tableBody[tableBody.selectedIndex].value;
-		console.log("theMonth: " + theMonth);
 		GETUrenPerMaand(theMonth);
 		}
 
@@ -28,14 +27,11 @@ function GETUrenPerMaand(theMonth){
 				var akkoordstatusPerMaand = "";
 				var aantalUrenPerMaand = 0;
 				klant.trainee[j].akkoordstatus = "" ;
-            	console.log(klant.trainee[j]);//--> hier zijn traineefield voornaam en achternaam bekend.
             	//dan per trainee de akkoordstatus en aantal uren bepalen
             	for(var i = 0; i<klant.trainee[j].uren.length; i++){ //--> hier per trainee naar alle uren kijken
             		if(theMonth == klant.trainee[j].uren[i].factuurDatum.substring(5,7)){
             			aantalUrenPerMaand += klant.trainee[j].uren[i].aantal;
             			klant.trainee[j].akkoordstatus = klant.trainee[j].uren[i].accordStatus;
-            			console.log(klant.trainee[j].uren[i])
-            			console.log(aantalUrenPerMaand);
             		}//end if
             	}//end forloop trainee.uren
             	if(klant.trainee[j].akkoordstatus == "GOEDGEKEURD" || klant.trainee[j].akkoordstatus == "AFGEKEURD" ){
