@@ -147,6 +147,9 @@ function GETUrenPerMaand(theMonth){
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
             trainee = JSON.parse(this.responseText);
+
+            
+           
             var tbody = addHtmlElement(table, document.createElement("tbody"));
             var pertraineetbody = addHtmlElement(pertraineetable, document.createElement("tbody"));
 
@@ -166,7 +169,7 @@ function GETUrenPerMaand(theMonth){
                 emptyPerTraineeAfgekeurdVariables();
                 emptyPerTraineeTeaccoderenVariables();
 
-                klant = trainee[i].klant;
+                klant = trainee[i].klant.bedrijf;
                 voornaam = trainee[i].voornaam;
                 achternaam = trainee[i].achternaam;
 
@@ -491,7 +494,6 @@ function adminUrenTotaalTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AantalOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AantalVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AantalZiekteUren);
     return tr;
 }
@@ -505,42 +507,41 @@ function adminUrentGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdZiekteUren);
     return tr;
 }
 // Tim - Afgekeurd Rij aanmaken
 function adminUrentAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
+
+     addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdTotaalUren);
     //addHtmlElementContent(tr, document.createElement("td"), "Datum");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdGewerkteUren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdZiekteUren);
     return tr;
 }
 // Tim - Teaccoderen Rij aanmaken
 function adminUrenteaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
+
+     addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenTotaalUren);
     //addHtmlElementContent(tr, document.createElement("td"), "Datum");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenGewerkteUren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - goedgekeurde uren rij aanmaken
 function PerTraineeGoedgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Goedgekeurdpertraineestatus);
@@ -549,14 +550,23 @@ function PerTraineeGoedgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), GoedgekeurdpertraineeZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    var toDo = document.createElement("span");
+    if(AfgekeurdpertraineeTotaalUren>0){        
+    // var bla = toDo;
+    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), klant);
+    }
+    else{
+     addHtmlElementContent(tr, document.createElement("td"), klant);
+    }
+
+
+    
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Afgekeurdpertraineestatus);
@@ -565,30 +575,38 @@ function PerTraineeAfgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdpertraineeZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeTeaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    var toDo = document.createElement("span");
+    if(TeaccoderenpertraineeTotaalUren>0){        
+    // var bla = toDo;
+    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), klant);
+    }
+    else{
+     addHtmlElementContent(tr, document.createElement("td"), klant);
+    }
+
+
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
+
     addHtmlElementContent(tr, document.createElement("td"), Teaccoderenpertraineestatus);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeTotaalUren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeGewerkteUren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
 function PerTraineeNietingediendTableRow(traineelijst) {
     var tr = document.createElement("tr");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
     addHtmlElementContent(tr, document.createElement("td"), Nietingediendpertraineestatus);
@@ -597,7 +615,6 @@ function PerTraineeNietingediendTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeOver100Uren);
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeOver125Uren);
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), "");
     addHtmlElementContent(tr, document.createElement("td"), NietingediendpertraineeZiekteUren);
     return tr;
 }
@@ -679,3 +696,111 @@ function emptyPerTraineeTeaccoderenVariables(){
     TeaccoderenpertraineeTotaalUren = 0;
 }
 
+//Downloaden CSV
+function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    
+    downloadLink.click();
+}
+
+function export_table_to_csv(filename) {
+  var csv = [];
+  var table = document.getElementById("pertraineeUren");
+  var rows = document.querySelectorAll(".pertraineeUren tr");
+  
+    for (var i = 0; i < rows.length; i++) {
+    var row = [], cols = rows[i].querySelectorAll("td, th");
+    
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+    csv.push(row.join(","));    
+  }
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+document.querySelector("#exporting").addEventListener("click", function () {
+    var html = document.querySelector(".pertraineeUren").outerHTML;
+  export_table_to_csv(html, "table.csv");
+});
+
+
+//Tabel sorteren door op de header van een kolom te klikken
+function sortTable(n) {
+ var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+ table = document.getElementById("perTraineeTabel");
+ switching = true;
+ //Set the sorting direction to ascending:
+ dir = "asc";
+ /*Make a loop that will continue until
+ no switching has been done:*/
+ while (switching) {
+   //start by saying: no switching is done:
+   switching = false;
+   rows = table.rows;
+   /*Loop through all table rows (except the
+   first, which contains table headers):*/
+   for (i = 1; i < (rows.length - 1); i++) {
+     //start by saying there should be no switching:
+     shouldSwitch = false;
+     /*Get the two elements you want to compare,
+     one from current row and one from the next:*/
+     x = rows[i].getElementsByTagName("TD")[n];
+     y = rows[i + 1].getElementsByTagName("TD")[n];
+     /*check if the two rows should switch place,
+     based on the direction, asc or desc:*/
+     if (dir == "asc") {
+       if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+         //if so, mark as a switch and break the loop:
+         shouldSwitch = true;
+         break;
+       }
+     } else if (dir == "desc") {
+       if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+         //if so, mark as a switch and break the loop:
+         shouldSwitch = true;
+         break;
+       }
+     }
+   }
+   if (shouldSwitch) {
+     /*If a switch has been marked, make the switch
+     and mark that a switch has been done:*/
+     rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+     switching = true;
+     //Each time a switch is done, increase this count by 1:
+     switchcount++;
+   } else {
+     /*If no switching has been done AND the direction is "asc",
+     set the direction to "desc" and run the while loop again.*/
+     if (switchcount == 0 && dir == "asc") {
+       dir = "desc";
+       switching = true;
+     }
+   }
+ }
+}
+
+function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
+    icon.className = "fas fa-exclamation-triangle";
+    parent.appendChild(icon)
+    icon.appendChild(child);
+    child.style.display="inline-block";
+    child.style.color="red";
+    child.innerHTML = tekst;
+    return icon;
+}
