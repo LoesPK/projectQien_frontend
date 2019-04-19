@@ -100,6 +100,7 @@ function traineeFields(){
     trainee.emailadres = emailadres;
     trainee.username = username; 
     trainee.wachtwoord = wachtwoord;
+    
     return trainee;
 }
 
