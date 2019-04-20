@@ -96,6 +96,11 @@ var AutoKM;
 var AutoEuro;
 var Totaal;
 
+function setCurrentMonth(){
+    console.log(today.substring(5,7));
+    var month = document.getElementById("selectedMonth");
+    month.value = today.substring(5,7);
+}
 
 // Tim - De maand selecteren
 function selectMonth(){
