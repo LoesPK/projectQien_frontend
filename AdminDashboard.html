@@ -10,7 +10,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
 
 </head>
-<body onload="selectMonth()">
+<body onload="selectMonth(), setCurrentMonth()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -26,13 +26,16 @@
 		</div>
 	</nav>
 
-	<div class="chart-container" style="position: relative; height:35%; width:35%">
-			<canvas id="myChart" ></canvas>
-	</div>
+	
 
 	<div class="wrapperAdminDashboard">
+
 		<div class="container">
 			<h1>Dashboard</h1>
+			<div class="chart-container" style="position: relative; height:35%; width:35%">
+			<canvas id="myChart" ></canvas>
+	</div>
+			
 			<div id="setYearDiv">
 				<select id="selectedYear"
 				onchange = "selectYear()">

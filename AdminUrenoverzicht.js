@@ -21,6 +21,12 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+function setCurrentMonth(){
+    console.log(today.substring(5,7));
+    var month = document.getElementById("selectedMonth");
+    month.value = today.substring(5,7);
+}
+
 // Tim - de geselecteerde jaar
 var theYear = yyyy;
 console.log(theYear + " theYear");
