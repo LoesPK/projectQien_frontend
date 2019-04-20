@@ -115,10 +115,6 @@ function GETRowUrenTabel(trainee){
     
 
 
-
-
-
-
   insertedRow.id = trainee.id;
   
     //datum
