@@ -69,7 +69,10 @@ function klantTableRow(klant) {
     temp2.className = "fas fa-trash-alt";
     temp2.addEventListener("click", function(){
     var td = event.target.parentNode;
-    DeleteKlant(klant.id)
+    //Als een klant trainees heeft kan deze niet verwijderd worden
+    CheckKlantOpTrainee(klant.id);
+    // Als een klant geen trainees heeft kan deze verwijderd worden
+    //DeleteKlant(klant.id);
     td.parentNode.removeChild(td);    
     });//end EventListener
     tr.appendChild(temp2);
@@ -98,15 +101,14 @@ function GETKlantById(id){
     var xhttp = new XMLHttpRequest();
      xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-      var klant = JSON.parse(this.responseText);  
-      console.log("in GETKlant: ");
-      console.log(klant);
-      wijzigKlant(klant);
-              }
-      };
-       xhttp.open("GET", api+id, true);
-        xhttp.setRequestHeader("Content-type", "application/json");
-        xhttp.send(); 
+        var klant = JSON.parse(this.responseText);  
+        wijzigKlant(klant);
+      }
+    };
+ 
+  xhttp.open("GET", api+id, true);
+  xhttp.setRequestHeader("Content-type", "application/json");
+  xhttp.send(); 
   }
   
   // EMIEL - maken van inputvelden op de pagina
@@ -115,14 +117,6 @@ function GETKlantById(id){
     var row = document.getElementById(klant.id);
     //iterate through columns
     for (var j = 0, col; col = row.cells[j]; j++) {
-    //   if(j==4){
-    //     // var t = document.createElement("select");
-    //     // t.id = "Nieuw" + col.id;
-    //     // col.appendChild(t);
-    //     // updateDropdownKlanten(row);
-    //   }else{
-  //    console.log(col.id);
-  //    console.log(col.innerText);
       var t = document.createElement("input");
       var e = col;
       t.value = col.innerText;
@@ -164,31 +158,17 @@ function GETKlantById(id){
 
 // EMIEL - PUT klant met de nieuwe waarden
 function putKlant(klant){
-    console.log("klantID" + klant.id)
-    console.log(klant)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
-     // klantID = klant.id;
-   console.log(klant.id)
-  
-        if (this.readyState == 4 && this.status == 200) {
-         var gewijzigdeKlant = JSON.parse(this.responseText);
-         if(!alert("Klant "+gewijzigdeKlant.voornaam + " "+ gewijzigdeKlant.achternaam +" bij " + gewijzigdeKlant.bedrijf+" is aangepast!")){
-            window.location.reload();
-       }
-        //  console.log("Check in putKlant");
-
-        //  console.log(gewijzigdeKlant);
-          }//end if
-      }//end http function;
+      if (this.readyState == 4 && this.status == 200) {
+        var gewijzigdeKlant = JSON.parse(this.responseText);
+        if(!alert("Klant "+gewijzigdeKlant.voornaam + " "+ gewijzigdeKlant.achternaam +" bij " + gewijzigdeKlant.bedrijf+" is aangepast!")){
+          window.location.reload();
+        }//end if
+      }//end if
+    }//end http function;
   
     xhttp.open("PUT", api +"naw/"+ klant.id, true);
-
-    console.log("XXXXX")
-
-    console.log(api+"naw/"+klant.id);
-
-    console.log(klant)
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send(JSON.stringify(klant));	
     }//end PUT
@@ -196,6 +176,29 @@ function putKlant(klant){
 
 
 
+
+// EMIEL - GET klant bij id
+function CheckKlantOpTrainee(id){
+  var xhttp = new XMLHttpRequest();
+   xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var klant = JSON.parse(this.responseText);  
+      if(klant.trainee == null || klant.trainee.length != 0){
+        if(!alert("Om deze klant te verwijderen, moeten eerst zijn trainees herplaatst worden.")){
+          window.location.reload();
+        }//end if
+      } else{
+        DeleteKlant(id);
+      }//end ifelse
+    }//end if
+   };
+
+xhttp.open("GET", api+id, true);
+xhttp.setRequestHeader("Content-type", "application/json");
+xhttp.send(); 
+}
+
+  
 
 //DELETE klant
 function DeleteKlant(numb) {

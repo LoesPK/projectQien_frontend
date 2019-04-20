@@ -177,7 +177,7 @@ function changeTrainee(id){
         
         nieuweTrainee.voornaam = document.getElementById("NieuwVoornaamInDB" + id).value;
         nieuweTrainee.achternaam = document.getElementById("NieuwAchternaamInDB" + id).value;
-        nieuweTrainee.wachtwoord = document.getElementById("NieuwEmailadresInDB" + id).value;
+        nieuweTrainee.emailadres = document.getElementById("NieuwEmailadresInDB" + id).value;
         nieuweTrainee.username = document.getElementById("NieuwUsernameInDB" + id).value;
         nieuwKlantBedrijf = document.getElementById("NieuwKlantInDB" + id).value;
         
