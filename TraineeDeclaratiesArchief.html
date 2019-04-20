@@ -2,21 +2,21 @@
 <html>
 <head>
 
-    <title> Dashboard Trainee || Declaraties</title>
+    <title>Dashboard Trainee || Declaraties Archief</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css"></link>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
-<body onload="GETTrainee()">
+<body onload="selectMonth()">
     <nav>
         <a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
         <div class="nav">
             <ul>
                 <li><a href="login.html">uitloggen</a></li>
-                <li><a href="TraineeDeclaraties.html" class="active"></a>Declaraties</a></li>
-                <li><a href="TraineeDeclaratiesArchief.html" >DeclaratiesArchief</a></li>
+                <li><a href="TraineeDeclaraties.html" >Declaraties</a></li>
+                <li><a href="TraineeDeclaratiesArchief.html" class="active">DeclaratiesArchief</a></li>
                 <li><a href="TraineeUrenoverzicht.html">Uren</a></li>
                 <li><a href="TraineeUrenArchief.html" >UrenArchief</a></li>
             </ul>
@@ -24,9 +24,24 @@
     </nav>
 <div class="wrapperK">
     <div class="container">
-        <h1>Declaraties</h1>
-        <div><button id="addButton" onclick=" addRowKostenTabel()">+</button></div>
+        <h1>Declaraties Archief</h1>
         <h2>OV en Overige Kosten</h2>
+        <select id="selectedMonth"
+				onchange = "selectMonth()">
+						<option value="01">Januari</option>
+						<option value="02">Februari</option>
+						<option value="03">Maart</option>
+						<option value="04">April</option>
+						<option value="05">Mei</option>
+						<option value="06">Juni</option>
+						<option value="07">Juli</option>
+						<option value="08">Augustus</option>
+						<option value="09">September</option>
+						<option value="10">Oktober</option>
+						<option value="11">November</option>
+						<option value="12">December</option>
+                  </select>
+                  <br>
         <div id="kostentabelDiv">
 
             <table id="kostenTabel" >
@@ -41,15 +56,11 @@
                     </thead>
                 </table>
         </div>
-        <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
-        <!-- <button onclick="KostenVerzenden()">Verzenden</button> -->
-
-        
     </div>
 </div>
 
 
-<script type="text/javascript" src="traineeDeclaraties.js"></script>
+<script type="text/javascript" src="TraineeDeclaratiesArchief.js"></script>
 
 </body>
 </html>
