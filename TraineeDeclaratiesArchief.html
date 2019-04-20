@@ -15,10 +15,10 @@
         <div class="nav">
             <ul>
                 <li><a href="login.html">uitloggen</a></li>
-                <li><a href="TraineeDeclaraties.html" >Declaraties</a></li>
                 <li><a href="TraineeDeclaratiesArchief.html" class="active">DeclaratiesArchief</a></li>
+                <li><a href="TraineeDeclaraties.html" >Declaraties</a></li>
+                <li><a href="TraineeUrenArchief.html" >UrenArchief</a></li>    
                 <li><a href="TraineeUrenoverzicht.html">Uren</a></li>
-                <li><a href="TraineeUrenArchief.html" >UrenArchief</a></li>
             </ul>
         </div>
     </nav>
@@ -43,7 +43,10 @@
                   </select>
                   <br>
         <div id="kostentabelDiv">
-
+                <table id="kostenDeclaArchTotaalTabel" >
+                        <th class="tableheader">Totaal €</th>
+                        <td id="kostenDeclaArchTotaalTabelBody"></td>
+                    </table>
             <table id="kostenTabel" >
                 <thead>
                     <tr class="KostenHeader">

@@ -32,7 +32,10 @@ function selectMonth(){
 
 // EMIEL - GET trainee en de kosten
 function GETDeclaratiesPerMaand(theMonth){
-  var xhttp = new XMLHttpRequest();
+    //variabele voor totaal
+    var totaleKosten = 0; 
+    
+    var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             var trainee = JSON.parse(this.responseText);  
@@ -43,8 +46,18 @@ function GETDeclaratiesPerMaand(theMonth){
                     console.log(trainee.kosten[i].status)	
                     console.log(trainee.kosten[i])
                     BuildRowKostenTabel(trainee.kosten[i]);
+                    
+                    
+                    console.log(totaleKosten)
+                    if(trainee.kosten[i].soort == "Auto"){
+                        bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
+                        totaleKosten += bedragAuto;
+                      }else{
+                        totaleKosten += trainee.kosten[i].bedrag;
+                      }//end if else
                 }//end if
             }//end for
+            calcTotaal(totaleKosten);
         }//end if
     };//end function
     xhttp.open("GET", apiUserId, true);
@@ -79,16 +92,15 @@ function BuildRowKostenTabel(kosten){
     var insertedCell4 = insertedRow.insertCell(4);
     if(kosten.soort == "Auto"){
     insertedCell4.innerHTML = kosten.aantalKM;}
-    else {insertedCell4.innerHTML = "nvt"}
-    
-    // // IN PROGRESS : Totaal rij...?
-    // var kostenTabelBody = document.createElement("tr");
-    // table.appendChild(kostenTabelBody);
-    // var totaalRow = kostenTabelBody.insertRow(1);
-    // var insertedCellTotaal1 = insertRow.insertCell(0);
-    // insertedCellTotaal1.innerHTML = "Totaal";
-    //     kostenTabelBody.insertRow(totaalRow);
+    else {insertedCell4.innerHTML = "-"}
     
 }//end BuildRowKostenTabel    
     
-  
+  // EMIEL - Totaal te declareren kosten weergeven
+function calcTotaal(totaleKosten){
+    totaleKosten = (Math.round(totaleKosten))/100;
+    tableTotaal = document.getElementById("kostenDeclaArchTotaalTabelBody");
+    tableTotaal.innerHTML = totaleKosten;
+   
+    //insertedCell0.appendChild(temp1);
+  }//end calTotaal
