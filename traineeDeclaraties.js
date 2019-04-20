@@ -13,9 +13,10 @@ var apiCosts = "http://localhost:8082/api/kosten/";
 var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");
 // var tijdsform = getData();
 var lijst = new Array();
-//bedrag per kiloter
+//bedrag per kilometer
 var bedragPerKm = 19;
 var trainee;
+var totaleKosten = 0;
 
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd (was een bug)
 var today = new Date();
@@ -48,7 +49,15 @@ function GETTrainee(){
       trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
       for(var i = 0; i<trainee.kosten.length; i++){
         GETRowKostenTabel(trainee.kosten[i]);
-      }
+
+          if(trainee.kosten[i].soort == "Auto"){
+            bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
+            totaleKosten += bedragAuto;
+          }else{
+            totaleKosten += trainee.kosten[i].bedrag;
+          }//end if else
+      }//end for
+      calcTotaal(totaleKosten);
       }
     };
       xhttp.open("GET", apiUserId, true);
@@ -274,9 +283,18 @@ function KostenOpslaan(){
     console.log(trainee);
     trainee.kosten = kostenlijst;
     console.log(trainee.kosten);
+
     PUTTrainee(trainee);
     
 }
+
+// EMIEL - Totaal te declareren kosten weergeven
+function calcTotaal(bedragTotaal){
+  bedragTotaal = (Math.round(bedragTotaal))/100;
+  tableTotaal = document.getElementById("kostenDeclaTotaalTabelBody");
+  tableTotaal.innerHTML = bedragTotaal;
+      
+}//end calTotaal
 
 //PUT uren
 function PUTTrainee(trainee){
