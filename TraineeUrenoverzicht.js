@@ -127,6 +127,9 @@ function HourSave(){
 	uur.aantal = chi2.value; 
 	var d = new Date(chi0.value);
 	uur.factuurDatum = d;
+	uur.bijKlant = trainee.klant.id;
+	console.log("KlanvhUur: ")
+	console.log(uur.bijKlant)
   	urenlijst.push(uur);
 	}
 	trainee.uren = urenlijst;
