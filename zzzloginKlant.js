@@ -1,4 +1,4 @@
-var apiGetLogin = "http://localhost:8082/api/login";
+ar apiGetLogin = "http://localhost:8082/api/login";
 //was xmlhttp
 
 function userLogin(){
