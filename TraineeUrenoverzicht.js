@@ -130,7 +130,9 @@ function HourSave(){
   	urenlijst.push(uur);
 	}
 	trainee.uren = urenlijst;
+	console.log(trainee.klant.id + "Traineeee");
 	PutTrainee(trainee);
+	enableverzenden();
 }
 
 //PUT uren
@@ -297,9 +299,18 @@ function addRowUrenTabel(){
 			}
 	}
 	traineeDropDownMenu(selectID);
+	disableverzenden();
 }
 
 
 function Userlogout(){
 	sessionStorage.clear();
+}
+
+function disableverzenden() {
+  document.getElementById("sendHours").disabled = true;
+}
+
+function enableverzenden() {
+  document.getElementById("sendHours").disabled = false;
 }
