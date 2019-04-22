@@ -21,8 +21,12 @@ function POSTTrainee(currentUser){
       console.log(user);
       sessionStorage.setItem("storedUserID", user.id);
       console.log(user.id);
-      // window.location.href = 'KlantHomepage.html';
-      window.location.href = 'TraineeUrenoverzicht.html';
+
+      switch(user.rol){
+        case "admin": window.location.href = 'AdminDashboard.html'; break;
+        case "trainee": window.location.href = 'TraineeUrenoverzicht.html'; break;
+        case "klant": window.location.href = 'KlantHomepage.html'; break;
+      }
     }
   };
   xhttp.open("POST", apiGetLogin, true);
