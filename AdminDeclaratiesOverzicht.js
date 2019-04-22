@@ -54,7 +54,7 @@ function setCurrentMonth(){
 function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
 		theMonth = tableBody[tableBody.selectedIndex].value;
-		//console.log("theMonth: " + theMonth);
+		//console.log("theMonth: "    + theMonth);
         GETKostenPerMaand(theMonth);
         GETKostenPerTrainee(theMonth);
 }
@@ -197,10 +197,6 @@ function switchTotaalKosten(traineelijst,typeKosten){
                 break
         }
     }
-    //console.log(OverigeKosten + "Totaal Overige Kosten");
-    //console.log(OpenbaarVervoer + "Totaal Openbaar Vervoer");
-    //console.log(AutoKM + "Totaal Auto KM");
-    //console.log(Totaal + "Totaal");
 }
 // Tim - Kosten Tabel Rij aanmaken
 function TotaalKostenRow(traineelijst) {
@@ -230,6 +226,7 @@ function PerTraineeKostenRow(traineelijst) {
     addHtmlElementContentPlusAwesome(tr, document.createElement("td"), perTraineeStatus);
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
+    checkbox.id = "checkbox"+
     addHtmlCheckbox(tr, document.createElement("td"), checkbox);
     return tr;
 }
