@@ -1,6 +1,7 @@
 
 //Loes: de api's
 var apiUserId = "http://localhost:8082/api/trainee/"+sessionStorage.getItem("storedUserID");//+sessionStorage.getItem("storedUserID");
+var apiKlant = "http://localhost:8082/api/klant/";
 //trainee variabele 
 var trainee;
 
@@ -56,6 +57,7 @@ function GETUrenPerMaand(theMonth){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
+
 	var table = document.getElementById("urenTabel");
 	var insertedRow = table.insertRow(1);
 	insertedRow.id = uur.id;
@@ -92,7 +94,29 @@ function GETRowUrenTabel(uur){
 	}
 	insertedCell3.innerHTML = statusAkkoord;
 	insertedCell3.appendChild(status);
+
+	var insertedCell5 = insertedRow.insertCell(4);   
+    var klant = document.createElement("td");
+		GetKlant(uur.bijKlant, klant);
+				insertedCell5.appendChild(klant);
 }
+
+// EMIEL - GET de klant van het uur
+function GetKlant(uurBijKlantId, klant){
+  var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+            klantDB = JSON.parse(this.responseText);	
+						console.log(klantDB.bedrijf);	
+						klant.innerHTML = klantDB.bedrijf;
+      }//end if
+		};//end function
+		
+      xhttp.open("GET", apiKlant+ uurBijKlantId, true);
+	    xhttp.setRequestHeader("Content-type", "application/json");
+	    xhttp.send();	
+}//end GetKlant
+
 
 function Userlogout(){
 	sessionStorage.clear();
