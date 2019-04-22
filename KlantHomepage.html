@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="KlantHomepage.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
-<body onload="GETUrenPerTrainee()">
+<body onload="GETUrenPerTrainee(), GetKlant()">
 	<nav>
 		<a href="dashboardKlant"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -21,6 +21,14 @@
 	</nav>
 	<div class="wrapperKlant">
 		  <h1>Trainees</h1>
+		  <div id="setTrainee">
+				<select id="selectedTrainee"
+				onchange = "selectTrainee()">
+						<option value="alle trainees">alle trainees</option>
+
+				  </select>
+			</div>
+
 		  <table>
 				<thead>
 				<tr class="UrenHeader">
@@ -34,6 +42,9 @@
 				<tbody id="traineelijst">
 				</tbody>
 			</table>
+
+			<table id="UrenSpecificaties"></table>
+
 			<button onclick="TraineeHourChange()">Versturen naar Qien</button>
 	</div>
 
