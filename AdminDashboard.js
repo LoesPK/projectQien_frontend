@@ -96,6 +96,12 @@ var AutoKM;
 var AutoEuro;
 var Totaal;
 
+var PGewerkt=0;
+var POver = 0;
+var POver125 =0;
+var PVerlof =0;
+var PZiekte = 0;
+
 function setCurrentMonth(){
     console.log(today.substring(5,7));
     var month = document.getElementById("selectedMonth");
