@@ -5,9 +5,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="selectMonth()">
+<body onload="selectMonth(), setCurrentMonth()">
 	<nav>
 		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
 		<div class="nav">
@@ -69,11 +70,11 @@
 				<table id="declaratieTabel" >
 					<thead>
 					<tr class="UrenHeader">
-						<th>Overige Kosten €</a></th>
-						<th>Openbaar Vervoer €</a></th>
-						<th>Auto KM</a></th>
-						<th>Auto €</a></th>
-						<th>Totaal €</a></th>
+						<th>Overige Kosten €</th>
+						<th>Openbaar Vervoer €</th>
+						<th>Auto KM</th>
+						<th>Auto €</th>
+						<th>Totaal €</th>
 					</tr>
 					</thead>
 				</table>
@@ -85,12 +86,13 @@
 				<table id="perTraineeTabel" >
 					<thead>
 					<tr class="UrenHeader">
-						<th>Voornaam</a></th>
-						<th>Achternaam</a></th>
-						<th>Soort</a></th>
-						<th>Auto KM</a></th>
-						<th>Bedrag €</a></th>
-						<th>Bijlage</a></th>
+						<th>Voornaam</th>
+						<th>Achternaam</th>
+						<th>Soort</th>
+						<th>Auto KM</th>
+						<th>Bedrag €</th>
+						<th>Status</th>
+						<th>Betaald</th>
 					</tr>
 					</thead>
 				</table>

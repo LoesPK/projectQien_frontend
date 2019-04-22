@@ -4,7 +4,6 @@ var apiUserId = "http://localhost:8082/api/trainee/"; //+sessionStorage.getItem(
 var trainee;
 
 // EMIEL - de geselecteerde maand
-var theMonth = "";
 
 // EMIEL - de maand van het uur in database
 var uurInDBHemZeMonth;
@@ -12,19 +11,22 @@ var uurInDBHemZeMonth;
 // Tim - de jaar 
 var uurInDBHemZeYear;
 
-//Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
-var dd = today.getDate();
-var mm = today.getMonth()+1; //As January is 0.
-var yyyy = today.getFullYear();
-if(dd<10) dd='0'+dd;
-if(mm<10) mm='0'+mm;
-today = yyyy+'-'+mm+'-'+dd ;
+    var dd = today.getDate();
+    var mm = today.getMonth()+1; //As January is 0.
+    var yyyy = today.getFullYear();
+    if(dd<10) dd='0'+dd;
+    if(mm<10) mm='0'+mm;
+    today = yyyy+'-'+mm+'-'+dd ;
+
+var theMonth = setCurrentMonth();
+
 
 function setCurrentMonth(){
-    console.log(today.substring(5,7));
+    
+    console.log(mm);
     var month = document.getElementById("selectedMonth");
-    month.value = today.substring(5,7);
+    month.value = mm;
 }
 
 // Tim - de geselecteerde jaar

@@ -21,7 +21,7 @@ if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
 // EMIEL - de geselecteerde maand
-var theMonth = "";
+var theMonth = setCurrentMonth();
 
 // Tim - de geselecteerde jaar
 var theYear = yyyy;
@@ -253,12 +253,12 @@ function addHtmlElementContent(parent, child, tekst) {
     return child;
 }
 
-function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
+function addHtmlElementContentPlusAwesome(parent, icon, color, child, tekst) {
     icon.className = "fas fa-exclamation-triangle";
+    icon.style.color = color;
     parent.appendChild(icon)
     icon.appendChild(child);
     child.style.display="inline-block";
-    child.style.color="red";
     child.innerHTML = tekst;
     return icon;
 }
@@ -607,9 +607,11 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
     // <i class="fas fa-exclamation-triangle">
     var toDo = document.createElement("span");
-    if(AfgekeurdTotaalUren>0){        
+    var color = "red"
+    if(AfgekeurdTotaalUren>0){
+
     // var bla = toDo;
-    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Afgekeurd");
+    addHtmlElementContentPlusAwesome(tr, toDo , color, document.createElement("td"), "Afgekeurd");
     }
     else{
      addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
@@ -627,9 +629,10 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
 function adminUrenteaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
     var toDo = document.createElement("span");
+    var color = "orange"
     if(teaccoderenTotaalUren>0){        
     // var bla = toDo;
-    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Ingediend");
+    addHtmlElementContentPlusAwesome(tr, toDo , color, document.createElement("td"), "Ingediend");
     }
     else{
     addHtmlElementContent(tr, document.createElement("td"), "Ingediend");

@@ -13,7 +13,7 @@ if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
 // EMIEL - de geselecteerde maand
-var theMonth = "";
+var theMonth = setCurrentMonth();
 
 // Tim - de geselecteerde jaar
 var theYear = yyyy;
@@ -41,15 +41,20 @@ var PerTraineeAchternaam = "";
 var PerTraineeSoort = "";
 var PerTraineeAutoKM = "";
 var PerTraineeBedrag;
+var perTraineeStatus="";
 var AutoKMBedrag;
 
-
+function setCurrentMonth(){
+    console.log(today.substring(5,7));
+    var month = document.getElementById("selectedMonth");
+    month.value = today.substring(5,7);
+}
 
 // Tim - De maand selecteren
 function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
 		theMonth = tableBody[tableBody.selectedIndex].value;
-		//console.log("theMonth: " + theMonth);
+		//console.log("theMonth: "    + theMonth);
         GETKostenPerMaand(theMonth);
         GETKostenPerTrainee(theMonth);
 }
@@ -95,6 +100,8 @@ function GETKostenPerTrainee(){
                         PerTraineeVoornaam = trainee[i].voornaam;
                         PerTraineeAchternaam = trainee[i].achternaam;
                         PerTraineeSoort = trainee[i].kosten[k].soort;
+
+                        perTraineeStatus = trainee[i].kosten[k].status;
                         switchPerTraineeKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
                         addHtmlElement(tbody, PerTraineeKostenRow(trainee));
                     } 
@@ -190,10 +197,6 @@ function switchTotaalKosten(traineelijst,typeKosten){
                 break
         }
     }
-    //console.log(OverigeKosten + "Totaal Overige Kosten");
-    //console.log(OpenbaarVervoer + "Totaal Openbaar Vervoer");
-    //console.log(AutoKM + "Totaal Auto KM");
-    //console.log(Totaal + "Totaal");
 }
 // Tim - Kosten Tabel Rij aanmaken
 function TotaalKostenRow(traineelijst) {
@@ -220,9 +223,29 @@ function PerTraineeKostenRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeSoort);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeAutoKM);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeBedrag);
-    addHtmlElementContent(tr, document.createElement("td"), "");
+    addHtmlElementContentPlusAwesome(tr, document.createElement("td"), perTraineeStatus);
+    var checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = "checkbox"+
+    addHtmlCheckbox(tr, document.createElement("td"), checkbox);
     return tr;
 }
+
+function addHtmlElementContentPlusAwesome(parent, child, tekst) {
+    parent.appendChild(child);
+    child.innerHTML = tekst;
+    child.style.display="inline-block";
+    
+    return child;
+}
+
+function addHtmlCheckbox(parent, child, checkbox){
+    parent.appendChild(child);
+    child.appendChild(checkbox);
+    return child;
+}
+
+
 // Tim - Per Trainee Tabel Rij aanmaken
 function PerTraineeGeenKostenRow(traineelijst) {
     var tr = document.createElement("tr");
@@ -231,7 +254,9 @@ function PerTraineeGeenKostenRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), "-");
     addHtmlElementContent(tr, document.createElement("td"), "-");
     addHtmlElementContent(tr, document.createElement("td"), "-");
-    addHtmlElementContent(tr, document.createElement("td"), "");
+
+
+    addHtmlElementContent(tr, document.createElement("td"), "-");
     return tr;
 }
 // EMIEL - elementen toevoegen in tabel
@@ -263,4 +288,21 @@ function emptyPerTraineeVariables(){
     PerTraineeAutoKM = "";
     PerTraineeBedrag = 0;
     AutoKMBedrag = 0;
+    perTraineeStatus = "";
 }
+
+
+// var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
+//     var SoortUur = document.createElement("select");
+//         SoortUur.id = uur.id;
+//     for(var i = 0; i<arr.length; i++){
+//         var option = document.createElement("OPTION"),
+//         txt = document.createTextNode(arr[i]);
+//         option.appendChild(txt);
+//         option.value = arr[i];
+//         SoortUur.insertBefore(option,SoortUur.lastChild);
+//         if(arr[i] === uur.waarde){
+//             SoortUur.value = uur.waarde;
+//         }
+//     insertedCell1.appendChild(SoortUur);
+//     }

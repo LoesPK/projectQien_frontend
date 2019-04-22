@@ -6,6 +6,10 @@
 	font-family: 'sans-serif', 'roboto';
 }
 
+.fas.fa-exclamation-triangle{
+	color: red;
+}
+
 [disabled]{
 	opacity: 0.5;	
 }
