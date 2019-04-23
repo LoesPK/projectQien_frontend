@@ -17,7 +17,7 @@ var theMonth = setCurrentMonth();
 
 // Tim - de geselecteerde jaar
 var theYear = yyyy;
-console.log(theYear + " theYear");
+//console.log(theYear + " theYear");
 
 // EMIEL - de maand van het uur in database
 var uurInDBHemZeMonth;
@@ -46,7 +46,7 @@ var AutoKMBedrag;
 var PerTraineeOpmerking = "";
 
 function setCurrentMonth(){
-    console.log(today.substring(5,7));
+    //console.log(today.substring(5,7));
     var month = document.getElementById("selectedMonth");
     month.value = today.substring(5,7);
 }
@@ -63,7 +63,7 @@ function selectMonth(){
 function selectYear(){
     var tablebodyYear = document.getElementById("selectedYear");
     theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
-    console.log(theYear + "SELECT YEAR");
+    //console.log(theYear + "SELECT YEAR");
     GETKostenPerMaand(theMonth);
     GETKostenPerTrainee(theMonth);
 }
@@ -80,6 +80,7 @@ function GETKostenPerTrainee(){
         if (this.readyState == 4 && this.status == 200){
             //console.log("GET WORKS");
             trainee = JSON.parse(this.responseText);
+            //trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
             var tbody = addHtmlElement(table, document.createElement("tbody"));
 
             // Tim - Per Trainee loop
@@ -91,20 +92,20 @@ function GETKostenPerTrainee(){
                     emptyPerTraineeVariables();
                     uurInDBHemZeMonth = trainee[i].kosten[k].factuurDatum.substring(5,7);
                     uurInDBHemZeYear = trainee[i].kosten[k].factuurDatum.substring(0,4);
-                    console.log(trainee[i].kosten[k].factuurDatum + " factuurDatum");
-                    console.log(uurInDBHemZeYear + " uurInDBHemZeYear");
-                    console.log(theYear + " the year");
+                    //console.log(trainee[i].kosten[k].factuurDatum + " factuurDatum");
+                    //console.log(uurInDBHemZeYear + " uurInDBHemZeYear");
+                    //console.log(theYear + " the year");
                     // Tim - vergelijk de maand, jaar en status
                     if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear){
                         heeftkosten += 1;
-                        console.log( heeftkosten + " HEEFT KOSTEN")
+                        //console.log( heeftkosten + " HEEFT KOSTEN")
                         PerTraineeVoornaam = trainee[i].voornaam;
                         PerTraineeAchternaam = trainee[i].achternaam;
                         PerTraineeSoort = trainee[i].kosten[k].soort;
                         perTraineeStatus = trainee[i].kosten[k].status;
                         PerTraineeOpmerking = trainee[i].kosten[k].opmerking;
                         switchPerTraineeKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
-                        addHtmlElement(tbody, PerTraineeKostenRow(trainee));
+                        addHtmlElement(tbody, PerTraineeKostenRow(trainee[i], trainee[i].kosten[k]));
                     } 
                 }
                 // Tim - als een trainee geen kosten heeft in de bepaalde maand is de "heeftkosten" counter 0
@@ -134,6 +135,7 @@ function GETKostenPerMaand(theMonth){
     xhttp.onreadystatechange = function(){
         if (this.readyState == 4 && this.status == 200){
             trainee = JSON.parse(this.responseText);
+            //trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
             var declaratietbody = addHtmlElement(pertraineetable, document.createElement("tbody"));
             // Tim - empty variables before the loops begin
             emptyTotaalKosten();
@@ -183,7 +185,7 @@ function switchPerTraineeKosten(traineelijst,typeKosten){
 }
 // Tim - Totaal kosten - Afhankelijk van het status 
 function switchTotaalKosten(traineelijst,typeKosten){
-    if(traineelijst.status == "Opgeslagen"){
+    
         switch(typeKosten){
             case "Overige Kosten":
                 OverigeKosten += traineelijst.bedrag;
@@ -197,7 +199,7 @@ function switchTotaalKosten(traineelijst,typeKosten){
                 AutoKM += traineelijst.aantalKM;
                 break
         }
-    }
+    
 }
 // Tim - Kosten Tabel Rij aanmaken
 function TotaalKostenRow(traineelijst) {
@@ -217,22 +219,44 @@ function TotaalKostenRow(traineelijst) {
     return tr;
 }
 // Tim - Per Trainee Tabel Rij aanmaken
-function PerTraineeKostenRow(traineelijst) {
+function PerTraineeKostenRow(traineelijst, kosten) {
     var tr = document.createElement("tr");
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeVoornaam);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeAchternaam);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeSoort);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeAutoKM);
     addHtmlElementContent(tr, document.createElement("td"), PerTraineeBedrag);
+    console.log(kosten.status + " de kosten status voor de if");
     addHtmlElementContentPlusAwesome(tr, document.createElement("td"), perTraineeStatus);
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = "checkbox"+
-    addHtmlCheckbox(tr, document.createElement("td"), checkbox);
-
+    if(kosten.status == "Opgeslagen"){
+        console.log(" kosten is opgeslagen if");
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = "checkbox"+
+        checkbox.addEventListener('change', (event) => {
+            if (event.target.checked) {
+                if(kosten.status = "Opgeslagen"){
+                    kosten.status = "Uitbetaald";
+                    //console.log(kosten.status + " kosten.status");
+                    //console.log(traineelijst.id);
+                    traineelijst.kosten.push(kosten);
+                    PUTTrainee(traineelijst);
+                }
+            } else {
+                //onsole.log(kosten.status + " kosten.status");
+            }
+        })
+        addHtmlCheckbox(tr, document.createElement("td"), checkbox);
+    }else if (kosten.status == "Uitbetaald"){
+        console.log(" kosten is Uitbetaald if");
+        addHtmlElementContent(tr, document.createElement("td"), "");
+    }
+    
     var Opmerkingveld = document.createElement("td");
     Opmerkingveld.width = "300";
     addHtmlElementContent(tr, Opmerkingveld, PerTraineeOpmerking);
+
+    
 
     return tr;
 }
@@ -295,6 +319,24 @@ function emptyPerTraineeVariables(){
     PerTraineeBedrag = 0;
     AutoKMBedrag = 0;
     perTraineeStatus = "";
+}
+
+//PUT kosten
+function PUTTrainee(trainee){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4)
+        if(this.status == 200) { 
+        trainee = JSON.parse(this.responseText);
+        GETKostenPerTrainee();
+          }
+          else{
+            alert("HELP!" + this.status);
+          }
+    };
+    xhttp.open("PUT", apiUserId + trainee.id, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send(JSON.stringify(trainee));
 }
 
 

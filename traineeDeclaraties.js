@@ -48,14 +48,19 @@ function GETTrainee(){
       trainee = JSON.parse(this.responseText);  
       trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
       for(var i = 0; i<trainee.kosten.length; i++){
-        GETRowKostenTabel(trainee.kosten[i]);
+        console.log(trainee.kosten[i].status + "DE STATUSSS");
+        if(trainee.kosten[i].status == "Opgeslagen"){
 
-          if(trainee.kosten[i].soort == "Auto"){
-            bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
-            totaleKosten += bedragAuto;
-          }else{
-            totaleKosten += trainee.kosten[i].bedrag;
-          }//end if else
+          GETRowKostenTabel(trainee.kosten[i]);
+            if(trainee.kosten[i].soort == "Auto"){
+              bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
+              totaleKosten += bedragAuto;
+            }else{
+              totaleKosten += trainee.kosten[i].bedrag;
+            }//end if else
+
+        }
+
       }//end for
       calcTotaal(totaleKosten);
       }

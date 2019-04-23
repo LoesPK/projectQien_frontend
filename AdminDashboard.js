@@ -382,7 +382,7 @@ function switchTotaalteaccoderenUren(traineelijst,typeUur){
 }
 // Tim - Teaccoderen - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
 function switchTotaalKosten(traineelijst,typeKosten){
-    if(traineelijst.status == "Opgeslagen"){
+    if(traineelijst.status == "Opgeslagen" || traineelijst.status == "Uitbetaald"){
         switch(typeKosten){
             case "Overige Kosten":
                 OverigeKosten += traineelijst.bedrag;
