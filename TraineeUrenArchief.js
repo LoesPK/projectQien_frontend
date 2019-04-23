@@ -61,6 +61,7 @@ function GETRowUrenTabel(uur){
 	var body = document.getElementById("urenTabel");
 	var insertedRow = body.insertRow(0);
 	console.log(insertedRow);
+
 	insertedRow.id = uur.id;
 	insertedRow.className = "table-striped"
     //datum
@@ -87,7 +88,7 @@ function GETRowUrenTabel(uur){
 		statusAkkoord = "Afgekeurd";
 	}
 	insertedCell3.innerHTML = statusAkkoord;
-	insertedCell3.appendChild(status);
+	//insertedCell3.appendChild(status);
 
 	var insertedCell5 = insertedRow.insertCell(4);   
     var klant = document.createElement("td");
