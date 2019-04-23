@@ -32,6 +32,7 @@ function selectMonth(){
 // EMIEL - GET Uren per maand
 function GETUrenPerMaand(theMonth){
 	var table = document. getElementById("urenTabel");
+	
 	for(var i = table.rows.length - 1; i > 0; i--)
 		{
 		table. deleteRow(i);
@@ -56,31 +57,25 @@ function GETUrenPerMaand(theMonth){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
-	var table = document.getElementById("urenTabel");
-	var insertedRow = table.insertRow(1);
+	var body = document.getElementById("urenTabel");
+	var insertedRow = body.insertRow(0);
+	console.log(insertedRow);
 	insertedRow.id = uur.id;
-    
+	insertedRow.className = "table-striped"
     //datum
 	var insertedCell = insertedRow.insertCell(0);
-	var Datum = document.createElement("td");
-		Datum.innerHTML = uur.factuurDatum.substring(8,10) + "/" + uur.factuurDatum.substring(5,7) +"/" + uur.factuurDatum.substring(0,4);
-		insertedCell.appendChild(Datum);
+		insertedCell.innerHTML = uur.factuurDatum.substring(8,10) + "/" + uur.factuurDatum.substring(5,7) +"/" + uur.factuurDatum.substring(0,4);
     
     //soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
-    var Soort = document.createElement("td");
-		Soort.innerHTML = uur.waarde;
-        insertedCell1.appendChild(Soort);
+        insertedCell1.innerHTML = uur.waarde;
 
     //aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);   
-    var AantalUur = document.createElement("td");
-		AantalUur.innerHTML = uur.aantal;
-				insertedCell2.appendChild(AantalUur);
+		insertedCell2.innerHTML = uur.aantal;
 
 		//akkoordstatus
 	var insertedCell3 = insertedRow.insertCell(3);   
-	var status = document.createElement("td");
 	if(uur.accordStatus == "NIETINGEVULD"){
 		statusAkkoord = "Opgeslagen";
 	}if(uur.accordStatus == "TEACCODEREN"){
@@ -91,10 +86,5 @@ function GETRowUrenTabel(uur){
 		statusAkkoord = "Afgekeurd";
 	}
 	insertedCell3.innerHTML = statusAkkoord;
-	insertedCell3.appendChild(status);
-}
-
-function Userlogout(){
-	sessionStorage.clear();
 }
 

@@ -298,17 +298,25 @@ function emptyPerTraineeVariables(){
 }
 
 
-// var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
-//     var SoortUur = document.createElement("select");
-//         SoortUur.id = uur.id;
-//     for(var i = 0; i<arr.length; i++){
-//         var option = document.createElement("OPTION"),
-//         txt = document.createTextNode(arr[i]);
-//         option.appendChild(txt);
-//         option.value = arr[i];
-//         SoortUur.insertBefore(option,SoortUur.lastChild);
-//         if(arr[i] === uur.waarde){
-//             SoortUur.value = uur.waarde;
-//         }
-//     insertedCell1.appendChild(SoortUur);
-//     }
+function export_table_to_csv(filename) {
+  var csv = [];
+  var table = document.getElementById("pertraineeUren");
+  var rows = document.querySelectorAll(".pertraineeUren tr");
+  
+    for (var i = 0; i < rows.length; i++) {
+    var row = [], cols = rows[i].querySelectorAll("td, th");
+    
+        for (var j = 0; j < cols.length; j++) 
+            row.push(cols[j].innerText);
+        
+    csv.push(row.join(","));    
+  }
+
+    // Download CSV
+    download_csv(csv.join("\n"), filename);
+}
+
+document.querySelector("#exporting").addEventListener("click", function () {
+    var html = document.querySelector(".pertraineeUren").outerHTML;
+  export_table_to_csv(html, "table.csv");
+});

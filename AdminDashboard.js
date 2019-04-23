@@ -702,6 +702,7 @@ console.log(YearPercentageGewerkteUren);
 var chart = new Chart(ctx, {
     // The type of chart we want to create
     type: 'pie',
+    maintainAspectRatio: 'true',
 
     // The data for our dataset
     data: {
@@ -730,10 +731,10 @@ var chart = new Chart(ctx, {
             
         }]//end datasets
     },//end data
-
     // Configuration options go here
     options: {
     }//end options
+
 });//end chart
 }//end buildChart
 
