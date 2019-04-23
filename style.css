@@ -4,6 +4,11 @@
 *{
 	box-sizing: border-box;
 	font-family: 'sans-serif', 'roboto';
+
+}
+
+.fas.fa-exclamation-triangle{
+	color: red;
 }
 
 [disabled]{
@@ -29,6 +34,7 @@ h1{
 
 h2{
 	color: #640080; 
+	text-align: center;
 }
 
 h4{
@@ -54,34 +60,37 @@ nav{
 	min-height: 61px;
 }
 
+.navbar{
+	background-color: rgba(100,0,128,0.5);
+}
 
-.nav ul {
+.navbar-nav ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
   overflow: hidden;
 }
 
-.nav li {
+.navbar-nav li {
   float: right;
   padding: 10px 10px;
 }
 
-.nav li a {
+.navbar-nav	{
 	font-size: 1.1rem;
  	display: block;
-  	color: #555;
+  	color: #fff;
   	text-align: center;
   	padding: 10px 10px;
   	text-decoration: none;
 }
 
-.nav li a.active {
+.active {
   color: #640080;
   font-weight: 600;
 }
 
-.nav li a:hover{
+.navbar-nav li a:hover{
   color: #640080;
   font-weight: 600;
 }
@@ -143,13 +152,13 @@ button:hover{
 	justify-content: center;
 	align-items: center;
 }
-.container{
+/*.container{
 	min-height: 80vh;
 	flex-direction: column;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-}
+}*/
 
 .beheer{
 	min-height: 80vh;
@@ -162,9 +171,7 @@ button:hover{
 #addButton{
 	margin-left: 100px;	 
 	margin-bottom: 35px;
-	position: relative;
-	left: 300px;
-	top: 80px;
+
 }
 
 #addButtonDecla{
@@ -211,27 +218,56 @@ button:hover{
 	margin-top: 5px;
 }
 
-table{
-  	border-spacing: 0;
-  	border-collapse: collapse;
-  	margin-bottom: 35px;
+.table-striped{
+  	white-space: nowrap
+  	  	border-radius: 3px;
+}
+
+tr{
+	border-bottom: dotted 1px darkslategrey;
 }
 
 th{
-	font-size: 1.3rem;
+	white-space: nowrap;
+	font-size: 1.2rem;
+	font-weight: 400;
 	padding: 12px 20px 12px 10px;
-  	text-align: left;
-  	background-color: #333;
+  	text-align: left; 	
+  	background-color: #555;
   	color: white;
 }
 
-td{
-	padding: 4px 20px 4px 10px;
+
+.table td{
+/*	padding: 4px 20px 4px 10px;*/
+	white-space: nowrap;
   	text-align: left;
+  	padding: 5px 15px
+  	vertical-align: none;
+  	border-top: none;
 }
 
-tr:nth-child(odd){
-	background-color: #ddd;
+.fas{
+	display: inline;
+}
+/*tr:nth-child(odd){
+	background-color: rgba(100,0,128,0.2);
+}*/
+
+.table-striped tbody tr:nth-of-type(odd){
+	background-color: rgba(100,0,128,0.1);
+}
+
+.table-striped tbody tr:nth-of-type(even){
+	background-color: #fff;
+}
+
+.table-striped thead tr:first-child th:first-child {
+    border-radius: 5px 0 0 0;
+}
+
+.table thead tr:first-child th:last-child {
+    border-radius: 0 5px 0 0 ;
 }
 
 /*dashboard trainee - declaraties*/
@@ -301,6 +337,5 @@ tr:nth-child(odd){
 	justify-content: center;
 	align-items: stretch;
 }
-
 
 

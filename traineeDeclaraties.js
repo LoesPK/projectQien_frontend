@@ -122,9 +122,8 @@ function GETRowKostenTabel(kosten){
     Bedrag.type = "number";
     Bedrag.value = kosten.bedrag/100;
     insertedCell2.appendChild(Bedrag);
-    
-    
-    
+
+  
     
   //aantal KM
     var insertedCell3 = insertedRow.insertCell(4);
@@ -139,6 +138,16 @@ function GETRowKostenTabel(kosten){
        Bedrag.removeAttribute("disabled");
        km.setAttribute("disabled", "disabled");
         }
+
+  // Opmerking
+  var insertedCell5 = insertedRow.insertCell(5);
+  var Opmerking1 = document.createElement("input");
+  Opmerking1.maxLength = 150;
+  Opmerking1.type = "string";
+  Opmerking1.value = kosten.opmerking;
+  insertedCell5.appendChild(Opmerking1);
+
+
     var VerwijderKnop  = document.createElement("span");
     VerwijderKnop.className = "fas fa-trash-alt";
     VerwijderKnop.addEventListener("click", function(){
@@ -150,7 +159,7 @@ function GETRowKostenTabel(kosten){
     };
       xhttp.open("DELETE", apiCosts+kosten.id, true);
       xhttp.send();});
-  insertedCell3.appendChild(VerwijderKnop);
+  insertedCell5.appendChild(VerwijderKnop);
   
      
 
@@ -218,13 +227,23 @@ function addRowKostenTabel(){
             temp6.value = 0;
             temp6.setAttribute("disabled", "disabled");
             insertedCell4.appendChild(temp6);
+
+    // Opmerking
+  var insertedCell5 = insertedRow.insertCell(5);
+  var Opmerking2 = document.createElement("input");
+  Opmerking2.maxLength = 150;
+  Opmerking2.type = "string";
+  Opmerking2.value = "";
+  insertedCell5.appendChild(Opmerking2);
+
+    //verwijderknop
     var VerwijderKnop  = document.createElement("span");
     VerwijderKnop.className = "fas fa-trash-alt";
     VerwijderKnop.addEventListener("click", function(){
 
           insertedRow.parentNode.removeChild(insertedRow);
 });
-  insertedCell4.appendChild(VerwijderKnop);
+  insertedCell5.appendChild(VerwijderKnop);
   
 
     traineeKostenDropDownMenu(selectID);
@@ -259,15 +278,21 @@ function KostenOpslaan(){
   var chiVal = chi.value;
 
   // ------- bedrag -------//
-    var ch2 = c[3];
-
+  var ch2 = c[3];
   var chi2 = ch2.children[0];
 
   // ------ aantal KM ------//
     var ch3 = c[4];
-    console.log(ch3);
+    //console.log(ch3);
     var ch3input = ch3.children[0]
-    console.log(ch3input.value);
+    //console.log(ch3input.value);
+
+  // ------ Opmerking ------//
+  var ch5 = c[5];
+  var chOpmerking = ch5.children[0]
+  //console.log( chOpmerking.value + "chOpmerking");
+
+
 
 
     kosten.waarde = chiVal;
@@ -276,6 +301,7 @@ function KostenOpslaan(){
     kosten.factuurDatum = d;
     kosten.status = "Opgeslagen";
     kosten.aantalKM = ch3input.value;
+    kosten.opmerking = chOpmerking.value;
     console.log(kosten);
     kostenlijst.push(kosten);
     }
@@ -303,7 +329,7 @@ function PUTTrainee(trainee){
     if (this.readyState == 4)
       if(this.status == 200) { 
       trainee = JSON.parse(this.responseText);
-      document.location.reload(true);
+      // document.location.reload(true);
         }
         else{
           alert("HELP!" + this.status);

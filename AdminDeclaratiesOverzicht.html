@@ -5,101 +5,117 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="selectMonth()">
-	<nav>
-		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-		<div class="nav">
-			
-			<ul>
-				<li><a href="" >Uitloggen</a></li>
-				<li><a href="AdminBeheer.html" >Beheer</a></li>
-				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
-				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
-				<li><a href="AdminDeclaratiesOverzicht.html" class="active">Declaraties</a></li>
-				<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
-				<li><a href="AdminDashboard.html" >Dashboard</a></li>
+<body onload="selectMonth(), setCurrentMonth()">
+<div class="jumbotron p-0 text-center">
+	<nav class="navbar navbar-expand  justify-content-center  m-0 p-0">
+	<a class="navbar-brand " href="AdminDashboard.html">
+    	<img id="logo" src="img/qienlogo.png"style="height: 70px;" class="d-inline-block align-top" >
+  	</a>
+
+			<ul class="navbar-nav d-flex flex-row">
+				<li class="nav-item"><a href="AdminDashboard.html" class="nav-link">Dashboard</a></li>
+				<li class="nav-item"><a href="AdminUrenoverzicht.html" class="nav-link ">Uren</a></li>
+				<li class="nav-item"><a href="AdminDeclaratiesOverzicht.html" class="nav-link active">Declaraties</a></li>
+				<li class="nav-item"><a href="AdminTraineeOverzicht.html" class="nav-link">Trainees</a></li>
+				<li class="nav-item"><a href="AdminKlantenOverzicht.html" class="nav-link">Klanten</a></li>
+				<li class="nav-item"><a href="AdminBeheer.html" class="nav-link">Beheer</a></li>
+				<li class="nav-item"><a href="login.html" class="nav-link">Uitloggen</a></li>
 			</ul>
-		</div>
-	</nav>
-	<div class="wrapperAdminDeclaratiesOverzicht">
-		<div class="container">
-			<h1>Declaraties</h1>
-			<div id="setYearDiv">
-					<select id="selectedYear"
-					onchange = "selectYear()">
-							<option value="2019">2019</option>
-							<option value="2018">2018</option>
-							<option value="2020">2020</option>
-							<option value="2021">2021</option>
-							<option value="2022">2022</option>
-							<option value="2023">2023</option>
-							<option value="2024">2024</option>
-							<option value="2025">2025</option>
-							<option value="2026">2026</option>
-							<option value="2027">2027</option>
-							<option value="2028">2028</option>
-							<option value="2029">2029</option>
-						</select>
-				</div>
-				<br>
-			<div id="setMonthDiv">
-				<select id="selectedMonth"
-				onchange = "selectMonth()">
-						<option value="01">Januari</option>
-						<option value="02">Februari</option>
-						<option value="03">Maart</option>
-						<option value="04">April</option>
-						<option value="05">Mei</option>
-						<option value="06">Juni</option>
-						<option value="07">Juli</option>
-						<option value="08">Augustus</option>
-						<option value="09">September</option>
-						<option value="10">Oktober</option>
-						<option value="11">November</option>
-						<option value="12">December</option>
-					</select>
-			</div>
-			<br>
-			<br>
-
+</nav>
+</div>
+<div class="container">
+	<div class="row mb-2">
+		<div class="col-sm"></div>
+		<div class="col-md">
 			<h2>Totaal Declaraties</h2>
-			<div id="urentabelDiv">
-				<table id="declaratieTabel" >
-					<thead>
-					<tr class="UrenHeader">
-						<th>Overige Kosten €</a></th>
-						<th>Openbaar Vervoer €</a></th>
-						<th>Auto KM</a></th>
-						<th>Auto €</a></th>
-						<th>Totaal €</a></th>
-					</tr>
-					</thead>
-				</table>
+			<div class=" d-flex justify-content-end mb-2" >
+			<div class=" mr-2" id="setYearDiv">
+			<select class="form-control" id="selectedYear"
+			onchange = "selectYear()">
+					<option value="2019">2019</option>
+					<option value="2018">2018</option>
+					<option value="2020">2020</option>
+					<option value="2021">2021</option>
+					<option value="2022">2022</option>
+					<option value="2023">2023</option>
+					<option value="2024">2024</option>
+					<option value="2025">2025</option>
+					<option value="2026">2026</option>
+					<option value="2027">2027</option>
+					<option value="2028">2028</option>
+					<option value="2029">2029</option>
+				</select>
 			</div>
-			<br>
-
-			<h2>Declaraties Per Trainee</h2>
-			<div id="urentabelDiv">
-				<table id="perTraineeTabel" >
-					<thead>
-					<tr class="UrenHeader">
-						<th>Voornaam</a></th>
-						<th>Achternaam</a></th>
-						<th>Soort</a></th>
-						<th>Auto KM</a></th>
-						<th>Bedrag €</a></th>
-						<th>Bijlage</a></th>
-					</tr>
-					</thead>
-				</table>
+			<div id="setMonthDiv">
+				<select class="form-control" id="selectedMonth"
+				onchange = "selectMonth()">
+					<option value="01">Januari</option>
+					<option value="02">Februari</option>
+					<option value="03">Maart</option>
+					<option value="04">April</option>
+					<option value="05">Mei</option>
+					<option value="06">Juni</option>
+					<option value="07">Juli</option>
+					<option value="08">Augustus</option>
+					<option value="09">September</option>
+					<option value="10">Oktober</option>
+					<option value="11">November</option>
+					<option value="12">December</option>
+				</select>
 			</div>
-			
+			</div>
+		<table id="declaratieTabel" class="table table-striped">
+			<thead>
+			<tr class="UrenHeader">
+				<th>Overige Kosten €</th>
+				<th>Openbaar Vervoer €</th>
+				<th>Auto KM</th>
+				<th>Auto €</th>
+				<th>Totaal €</th>
+			</tr>
+			</thead>
+		</table>
+		<!-- /col -->
 		</div>
-	</div>
+		<div class="col-sm"></div>
+	</div ><!-- /row -->
+
+	 <div class="row mb-2">
+    	<div class="col-sm"></div>
+    	<div class="col-lg mt-2">
+			<h2>Declaraties Per Trainee</h2>
+
+			<table id="perTraineeTabel" class="table table-striped">
+				<thead>
+				<tr class="UrenHeader">
+					<th>Voornaam</th>
+					<th>Achternaam</th>
+					<th>Soort</th>
+					<th>Auto KM</th>
+					<th>Bedrag €</th>
+					<th>Status</th>
+					<th>Betaald</th>
+					<th>Opmerking</th>
+				</tr>
+				</thead>
+			</table>
+			<button id="exporting" onclick="export_table_to_csv('Declaraties_per_Trainee.csv')">Export tabel</button>
+	    </div><!--//col-->
+
+    	<div class="col-sm"></div>
+
+    </div><!--//row-->
 
 
+</div><!--//container-->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="AdminDeclaratiesOverzicht.js"></script>
 </body>
 </html>

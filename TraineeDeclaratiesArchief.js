@@ -93,6 +93,13 @@ function BuildRowKostenTabel(kosten){
     if(kosten.soort == "Auto"){
     insertedCell4.innerHTML = kosten.aantalKM;}
     else {insertedCell4.innerHTML = "-"}
+
+    // Opmerking veld
+    var insertedCell5 = insertedRow.insertCell(5);
+    insertedCell5.width = "300";
+    insertedCell5.innerHTML = kosten.opmerking;
+
+
     
 }//end BuildRowKostenTabel    
     

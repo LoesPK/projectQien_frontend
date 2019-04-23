@@ -21,7 +21,7 @@ if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
 // EMIEL - de geselecteerde maand
-var theMonth = "";
+var theMonth = setCurrentMonth();
 
 // Tim - de geselecteerde jaar
 var theYear = yyyy;
@@ -95,6 +95,12 @@ var OpenbaarVervoer;
 var AutoKM;
 var AutoEuro;
 var Totaal;
+
+var PGewerkt=0;
+var POver = 0;
+var POver125 =0;
+var PVerlof =0;
+var PZiekte = 0;
 
 function setCurrentMonth(){
     console.log(today.substring(5,7));
@@ -253,12 +259,12 @@ function addHtmlElementContent(parent, child, tekst) {
     return child;
 }
 
-function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
+function addHtmlElementContentPlusAwesome(parent, icon, color, child, tekst) {
     icon.className = "fas fa-exclamation-triangle";
+    icon.style.color = color;
     parent.appendChild(icon)
     icon.appendChild(child);
     child.style.display="inline-block";
-    child.style.color="red";
     child.innerHTML = tekst;
     return icon;
 }
@@ -607,9 +613,11 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
     var tr = document.createElement("tr");
     // <i class="fas fa-exclamation-triangle">
     var toDo = document.createElement("span");
-    if(AfgekeurdTotaalUren>0){        
+    var color = "red"
+    if(AfgekeurdTotaalUren>0){
+
     // var bla = toDo;
-    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Afgekeurd");
+    addHtmlElementContentPlusAwesome(tr, toDo , color, document.createElement("td"), "Afgekeurd");
     }
     else{
      addHtmlElementContent(tr, document.createElement("td"), "Afgekeurd");
@@ -627,9 +635,10 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
 function adminUrenteaccoderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
     var toDo = document.createElement("span");
+    var color = "orange"
     if(teaccoderenTotaalUren>0){        
     // var bla = toDo;
-    addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), "Ingediend");
+    addHtmlElementContentPlusAwesome(tr, toDo , color, document.createElement("td"), "Ingediend");
     }
     else{
     addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
@@ -693,6 +702,7 @@ console.log(YearPercentageGewerkteUren);
 var chart = new Chart(ctx, {
     // The type of chart we want to create
     type: 'pie',
+    maintainAspectRatio: 'true',
 
     // The data for our dataset
     data: {
@@ -721,10 +731,10 @@ var chart = new Chart(ctx, {
             
         }]//end datasets
     },//end data
-
     // Configuration options go here
     options: {
     }//end options
+
 });//end chart
 }//end buildChart
 

@@ -6,31 +6,38 @@
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
 <body onload="selectMonth(), setCurrentMonth()">
-	<nav>
-		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-		<div class="nav">
-			<ul>
-				<li><a href="" >Uitloggen</a></li>
-				<li><a href="AdminBeheer.html" >Beheer</a></li>
-				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
-				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
-				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
-				<li><a href="AdminUrenoverzicht.html" class="active">Uren</a></li>
-				<li><a href="AdminDashboard.html" >Dashboard</a></li>
+<div class="jumbotron p-0 text-center">
+	<nav class="navbar navbar-expand  justify-content-center  m-0 p-0">
+	<a class="navbar-brand " href="AdminDashboard.html">
+    	<img id="logo" src="img/qienlogo.png"style="height: 70px;" class="d-inline-block align-top" >
+  	</a>
 
+			<ul class="navbar-nav d-flex flex-row">
+				<li class="nav-item"><a href="AdminDashboard.html" class="nav-link">Dashboard</a></li>
+				<li class="nav-item"><a href="AdminUrenoverzicht.html" class="nav-link active">Uren</a></li>
+				<li class="nav-item"><a href="AdminDeclaratiesOverzicht.html" class="nav-link">Declaraties</a></li>
+				<li class="nav-item"><a href="AdminTraineeOverzicht.html" class="nav-link">Trainees</a></li>
+				<li class="nav-item"><a href="AdminKlantenOverzicht.html" class="nav-link">Klanten</a></li>
+				<li class="nav-item"><a href="AdminBeheer.html" class="nav-link">Beheer</a></li>
+				<li class="nav-item"><a href="login.html" class="nav-link">Uitloggen</a></li>
 			</ul>
-		</div>
-	</nav>
+</nav>
+</div>
+<div class="container">
 
-	<div class="wrapperAdminDashboard">
-		<div class="container">
-			<h1>Uren</h1>
-
-			<div id="setYearDiv">
-					<select id="selectedYear"
+			
+	
+	<div class="row mb-2">
+		<div class="col-sm"></div>
+		<div class="col-md">
+			<h2>Uren Per Maand</h2>
+			<div class=" d-flex justify-content-end mb-2" >
+			<div class=" mr-2" id="setYearDiv">
+					<select class="form-control" id="selectedYear"
 					onchange = "selectYear()">
 							<option value="2019">2019</option>
 							<option value="2018">2018</option>
@@ -46,9 +53,9 @@
 							<option value="2029">2029</option>
 					  </select>
 				</div>
-				<br>
+				
 			<div id="setMonthDiv">
-				<select id="selectedMonth"
+				<select class="form-control" id="selectedMonth"
 				onchange = "selectMonth()">
 						<option value="01">Januari</option>
 						<option value="02">Februari</option>
@@ -64,52 +71,62 @@
 						<option value="12">December</option>
 				  </select>
 			</div>
-            <br>
-            <br>
+		</div>
+		<table id="urenTabel"class="table table-striped" >
+			<thead>
+			<tr class="UrenHeader">
+				<th>Status</th>
+				<th>Totaal</th>
+				<th>Gewerkt</th>
+				<th>Over 100%</th>
+				<th>Over 125%</th>
+				<th>Verlof</th>
+				<th>Ziekte</th>
+			</tr>
+			</thead>
+		</table>
+		<!-- /col -->
+		</div>
+	
+	<div class="col-sm"></div>
+	</div ><!-- /row -->
 
-			<h2>Uren Per Maand</h2>
-			<div id="urentabelDiv">
-				<table id="urenTabel" >
+    <div class="row mb-2">
+    	<div class="col-sm"></div>
+
+    	<div class="col-lg mt-2">
+     		 <h2>Uren Per Trainee</h2>
+				<table id="perTraineeTabel" class="table table-striped pertraineeUren" >
 					<thead>
 					<tr class="UrenHeader">
-						<th>Status</a></th>
-						<th>Totaal</a></th>
-						<th>Gewerkt</a></th>
-						<th>Over 100%</a></th>
-						<th>Over 125%</a></th>
-						<th>Verlof</a></th>
-						<th>Ziekte</a></th>
-					</tr>
-					</thead>
-				</table>
-			</div>
-			<br>
-
-			<h2>Uren Per Trainee</h2>
-			<div id="urentabelDiv">
-				<table id="perTraineeTabel" class="pertraineeUren" >
-					<thead>
-					<tr class="UrenHeader">
-						<th onclick="sortTable(1)">Klant</th>
-						<th onclick="sortTable(2)">Voornaam</th>
-						<th onclick="sortTable(3)">Achternaam</th>
-						<th onclick="sortTable(4)">Status</th>
-						<th onclick="sortTable(5)">Totaal</th>
-						<th onclick="sortTable(6)">Gewerkt</th>
-						<th onclick="sortTable(7)">Over 100%</th>
-                        <th onclick="sortTable(8)">Over 125%</th>
-                        <th onclick="sortTable(9)">Verlof</th>
-                        <th onclick="sortTable(10)">Ziekte</th>
+						<th scope="col" onclick="sortTable(1)">Klant</th>
+						<th scope="col" onclick="sortTable(2)">Voornaam</th>
+						<th scope="col" onclick="sortTable(3)">Achternaam</th>
+						<th scope="col" onclick="sortTable(4)">Status</th>
+						<th scope="col" onclick="sortTable(5)">Totaal</th>
+						<th scope="col" onclick="sortTable(6)">Gewerkt</th>
+						<th scope="col" onclick="sortTable(7)">Over 100%</th>
+                        <th scope="col" onclick="sortTable(8)">Over 125%</th>
+                        <th scope="col" onclick="sortTable(9)">Verlof</th>
+                        <th scope="col" onclick="sortTable(10)">Ziekte</th>
 					</tr>
 					</thead>
 				</table>
 				<button id="exporting" onclick="export_table_to_csv('Uren_per_Trainee.csv')">Export tabel</button>
-			</div>
-			
-		</div>
-	</div>
+	    </div><!--//col-->
+
+    	<div class="col-sm"></div>
+
+    </div><!--//row-->
+
+</div><!--//container-->
+
+	
 
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="AdminUrenoverzicht.js"></script>
 </body>
 </html>
