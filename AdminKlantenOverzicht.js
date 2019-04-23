@@ -70,14 +70,14 @@ function addHtmlElementContentPlusAwesome(parent, icon,  icon2, child, tekst, id
     icon2.className = "fas fa-trash-alt";
     icon2.style.paddingLeft = "10px"
     icon2.addEventListener("click", function(){
-    DeleteTrainee(traineeID)
+    DeleteKlant(klantID)
     child.parentNode.removeChild(child);    
     });//end EventListener
     parent.appendChild(child) 
     child.innerHTML = tekst;
     child.id=id;
     child.appendChild(icon);
-    icon.appendChild(icon2);
+    child.appendChild(icon2);
     return child;
 }
 

@@ -72,7 +72,7 @@ function addHtmlElementContentPlusAwesome(parent, icon,  icon2, child, tekst, id
     child.innerHTML = tekst;
     child.id=id;
     child.appendChild(icon);
-    icon.appendChild(icon2);
+    child.appendChild(icon2);
     return child;
 }
 

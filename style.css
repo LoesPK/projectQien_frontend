@@ -15,6 +15,10 @@
 	cursor: pointer;
 	color:  #640080;
 }
+.fas.fa-trash-alt:hover{
+	cursor: pointer;
+	color:  #640080;
+}
 
 [disabled]{
 	opacity: 0.5;	
@@ -35,6 +39,23 @@ h1{
 	margin-bottom: 70px;
 	color: #333;
 	text-align: center;
+}
+
+#containerLogin{
+	background-image: url("img/duiken.jpg");
+}
+
+#loginNav{
+	 background-color: rgba(0,0,0,0);
+}
+
+#loginButton{
+	margin: auto;
+}
+
+#h1Login{
+	height: auto;	
+	width: auto;
 }
 
 h2{
