@@ -137,7 +137,7 @@ function getUrenPerTrainee(traineeID){
         var trainee = JSON.parse(this.responseText);    
             var table = document.getElementById("UrenSpecificaties");  
 
-               // createNewAutoTableHeader();
+               // createNewTableHeader();
                addHtmlElement(table, UurSpecifiekTableHeader());
                var tbody = addHtmlElement(table, document.createElement("tbody"));
                for(var i = 0; i< trainee.uren.length; i++) {
