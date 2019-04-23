@@ -57,13 +57,13 @@ var AfgekeurdVerlofUren = 0;
 var AfgekeurdZiekteUren = 0;
 var AfgekeurdTotaalUren = 0;
 
-// Tim - Variabelen aanmaken om de totale teaccoderen uren in bij elkaar op te tellen
-var teaccoderenGewerkteUren = 0; 
-var teaccoderenOver100Uren = 0;
-var teaccoderenOver125Uren = 0;
-var teaccoderenVerlofUren = 0;
-var teaccoderenZiekteUren = 0;
-var teaccoderenTotaalUren = 0;
+// Tim - Variabelen aanmaken om de totale teaccorderen uren in bij elkaar op te tellen
+var teaccorderenGewerkteUren = 0; 
+var teaccorderenOver100Uren = 0;
+var teaccorderenOver125Uren = 0;
+var teaccorderenVerlofUren = 0;
+var teaccorderenZiekteUren = 0;
+var teaccorderenTotaalUren = 0;
 
 // Tim - per trainee - Variabelen aanmaken om  een rij te maken
 var klant = "";
@@ -102,16 +102,16 @@ var AfgekeurdpertraineeVerlofUren = 0;
 var AfgekeurdpertraineeZiekteUren = 0;
 var AfgekeurdpertraineeTotaalUren = 0;
 
-// Tim - per trainee - Teaccoderen uren
-var Teaccoderenpertraineestatus;
-var Teaccoderenpertraineetotaal = 0;
-var Teaccoderenpertraineedagen = 0;
-var TeaccoderenpertraineeGewerkteUren = 0; 
-var TeaccoderenpertraineeOver100Uren = 0;
-var TeaccoderenpertraineeOver125Uren = 0;
-var TeaccoderenpertraineeVerlofUren = 0;
-var TeaccoderenpertraineeZiekteUren = 0;
-var TeaccoderenpertraineeTotaalUren = 0;
+// Tim - per trainee - Teaccorderen uren
+var Teaccorderenpertraineestatus;
+var Teaccorderenpertraineetotaal = 0;
+var Teaccorderenpertraineedagen = 0;
+var TeaccorderenpertraineeGewerkteUren = 0; 
+var TeaccorderenpertraineeOver100Uren = 0;
+var TeaccorderenpertraineeOver125Uren = 0;
+var TeaccorderenpertraineeVerlofUren = 0;
+var TeaccorderenpertraineeZiekteUren = 0;
+var TeaccorderenpertraineeTotaalUren = 0;
 
 // Tim - per trainee - nietingediend uren
 var Nietingediendpertraineestatus = "-";
@@ -166,7 +166,7 @@ function GETUrenPerMaand(theMonth){
             emptyTotaal();
             emptyGoedgekeurd();
             emptyAfgekeurd();
-            emptyTeaccoderen();
+            emptyTeaccorderen();
 
 
             // Tim - Per Trainee loop
@@ -175,11 +175,12 @@ function GETUrenPerMaand(theMonth){
                 // Tim - empty variables per trainee before loops begin
                 emptyPerTraineeGoedgekeurdVariables();
                 emptyPerTraineeAfgekeurdVariables();
-                emptyPerTraineeTeaccoderenVariables();
+                emptyPerTraineeTeaccorderenVariables();
 
                 klant = trainee[i].klant.bedrijf;
                 voornaam = trainee[i].voornaam;
                 achternaam = trainee[i].achternaam;
+ 
 
                 // Tim - Per Uur loop
                 for(var k = 0; k < trainee[i].uren.length; k++){
@@ -187,28 +188,28 @@ function GETUrenPerMaand(theMonth){
                     //console.log(trainee[i].uren[k].accordStatus);
                     uurInDBHemZeMonth = trainee[i].uren[k].factuurDatum.substring(5,7);
                     uurInDBHemZeYear = trainee[i].uren[k].factuurDatum.substring(0,4);
-                    //console.log(uurInDBHemZeMonth);
-                    // Tim - vergekijk maand en jaar
-                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear) {
-                        // console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
-                        // Tim - Totaal tabel variables pakken
-                        switchTotaalUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                        switchTotaalGoegekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                        switchTotaalAfgekeurdeUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                        switchTotaalteaccoderenUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
 
-                        // Tim - Per Trainee tabel variables pakken
-                        switch(trainee[i].uren[k].accordStatus){
-                            case "GOEDGEKEURD": 
-                            switchPerTraineeGoedgekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                            case "AFGEKEURD":
-                            switchPerTraineeAfgekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                            case "TEACCODEREN":
-                            switchPerTraineeTeaccoderenUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
-                            
-                        }
-                    }
-                }
+                        // Tim - vergekijk maand en jaar
+                        if(uurInDBHemZeMonth == theMonth && uurInDBHemZeYear == theYear) {
+                            // console.log(trainee[i].voornaam + " IF ITS THE RIGHT MONTH");
+                            // Tim - Totaal tabel variables pakken
+                            switchTotaalUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                            switchTotaalGoegekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                            switchTotaalAfgekeurdeUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                            switchTotaalteaccorderenUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+
+                            // Tim - Per Trainee tabel variables pakken
+                            switch(trainee[i].uren[k].accordStatus){
+                                case "GOEDGEKEURD": 
+                                switchPerTraineeGoedgekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                                case "AFGEKEURD":
+                                switchPerTraineeAfgekeurdUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                                case "TEACCORDEREN":
+                                switchPerTraineeTeaccorderenUren(trainee[i].uren[k],trainee[i].uren[k].waarde);
+                                
+                            }//end switch
+                        }//end if
+                }//end for
                 // Tim - per trainee - opbouwen van de body van de tabel
                 // Tim - als de trainee goedegeurde uren heeft dan zet ie het in de tabel
                 if(GoedgekeurdpertraineeTotaalUren > 0){
@@ -221,18 +222,18 @@ function GETUrenPerMaand(theMonth){
                     //console.log("AFGEKEURD");
                     addHtmlElement(pertraineetbody,PerTraineeAfgekeurdTableRow(trainee));
                 }
-                // Tim - als de trainee teaccoderen uren heeft dan zet ie het in de tabel
-                if(TeaccoderenpertraineeTotaalUren > 0){
-                    //console.log("TEACCODEREN");
-                    addHtmlElement(pertraineetbody,PerTraineeTeaccoderenTableRow(trainee));
+                // Tim - als de trainee teaccorderen uren heeft dan zet ie het in de tabel
+                if(TeaccorderenpertraineeTotaalUren > 0){
+                    //console.log("TEACCORDEREN");
+                    addHtmlElement(pertraineetbody,PerTraineeTeaccorderenTableRow(trainee));
                 }
                 //console.log(GoedgekeurdpertraineeTotaalUren + " GoedgekeurdpertraineeTotaalUren");
                 //console.log(AfgekeurdpertraineeTotaalUren + " AfgekeurdpertraineeTotaalUren");
-                //console.log(TeaccoderenpertraineeTotaalUren + " TeaccoderenpertraineeTotaalUren");
+                //console.log(TeaccorderenpertraineeTotaalUren + " TeaccorderenpertraineeTotaalUren");
 
 
                 //Tim - als de trainee geen uren heeft ingediend
-                if(TeaccoderenpertraineeTotaalUren == 0 && AfgekeurdpertraineeTotaalUren == 0 && GoedgekeurdpertraineeTotaalUren == 0){
+                if(TeaccorderenpertraineeTotaalUren == 0 && AfgekeurdpertraineeTotaalUren == 0 && GoedgekeurdpertraineeTotaalUren == 0){
                     //console.log("NIKS INGEDIEND");
                     addHtmlElement(pertraineetbody,PerTraineeNietingediendTableRow(trainee));
                 }
@@ -241,7 +242,7 @@ function GETUrenPerMaand(theMonth){
             //addHtmlElement(tbody, adminUrenTotaalTableRow(trainee));
             addHtmlElement(tbody, adminUrentGoedgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
-            addHtmlElement(tbody, adminUrenteaccoderenTableRow(trainee));
+            addHtmlElement(tbody, adminUrenteaccorderenTableRow(trainee));
         }
     };
     xhttp.open("GET", apiUserId, true);
@@ -341,30 +342,30 @@ function switchTotaalAfgekeurdeUren(traineelijst,typeUur){
         }
     }
 }
-// Tim - Teaccoderen - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
-function switchTotaalteaccoderenUren(traineelijst,typeUur){
-    if(traineelijst.accordStatus == "TEACCODEREN"){
+// Tim - Teaccorderen - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
+function switchTotaalteaccorderenUren(traineelijst,typeUur){
+    if(traineelijst.accordStatus == "TEACCORDEREN"){
         switch(typeUur){
             case "Gewerkte Uren": 
             //console.log("Check in Gewerkte uren: "+ traineelijst.aantal)
-                teaccoderenGewerkteUren += traineelijst.aantal;
-                teaccoderenTotaalUren += traineelijst.aantal; 
+                teaccorderenGewerkteUren += traineelijst.aantal;
+                teaccorderenTotaalUren += traineelijst.aantal; 
                 return AantalGewerkteUren;
             case "Overuren 100%": 
-                teaccoderenOver100Uren += traineelijst.aantal;
-                teaccoderenTotaalUren += traineelijst.aantal;
+                teaccorderenOver100Uren += traineelijst.aantal;
+                teaccorderenTotaalUren += traineelijst.aantal;
             break
             case "Overuren 125%": 
-                teaccoderenOver125Uren += traineelijst.aantal;
-                teaccoderenTotaalUren += traineelijst.aantal;
+                teaccorderenOver125Uren += traineelijst.aantal;
+                teaccorderenTotaalUren += traineelijst.aantal;
             break
             case "Verlof Uren": 
-                teaccoderenVerlofUren += traineelijst.aantal;
-                teaccoderenTotaalUren += traineelijst.aantal;
+                teaccorderenVerlofUren += traineelijst.aantal;
+                teaccorderenTotaalUren += traineelijst.aantal;
             break
             case "Ziekte Uren": 
-                teaccoderenZiekteUren += traineelijst.aantal;
-                teaccoderenTotaalUren += traineelijst.aantal;
+                teaccorderenZiekteUren += traineelijst.aantal;
+                teaccorderenTotaalUren += traineelijst.aantal;
             break
         }
     }
@@ -430,32 +431,32 @@ function switchPerTraineeAfgekeurdUren(traineelijst,typeUur){
         //console.log(AfgekeurdpertraineeTotaalUren);
     }
 }
-// Tim - per trainee - teaccoderen uren - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
-function switchPerTraineeTeaccoderenUren(traineelijst,typeUur){
-    if(traineelijst.accordStatus == "TEACCODEREN"){
+// Tim - per trainee - teaccorderen uren - Afhankelijk van het type uren worden de uren van een "Uren" in database bij de totalen van de correcte variabelen toegevoegd
+function switchPerTraineeTeaccorderenUren(traineelijst,typeUur){
+    if(traineelijst.accordStatus == "TEACCORDEREN"){
     //console.log("PER INGEDIEND");
-    Teaccoderenpertraineestatus = "Ingediend";
+    Teaccorderenpertraineestatus = "Ingediend";
 
         switch(typeUur){
             case "Gewerkte Uren": 
-                TeaccoderenpertraineeGewerkteUren += traineelijst.aantal;
-                TeaccoderenpertraineeTotaalUren += traineelijst.aantal; 
+                TeaccorderenpertraineeGewerkteUren += traineelijst.aantal;
+                TeaccorderenpertraineeTotaalUren += traineelijst.aantal; 
                 return AantalGewerkteUren;
             case "Overuren 100%": 
-                TeaccoderenpertraineeOver100Uren += traineelijst.aantal;
-                TeaccoderenpertraineeTotaalUren += traineelijst.aantal;
+                TeaccorderenpertraineeOver100Uren += traineelijst.aantal;
+                TeaccorderenpertraineeTotaalUren += traineelijst.aantal;
             break
             case "Overuren 125%": 
-                TeaccoderenpertraineeOver125Uren += traineelijst.aantal;
-                TeaccoderenpertraineeTotaalUren += traineelijst.aantal;
+                TeaccorderenpertraineeOver125Uren += traineelijst.aantal;
+                TeaccorderenpertraineeTotaalUren += traineelijst.aantal;
             break
             case "Verlof Uren": 
-                TeaccoderenpertraineeVerlofUren += traineelijst.aantal;
-                TeaccoderenpertraineeTotaalUren += traineelijst.aantal;
+                TeaccorderenpertraineeVerlofUren += traineelijst.aantal;
+                TeaccorderenpertraineeTotaalUren += traineelijst.aantal;
             break
             case "Ziekte Uren": 
-                TeaccoderenpertraineeZiekteUren += traineelijst.aantal;
-                TeaccoderenpertraineeTotaalUren += traineelijst.aantal;
+                TeaccorderenpertraineeZiekteUren += traineelijst.aantal;
+                TeaccorderenpertraineeTotaalUren += traineelijst.aantal;
             break
         }
         //console.log(AfgekeurdpertraineeTotaalUren);
@@ -465,7 +466,7 @@ function switchPerTraineeTeaccoderenUren(traineelijst,typeUur){
 function switchPerTraineeNietingediendUren(traineelijst,typeUur){
     if(traineelijst.accordStatus == "NIETINGEDIEND"){
     //console.log("PER NIETINGEDIEND");
-    Teaccoderenpertraineestatus = "-";
+    Teaccorderenpertraineestatus = "-";
 
         switch(typeUur){
             case "Gewerkte Uren": 
@@ -532,22 +533,24 @@ function adminUrentAfgekeurdTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), AfgekeurdZiekteUren);
     return tr;
 }
-// Tim - Teaccoderen Rij aanmaken
-function adminUrenteaccoderenTableRow(traineelijst) {
+// Tim - Teaccorderen Rij aanmaken
+function adminUrenteaccorderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
 
      addHtmlElementContent(tr, document.createElement("td"), "Ingediend");
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenTotaalUren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenTotaalUren);
     //addHtmlElementContent(tr, document.createElement("td"), "Datum");
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenGewerkteUren);
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver100Uren);
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenOver125Uren);
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), teaccoderenZiekteUren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenGewerkteUren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenOver100Uren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenOver125Uren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenVerlofUren);
+    addHtmlElementContent(tr, document.createElement("td"), teaccorderenZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - goedgekeurde uren rij aanmaken
 function PerTraineeGoedgekeurdTableRow(traineelijst) {
+    console.log("hoi")
+    console.log(traineelijst)
     var tr = document.createElement("tr");
     addHtmlElementContent(tr, document.createElement("td"), klant);
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
@@ -587,10 +590,10 @@ function PerTraineeAfgekeurdTableRow(traineelijst) {
     return tr;
 }
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
-function PerTraineeTeaccoderenTableRow(traineelijst) {
+function PerTraineeTeaccorderenTableRow(traineelijst) {
     var tr = document.createElement("tr");
     var toDo = document.createElement("span");
-    if(TeaccoderenpertraineeTotaalUren>0){        
+    if(TeaccorderenpertraineeTotaalUren>0){        
     // var bla = toDo;
     addHtmlElementContentPlusAwesome(tr, toDo , document.createElement("td"), klant);
     }
@@ -602,13 +605,13 @@ function PerTraineeTeaccoderenTableRow(traineelijst) {
     addHtmlElementContent(tr, document.createElement("td"), voornaam);
     addHtmlElementContent(tr, document.createElement("td"), achternaam);
 
-    addHtmlElementContent(tr, document.createElement("td"), Teaccoderenpertraineestatus);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeTotaalUren);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeGewerkteUren);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver100Uren);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeOver125Uren);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeVerlofUren);
-    addHtmlElementContent(tr, document.createElement("td"), TeaccoderenpertraineeZiekteUren);
+    addHtmlElementContent(tr, document.createElement("td"), Teaccorderenpertraineestatus);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeTotaalUren);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeGewerkteUren);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeOver100Uren);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeOver125Uren);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeVerlofUren);
+    addHtmlElementContent(tr, document.createElement("td"), TeaccorderenpertraineeZiekteUren);
     return tr;
 }
 // Tim - Per Trainee - afgekeurde uren rij aanmaken
@@ -644,14 +647,14 @@ function emptyGoedgekeurd(){
     GoedgekeurdZiekteUren = 0;
     GoedgekeurdTotaalUren = 0;
 }
-// Tim - empty teaccoderen variables before the loops start
-function emptyTeaccoderen(){
-    teaccoderenGewerkteUren = 0; 
-    teaccoderenOver100Uren = 0;
-    teaccoderenOver125Uren = 0;
-    teaccoderenVerlofUren = 0;
-    teaccoderenZiekteUren = 0;
-    teaccoderenTotaalUren = 0;
+// Tim - empty teaccorderen variables before the loops start
+function emptyTeaccorderen(){
+    teaccorderenGewerkteUren = 0; 
+    teaccorderenOver100Uren = 0;
+    teaccorderenOver125Uren = 0;
+    teaccorderenVerlofUren = 0;
+    teaccorderenZiekteUren = 0;
+    teaccorderenTotaalUren = 0;
 }
 // Tim - empty afgekeurd variables before the loops start
 function emptyAfgekeurd(){
@@ -690,18 +693,18 @@ function emptyPerTraineeAfgekeurdVariables(){
     AfgekeurdpertraineeZiekteUren = 0;
     AfgekeurdpertraineeTotaalUren = 0;
 }
-// Tim - empty - per trainee - teaccoderen
-function emptyPerTraineeTeaccoderenVariables(){
+// Tim - empty - per trainee - teaccorderen
+function emptyPerTraineeTeaccorderenVariables(){
     //console.log("Empty variables INGEDIEND");
-    Teaccoderenpertraineestatus;
-    Teaccoderenpertraineetotaal = 0;
-    Teaccoderenpertraineedagen = 0;
-    TeaccoderenpertraineeGewerkteUren = 0; 
-    TeaccoderenpertraineeOver100Uren = 0;
-    TeaccoderenpertraineeOver125Uren = 0;
-    TeaccoderenpertraineeVerlofUren = 0;
-    TeaccoderenpertraineeZiekteUren = 0;
-    TeaccoderenpertraineeTotaalUren = 0;
+    Teaccorderenpertraineestatus;
+    Teaccorderenpertraineetotaal = 0;
+    Teaccorderenpertraineedagen = 0;
+    TeaccorderenpertraineeGewerkteUren = 0; 
+    TeaccorderenpertraineeOver100Uren = 0;
+    TeaccorderenpertraineeOver125Uren = 0;
+    TeaccorderenpertraineeVerlofUren = 0;
+    TeaccorderenpertraineeZiekteUren = 0;
+    TeaccorderenpertraineeTotaalUren = 0;
 }
 
 //Downloaden CSV

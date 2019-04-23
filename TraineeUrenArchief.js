@@ -85,8 +85,8 @@ function GETRowUrenTabel(uur){
 	var status = document.createElement("td");
 	if(uur.accordStatus == "NIETINGEVULD"){
 		statusAkkoord = "Opgeslagen";
-	}if(uur.accordStatus == "TEACCODEREN"){
-		statusAkkoord = "Te Accoderen";
+	}if(uur.accordStatus == "TEACCORDEREN"){
+		statusAkkoord = "Te Accorderen";
 	}if(uur.accordStatus == "GOEDGEKEURD"){
 		statusAkkoord = "Goedgekeurd";
 	}if(uur.accordStatus == "AFGEKEURD"){
