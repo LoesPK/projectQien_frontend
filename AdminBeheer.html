@@ -5,60 +5,74 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"></link>
 </head>
 <body onload = setPage()> 
-	<nav>
-		<a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-		<div class="nav">
-			
-			<ul>
-				<li><a href="" >Uitloggen</a></li>
-				<li><a href="AdminBeheer.html" class="active" >Beheer</a></li>
-				<li><a href="AdminKlantenOverzicht.html" >Klanten</a></li>
-				<li><a href="AdminTraineeOverzicht.html" >Trainees</a></li>
-				<li><a href="AdminDeclaratiesOverzicht.html" >Declaraties</a></li>
-				<li><a href="AdminUrenoverzicht.html" >Uren</a></li>
-				<li><a href="AdminDashboard.html" >Dashboard</a></li>
-			</ul>
-		</div>
-	</nav>
+<div class="jumbotron p-0 text-center">
+	<nav class="navbar navbar-expand  justify-content-center  m-0 p-0">
+	<a class="navbar-brand " href="AdminDashboard.html">
+    	<img id="logo" src="img/qienlogo.png"style="height: 70px;" class="d-inline-block align-top" >
+  	</a>
 
-    <div class="container">
+			<ul class="navbar-nav d-flex flex-row">
+				<li class="nav-item"><a href="AdminDashboard.html" class="nav-link">Dashboard</a></li>
+				<li class="nav-item"><a href="AdminUrenoverzicht.html" class="nav-link ">Uren</a></li>
+				<li class="nav-item"><a href="AdminDeclaratiesOverzicht.html" class="nav-link">Declaraties</a></li>
+				<li class="nav-item"><a href="AdminTraineeOverzicht.html" class="nav-link">Trainees</a></li>
+				<li class="nav-item"><a href="AdminKlantenOverzicht.html" class="nav-link">Klanten</a></li>
+				<li class="nav-item"><a href="AdminBeheer.html" class="nav-link active">Beheer</a></li>
+				<li class="nav-item"><a href="login.html" class="nav-link">Uitloggen</a></li>
+			</ul>
+</nav>
+</div>
+
+<div class="container">
+	<div class="row">
+		 <div class="col-sm"></div>
+		 <div class="col-sm">
     	<h1>Account Aanmaken</h1>
-    	<div class="beheer">
+    </div>
+    	<div class="col-sm"></div>
+    </div>
+    <div class="row align-items-center">
+ 	<div class="col-sm"></div>
+    <div class="col-sm p-0 d-flex flex-row justify-content-center">
+    
+		<div class="klantAanmaken">
+				<h2>Klant</h2>
+				<p> Voornaam:</p><input class ="form-control" type="text" id="voornaamKlant"/>
+				<p>Achternaam:</p><input class ="form-control" type="text" id="achternaamKlant"/>
+				<p>Bedrijf:</p><input class ="form-control" type="text" id="bedrijfKlant"/>
+				<p>Emailadres:</p><input  class ="form-control" type="text" id="emailadresKlant"/>
+				<p>Username:</p><input class ="form-control" type="text" id="usernameKlant"/>
+				<p>Wachtwoord:</p><input class ="form-control" type="text" id="wachtwoordKlant"/>
+				<button onclick="UserVersturen('klant')">Maak Klant aan</button>
+			</div>
+	</div>
+	<div class="col-sm p-0 d-flex flex-row justify-content-center">
 			<div class="traineeAanmaken">
 				
 				<h2>Trainee</h2>
-				<p>Voornaam:</p><input type="text" id="voornaamTrainee"/><br />
-				<p>Achternaam:</p><input type="text" id="achternaamTrainee"/><br />
-				<p>Emailadres:</p><input type="text" id="emailadresTrainee"/><br />
-				<p>Username:</p><input type="text" id="usernameTrainee"/><br />
-				<p>Wachtwoord:</p><input type="text" id="wachtwoordTrainee"/><br />
-				<p>Klant:</p> <select name="klantenOpties" id="klantTrainee"></select>
-				
-				<br>
-				<button onclick="UserVersturen('trainee')">Maak Trainee aan</button>
-					
-			</div>
+				<p>Voornaam:</p><input class ="form-control" type="text" id="voornaamTrainee"/>
+				<p>Achternaam:</p><input class ="form-control" type="text" id="achternaamTrainee"/>
+				<p>Emailadres:</p><input class ="form-control" type="text" id="emailadresTrainee"/>
+				<p>Username:</p><input class ="form-control" type="text" id="usernameTrainee"/>
+				<p>Wachtwoord:</p><input class ="form-control" type="text" id="wachtwoordTrainee"/>
+				<p>Klant:</p> <select class ="form-control" name="klantenOpties" id="klantTrainee"></select>
 
-			<div class="klantAanmaken">
-				<h2>Klant</h2>
-				<p> Voornaam:</p><input type="text" id="voornaamKlant"/><br/>
-				<p>Achternaam:</p><input type="text" id="achternaamKlant"/><br />
-				<p>Bedrijf:</p><input type="text" id="bedrijfKlant"/><br />
-				<p>Emailadres:</p><input type="text" id="emailadresKlant"/><br />
-				<p>Username:</p><input type="text" id="usernameKlant"/><br />
-				<p>Wachtwoord:</p><input type="text" id="wachtwoordKlant"/><br />
-				<button onclick="UserVersturen('klant')">Maak Klant aan</button>
+				<button onclick="UserVersturen('trainee')">Maak Trainee aan</button>
 			</div>
-		</div>
+	</div>
+	<div class="col-sm"></div>
     </div>
 
 
 
 
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="AdminTraineeAanmaken.js"></script>
 </body>
 </html>
