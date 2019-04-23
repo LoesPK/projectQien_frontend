@@ -43,6 +43,7 @@ var PerTraineeAutoKM = "";
 var PerTraineeBedrag;
 var perTraineeStatus="";
 var AutoKMBedrag;
+var PerTraineeOpmerking = "";
 
 function setCurrentMonth(){
     console.log(today.substring(5,7));
@@ -100,8 +101,8 @@ function GETKostenPerTrainee(){
                         PerTraineeVoornaam = trainee[i].voornaam;
                         PerTraineeAchternaam = trainee[i].achternaam;
                         PerTraineeSoort = trainee[i].kosten[k].soort;
-
                         perTraineeStatus = trainee[i].kosten[k].status;
+                        PerTraineeOpmerking = trainee[i].kosten[k].opmerking;
                         switchPerTraineeKosten(trainee[i].kosten[k],trainee[i].kosten[k].soort);
                         addHtmlElement(tbody, PerTraineeKostenRow(trainee));
                     } 
@@ -228,13 +229,18 @@ function PerTraineeKostenRow(traineelijst) {
     checkbox.type = "checkbox";
     checkbox.id = "checkbox"+
     addHtmlCheckbox(tr, document.createElement("td"), checkbox);
+
+    var Opmerkingveld = document.createElement("td");
+    Opmerkingveld.width = "300";
+    addHtmlElementContent(tr, Opmerkingveld, PerTraineeOpmerking);
+
     return tr;
 }
 
 function addHtmlElementContentPlusAwesome(parent, child, tekst) {
     parent.appendChild(child);
     child.innerHTML = tekst;
-    child.style.display="inline-block";
+   // child.style.display="inline-block";
     
     return child;
 }
