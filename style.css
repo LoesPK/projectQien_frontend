@@ -11,6 +11,11 @@
 	color: red;
 }
 
+.fas.fa-pencil-alt:hover{
+	cursor: pointer;
+	color:  #640080;
+}
+
 [disabled]{
 	opacity: 0.5;	
 }
