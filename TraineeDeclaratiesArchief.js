@@ -26,9 +26,11 @@ function setCurrentMonth(){
 
 // EMIEL - De maand selecteren
 function selectMonth(){
-	var tableBody = document.getElementById("selectedMonth");
-        // var theMonth = tableBody[tableBody.selectedIndex].value;
-        var table = document.getElementById("kostenTabel");
+  // console.log('FFFFFFFFFFFFFFFFFFFFFUCK');
+	// var tableBody = document.getElementById("selectedMonth");
+        // theMonth = tableBody[tableBody.selectedIndex].value;
+        var table = document.getElementById("kostentabel");
+        console.log(table);
             for(var i = table.rows.length - 1; i > 0; i--){
                 if(i !=0){
                     console.log(i);     
