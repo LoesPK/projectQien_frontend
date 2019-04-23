@@ -4,35 +4,56 @@
 	<title>Dashboard klant</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="style.css"></link>
-	<script type="text/javascript" src="KlantHomepage.js"></script>
+	
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body onload="GETUrenPerTrainee(), GetKlant()">
-	<nav>
-		<a href="dashboardKlant"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-		<div class="nav">
-			<ul>
-				<li><a href="login.html" >Uitloggen</a></li>
-				<li><a href="dashboardKlant.html" class ="active">Dashboard</a></li>
-				<li><a href="KlantUrenArchief.html" >UrenArchief</a></li>
+<div class="jumbotron p-0 text-center">
+	<nav class="navbar navbar-expand  justify-content-center  m-0 p-0">
+	<a class="navbar-brand " href="TraineeUrenoverzicht.html">
+    	<img id="logo" src="img/qienlogo.png"style="height: 70px;" class="d-inline-block align-top" >
+  	</a>
+  	<ul class="navbar-nav d-flex flex-row">
+				
+				<li class="nav-item"><a href="dashboardKlant.html" class="nav-link active">Dashboard</a></li>
+				<li class="nav-item"><a href="KlantUrenArchief.html" class="nav-link">UrenArchief</a></li>
+				<li class="nav-item"><a href="login.html" class="nav-link" >Uitloggen</a></li>
 			</ul>
-		</div>
 	</nav>
-	<div class="wrapperKlant">
-		  <h1>Trainees</h1>
-		  <div id="setTrainee">
-				<select id="selectedTrainee"
+</div>
+<div class="container">
+	<div class="row mb-auto">
+		<div class="col-sm"></div>
+
+		<div class="col-sm">
+			  <h1>Trainees</h1>
+			  </div>
+		<div class="col-sm"></div>
+
+	</div><!--//row-->
+	<div class="row">
+		<div class="col-sm"></div>
+		<div class="col-lg">
+			<div class="d-flex justify-content-end mb-2" >
+				<div class=" mr-2">
+				<select class="form-control" id="selectedTrainee"
 				onchange = "selectTrainee()">
-						<option value="alle trainees">alle trainees</option>
-
-				  </select>
+					<option value="alle trainees">alle trainees</option>
+	        	</select>
+	   		 	</div>
 			</div>
-
-		  <table>
+		</div>
+		<div class="col-sm"></div>
+	</div><!--//row-->
+	<div class="row">
+		<div class="col-sm"></div>
+		<div class="col-lg">
+			  <table class="table table-striped">
 				<thead>
 				<tr class="UrenHeader">
-				<th>Voornaam</a></th>
+					<th>Voornaam</a></th>
 					<th>Achternaam</a></th>
 					<th>Aantal uren</a></th>
 					<th>Akkoordstatus</a></th>
@@ -41,13 +62,19 @@
 				</thead>
 				<tbody id="traineelijst">
 				</tbody>
-			</table>
-
-			<table id="UrenSpecificaties"></table>
-
-			<button onclick="TraineeHourChange()">Versturen naar Qien</button>
+				</table>
+				<table class="table table-striped" id="UrenSpecificaties"></table>
+				<div class="col-sm d-flex align-items-end">
+					<button onclick="TraineeHourChange()">Accorderen</button>
+				</div>
+		</div>
+		<div class="col-sm"></div>		
 	</div>
+</div>
 
-	
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="KlantHomepage.js"></script>	
 </body>
 </html>
