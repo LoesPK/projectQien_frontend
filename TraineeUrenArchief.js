@@ -5,10 +5,10 @@ var apiKlant = "http://localhost:8082/api/klant/";
 //trainee variabele 
 var trainee;
 
-// EMIEL - de geselecteerde maand
-var theMonth = "";
-// EMIEL - de maand van het uur in database
+
+// EMIEL - de maand van het uur in database en het jaar van het uur in database
 var uurInDBHemZeMonth;
+var uurInDBHemZeJaar;
 
 //Bepalen huidige datum zodat er nooit een leeg datumveld wordt opgestuurd
 var today = new Date();
@@ -19,7 +19,24 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+// EMIEL - de geselecteerde maand en het jaar
+var theMonth = setCurrentMonth();
+var theYear = setCurrentJaar();
 
+
+function setCurrentMonth(){
+	console.log(today.substring(5,7));
+	var month = document.getElementById("selectedMonth");
+	month.value = mm
+	console.log(month.value)
+}
+
+function setCurrentJaar(){
+	console.log(today.substring(0,5));
+	var year = document.getElementById("selectedYear");
+	year.value = yyyy;
+	console.log(year.value)
+}
 
 
 // EMIEL - De maand selecteren
@@ -30,11 +47,19 @@ function selectMonth(){
 		GETUrenPerMaand(theMonth);
 		}
 
+//Tim - Het jaar selecteren
+function selectYear(){
+	var tablebodyYear = document.getElementById("selectedYear");
+	theYear = tablebodyYear[tablebodyYear.selectedIndex].value;
+	console.log("theYear : " + theYear)
+	selectMonth();
+}
+
 // EMIEL - GET Uren per maand
 function GETUrenPerMaand(theMonth){
 	var table = document. getElementById("urenTabel");
 	
-	for(var i = table.rows.length - 1; i > 0; i--)
+	for(var i = table.rows.length -1; i >= 0; i--)
 		{
 		table. deleteRow(i);
 		}
@@ -44,8 +69,14 @@ function GETUrenPerMaand(theMonth){
             trainee = JSON.parse(this.responseText);	
             trainee.uren.sort(function(a,b){return b.factuurDatum<a.factuurDatum?-1:1});
             for(var i = 0; i<trainee.uren.length; i++){
-                uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
-                    if(uurInDBHemZeMonth == theMonth) {
+								uurInDBHemZeMonth = trainee.uren[i].factuurDatum.substring(5,7);
+								uurInDBHemZeJaar = trainee.uren[i].factuurDatum.substring(0,4);
+								console.log("datum in de uren")
+								console.log(uurInDBHemZeMonth)
+								console.log(uurInDBHemZeJaar)
+								
+                    if(uurInDBHemZeMonth == theMonth && uurInDBHemZeJaar == theYear) {
+
                         GETRowUrenTabel(trainee.uren[i]);
                     }	
             }
