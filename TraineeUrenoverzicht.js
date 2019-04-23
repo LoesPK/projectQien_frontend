@@ -20,6 +20,115 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+// Jordi
+// Checkt of de aangeklikte dag declarabel is (dus geen weekend of vrije feestdag)
+function isDeclarabeleDag(e){
+	var dagvdWeek = new Date( e.target.value ).getUTCDay() + 1; // telt nu van 1-7 (begin bij zondag)
+
+	var jaar = new Date( e.target.value ).getUTCFullYear();
+	var maand = new Date( e.target.value ).getUTCMonth() + 1; // nu 1-12 (januari = 1)
+	var dag = new Date( e.target.value ).getUTCDate(); // 1-31 (dag vd maand)
+
+	var pasen = new Date (jaar, EasterMaand(jaar)-1, EasterDag(jaar)); //-1 omdat gewoon zomaar
+
+	var hemelvaart = new Date(jaar, pasen.getUTCMonth(), pasen.getUTCDate());
+	hemelvaart.setDate(pasen.getUTCDate() + 40);
+
+	var pinksteren = new Date(jaar, pasen.getUTCMonth(), pasen.getUTCDate());
+	pinksteren.setDate(pasen.getUTCDate() + 50);
+
+	console.log("jaar: " + jaar + ", maand: " + maand + ", dag: " + dag);
+	console.log("pasen:");
+	console.log(pasen);
+	console.log("hemelvaart:");
+	console.log(hemelvaart);
+	console.log(hemelvaart.getUTCMonth());
+	console.log(hemelvaart.getUTCDate());
+	console.log("pinksterdag 1:");
+	console.log(pinksteren);
+	console.log(pinksteren.getUTCMonth());
+	console.log(pinksteren.getUTCDate());
+
+	// Is het weekend?
+	if(dagvdWeek == 1 || dagvdWeek == 7){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// nieuwjaar
+	else if(maand == 1 && dag == 1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// koningsdag (als het op zondag valt wordt het een dag eerder gevierd, maar zaterdag valt al onder weekend check)
+	else if(maand == 4 && dag == 27){
+		// if (!(koningsdag.getUTCDay + 1) == 1){
+			alert("Let op, deze dag is niet declarabel");
+		// }
+	}
+	// kerstdagen
+	else if(maand == 12 && dag == 25){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	else if(maand == 12 && dag == 26){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// niet-vaste vrije dagen:
+	// paasdagen
+	// 1e
+	else if(maand == EasterMaand(jaar) && dag == EasterDag(jaar)){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// 2e
+	else if(maand == EasterMaand(jaar) && dag == EasterDag(jaar)+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// hemelvaart
+	else if(maand == hemelvaart.getUTCMonth()+1 && dag == hemelvaart.getUTCDate()+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// pinksterdagen
+	// 1e
+	else if(maand == pinksteren.getUTCMonth()+1 && dag == pinksteren.getUTCDate()+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// 2e
+	else if(maand == pinksteren.getUTCMonth()+1 && dag == pinksteren.getUTCDate()+1+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+}
+
+// kant en klare berekening, returnt de maand (M) en de dag (D) van pasen van het meegegeven jaar (Y)
+function EasterMaand(Y) {
+	var C = Math.floor(Y/100);
+	var N = Y - 19*Math.floor(Y/19);
+	var K = Math.floor((C - 17)/25);
+	var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
+	I = I - 30*Math.floor((I/30));
+	I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
+	var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+	J = J - 7*Math.floor(J/7);
+	var L = I - J;
+	var M = 3 + Math.floor((L + 40)/44);
+	var D = L + 28 - 31*Math.floor(M/4);
+	return M;
+}
+function EasterDag(Y) {
+	var C = Math.floor(Y/100);
+	var N = Y - 19*Math.floor(Y/19);
+	var K = Math.floor((C - 17)/25);
+	var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
+	I = I - 30*Math.floor((I/30));
+	I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
+	var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+	J = J - 7*Math.floor(J/7);
+	var L = I - J;
+	var M = 3 + Math.floor((L + 40)/44);
+	var D = L + 28 - 31*Math.floor(M/4);
+	return D;
+}
+
 //Dropdown menu opbouwen
 function traineeDropDownMenu(selectID){
 	var select = document.getElementById("select"+selectID),
@@ -126,6 +235,7 @@ function HourSave(){
  	uur.waarde = chiVal;
 	uur.aantal = chi2.value; 
 	var d = new Date(chi0.value);
+	console.log("hier misschien die functie?"); // Jordi
 	uur.factuurDatum = d;
   	urenlijst.push(uur);
 	}
@@ -168,6 +278,11 @@ function GETRowUrenTabel(uur){
 		document.getElementById("sendHours").setAttribute("disabled", "disabled");
 		var but = document.getElementsByClassName("fas fa-trash-alt");
 		console.log(but);
+
+		// Jordi
+		// console.log(uur.factuurDatum);
+		// isDeclarabeleDag(uur.factuurDatum); 
+		// console.log("De dag " + uur.factuurDatum + " is declarabel: " + isDeclarabeleDag(uur.factuurDatum));
 	}
 	else if(uur.accordStatus == "AFGEKEURD"){
 			var Datum = document.createElement("input");
@@ -180,6 +295,7 @@ function GETRowUrenTabel(uur){
 			insertedCell.appendChild(Datum);
 	}else{
 		var Datum = document.createElement("input");
+
 		Datum.type = "date";
 		Datum.value = uur.factuurDatum.substring(0,10);
 		Datum.setAttribute("max", today);
@@ -262,6 +378,13 @@ function addRowUrenTabel(){
 				temp1.setAttribute("max", today);
 				temp1.value = today;
 				insertedCell.appendChild(temp1);
+
+				//Jordi
+				var datumSelector = document.querySelector('[type=date]');
+				ds = document.getElementById(temp1.id);
+				// console.log(datumSelector);
+				datumSelector.addEventListener('input', isDeclarabeleDag);
+				// ds.onchange = alert("yo");
 			}
 			//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
 			if (i == 1) {
