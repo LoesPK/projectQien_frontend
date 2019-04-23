@@ -244,6 +244,7 @@ function GETUrenPerMaand(theMonth){
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrenteaccorderenTableRow(trainee));
         }
+        sortTable(1);
     };
     xhttp.open("GET", apiUserId, true);
 	xhttp.setRequestHeader("Content-type", "application/json");
