@@ -109,6 +109,8 @@ function GETRowKostenTabel(kosten){
           Bedrag.value = 0.19;
           Bedrag.setAttribute("disabled", "disabled");
           km.removeAttribute("disabled");
+          km.className = "form-control";
+            km.style.width="auto";
         }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
             
             km.value = 0;
@@ -207,6 +209,7 @@ function addRowKostenTabel(){
         
         var temp3 = document.createElement("select");
         temp3.className = "form-control";
+        temp3.style.width="auto";
         temp3.id = "select"+selectID;
         var temp4 = document.createElement("OPTION");
         temp4.innerHTML = "Openbaar Vervoer"
@@ -222,6 +225,8 @@ function addRowKostenTabel(){
 
             temp5.setAttribute("disabled", "disabled");
             temp6.removeAttribute("disabled");
+            temp6.className = "form-control";
+            temp6.style.width="auto";
           }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
               
               temp5.value = 0;

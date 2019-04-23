@@ -196,7 +196,7 @@ function akkoordUur(uur, i) {
    xhttp.onreadystatechange = function () {
        if (this.readyState == 4) {
            if (this.status == 200) {
-           	document.location.reload(true);
+           	// document.location.reload(true);
            } else {
                alert(this.statusText)
            }
