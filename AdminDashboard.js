@@ -221,11 +221,15 @@ function GETUrenPerMaand(theMonth){
             yearPercentagesRekenen()
 
             // Tim - Year tabel opbouwen
-            addHtmlElement(Yeartbody, PercentagesYearTableRow(trainee));
+            if(YearTotaalUren > 0){
+                addHtmlElement(Yeartbody, PercentagesYearTableRow(trainee));
+            }
             addHtmlElement(Yeartbody, YearTableRow(trainee));
 
             // Tim - Opbouwen van de body van de tabel
-            addHtmlElement(tbody, adminPercentagesTableRow(trainee));
+            if(GoedgekeurdTotaalUren > 0){
+                addHtmlElement(tbody, adminPercentagesTableRow(trainee));
+            }
             addHtmlElement(tbody, adminUrentGoedgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrenteaccorderenTableRow(trainee));
@@ -264,7 +268,7 @@ function addHtmlElementContentPlusAwesome(parent, icon, color, child, tekst) {
     icon.style.color = color;
     parent.appendChild(icon)
     icon.appendChild(child);
-    child.style.display="inline-block";
+
     child.innerHTML = tekst;
     return icon;
 }
