@@ -358,7 +358,27 @@ function export_table_to_csv(filename) {
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector(".pertraineeUren").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
+//Downloaden CSV
+function download_csv(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV FILE
+    csvFile = new Blob([csv], {type: "text/csv"});
+
+    // Download link
+    downloadLink = document.createElement("a");
+    downloadLink.download = filename;
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+
+    
+    downloadLink.click();
+}
+
+// Jordi: weg hiermee
+// document.querySelector("#exporting").addEventListener("click", function () {
+//     var html = document.querySelector(".pertraineeUren").outerHTML;
+//   export_table_to_csv(html, "table.csv");
+// });
