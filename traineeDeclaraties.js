@@ -26,6 +26,7 @@ var yyyy = today.getFullYear();
 if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
+console.log(today + "date");
 
 
 //Dropdown menu opbouwen
@@ -343,4 +344,10 @@ function PUTTrainee(trainee){
   xhttp.open("PUT", apiUserId, true);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify(trainee));
+}
+
+function setsubjectline(){
+  var subjectline = "string";
+  subjectline = "subject function works";
+  return subjectline;
 }
