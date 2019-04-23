@@ -10,7 +10,7 @@ var klant;
 function GETUrenPerTrainee(){
   console.log ("huidige ingelogde user:")
   console.log(sessionStorage.getItem("storedUserID"));
-  var table = document. getElementById("traineelijst");
+  var body = document.getElementById("traineelijst");
   var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -64,7 +64,8 @@ function GETRowUrenTabel(trainee){
   console.log(trainee.uren.length);
   for(var i=0;i<trainee.uren.length;i++){
       console.log(trainee.uren[i].accordStatus);   
-      
+      console.log(trainee.uren[i].bijKlant);
+      console.log(sessionStorage.getItem("storedUserID"))
       if(trainee.uren[i].accordStatus == "TEACCORDEREN"&& trainee.uren[i].bijKlant == sessionStorage.getItem("storedUserID")){
         akkoordstatus = "Te Accorderen";
           aantalUren += trainee.uren[i].aantal ;
@@ -120,13 +121,19 @@ function selectTrainee(){
     gekozenTrainee = selectedTrainee[selectedTrainee.selectedIndex].value;
     console.log(selectedTrainee[selectedTrainee.selectedIndex].id);
     var id = selectedTrainee[selectedTrainee.selectedIndex].id.substring(6);
-    getUrenPerTrainee(id);
+    console.log(gekozenTrainee)
+    if(gekozenTrainee == "alle trainees"){
+      location.reload();
+    }else{
+       getUrenPerTrainee(id);
+    }
 }
 
 //Jordi: uren van alleen de geselecteerde trainee 
 function getUrenPerTrainee(traineeID){
   var oldTable = document.getElementById("UrenSpecificaties");
   console.log(oldTable);
+  console.log(oldTable.rows.length)
   for(var i = oldTable.rows.length - 1; i > -1; i--){
     oldTable. deleteRow(i);
   }
@@ -147,6 +154,7 @@ function getUrenPerTrainee(traineeID){
                }
 
                // document.getElementById("UrenSpecificaties").appendChild(table);
+              
               
            } 
       
@@ -273,7 +281,4 @@ function GETtrainee(traineeID){
       xhttp.send(); 
 }
 
-function Userlogout(){
-  sessionStorage.clear();
-}
 

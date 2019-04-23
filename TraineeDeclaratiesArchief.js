@@ -26,19 +26,17 @@ function setCurrentMonth(){
 
 // EMIEL - De maand selecteren
 function selectMonth(){
-  // console.log('FFFFFFFFFFFFFFFFFFFFFUCK');
-	// var tableBody = document.getElementById("selectedMonth");
-        // theMonth = tableBody[tableBody.selectedIndex].value;
-        var table = document.getElementById("kostentabel");
-        console.log(table);
-            for(var i = table.rows.length - 1; i > 0; i--){
+	var tableBody = document.getElementById("selectedMonth");
+        var theMonth = tableBody[tableBody.selectedIndex].value;
+        var body = document.getElementById("kostentabel");
+        console.log(body);
+            for(var i = body.rows.length - 1; i > 0; i--){
                 if(i !=0){
                     console.log(i);     
                     table.deleteRow(i);
                 }//end if
             }//end for
         console.log("theMonth: " + theMonth);
-        console.log(sessionStorage.getItem("storedUserID"))
 		GETDeclaratiesPerMaand(theMonth);
 		}
 
@@ -79,9 +77,9 @@ function GETDeclaratiesPerMaand(theMonth){
 
 //EMIEL - Opbouwen rijen urentabel
 function BuildRowKostenTabel(kosten){
-  var table = document.getElementById("kostenTabel");
-  
-  var insertedRow = table.insertRow(1);
+  var body = document.getElementById("kostentabel");
+
+  var insertedRow = body.insertRow(0);
   
   var insertedCell = insertedRow.insertCell(0);
   insertedCell.innerHTML = kosten.status;
