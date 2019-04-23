@@ -5,36 +5,62 @@
     <title> Dashboard Trainee || Declaraties</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css"></link>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">  
+    <link rel="stylesheet" href="style.css"></link>
 </head>
 <body onload="GETTrainee()">
-    <nav>
-        <a href="index.html"><img id="logo" src="img/QienLogo.jpg"style="height: 70px;"></a>
-        <div class="nav">
-            <ul>
-                <li><a href="login.html">uitloggen</a></li>
-                
-                <li><a href="TraineeDeclaratiesArchief.html" >DeclaratiesArchief</a></li>
-                <li><a href="traineeDeclaraties.html" class="active">Declaraties</a></li>
-                <li><a href="TraineeUrenArchief.html" >UrenArchief</a></li>
-                <li><a href="TraineeUrenoverzicht.html">Uren</a></li>
-   
-            </ul>
-        </div>
+<div class="jumbotron p-0 text-center">
+    <nav class="navbar navbar-expand  justify-content-center  m-0 p-0">
+    <a class="navbar-brand " href="TraineeUrenoverzicht.html">
+        <img id="logo" src="img/qienlogo.png"style="height: 70px;" class="d-inline-block align-top" >
+    </a>
+    <ul class="navbar-nav d-flex flex-row">
+        <li class="nav-item"><a href="TraineeUrenoverzicht.html" class="nav-link ">Uren</a></li>
+        <li class="nav-item"><a href="TraineeUrenArchief.html" class="nav-link">Urenarchief</a></li>
+        <li class="nav-item"><a href="traineeDeclaraties.html" class="nav-link active">Declaraties</a></li>
+        <li class="nav-item"><a href="TraineeDeclaratiesArchief.html" class="nav-link">Declaratiesarchief</a></li>
+        <li class="nav-item"><a href="login.html" class="nav-link">Uitloggen</a></li>
+                  
+    </ul>
     </nav>
-<div class="wrapperK">
-    <div class="container">
+</div>
+<div class="container">
+<div class="row mb-2">
+    <div class="col-sm"></div>
+
+    <div class="col-sm">
         <h1>Declaraties</h1>
-        <div><button id="addButton" onclick=" addRowKostenTabel()">+</button></div>
-        <h2>OV en Overige Kosten</h2>
-        <div id="kostentabelDiv">
-            <table id="kostenTotaalTabel" >
+    </div>
+    <div class="col-sm"></div>
+
+</div><!--//row-->
+<div class="row mb-2">
+
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-sm">
+        
+        <table class="table table-striped" id="kostenTotaalTabel">
+            <thead>
+            <tr>
                 <th class="tableheader">Totaal €</th>
-                <td id="kostenDeclaTotaalTabelBody"></td>
-            </table>
-            <table id="kostenTabel" >
+            </tr>
+            </thead>
+            <td id="kostenDeclaTotaalTabelBody"></td>
+        </table>
+    </div>
+    <div class="col-sm"><button id="addButton" onclick=" addRowKostenTabel()">+</button></div>
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+</div><!--//row-->
+<div class="row mb-2">
+    <div class="col-sm"></div>
+    <div class="col-sm"></div>
+    <div class="col-lg">
+            <table class="table table-striped"  >
                 <thead>
                     <tr class="KostenHeader">
                         <th class="tableheader">Status</th>
@@ -44,23 +70,34 @@
                         <th class="tableheader">KM</th>
                         <th class="tableheader">Opmerking</th>
                     </tr>
-                    </thead>
+                </thead>
+                <tbody id="kostenTabel">
+                    
+                </tbody>
                 </table>
+    <div class="d-flex justify-content-center mb-2" >
+            <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
+            
         </div>
-        <button type ="submit" value="opslaan" onclick="KostenOpslaan()">Opslaan</button>
-        
+        </div><!--//col table-->
+        <div class="col-sm"></div>
+        <div class="col-sm"></div>
+
         <p>
-        Mail jou bijlage naar Cora,
+        Mail jouw bijlage naar Cora,
         <a href="mailto:timkroon0703@gmail.com?Subject=zz" target="_top"><font color="FF00CC">Klik Hier!</font>Send Mail</a>
         </p>
-        <!-- <button onclick="KostenVerzenden()">Verzenden</button> -->
+
 
         
     </div>
 </div>
 
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script type="text/javascript" src="traineeDeclaraties.js"></script>
 
 </body>
 </html>
+
