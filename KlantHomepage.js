@@ -123,6 +123,7 @@ function selectTrainee(){
     getUrenPerTrainee(id);
 }
 
+//Jordi: uren van alleen de geselecteerde trainee 
 function getUrenPerTrainee(traineeID){
   var oldTable = document.getElementById("UrenSpecificaties");
   console.log(oldTable);
@@ -139,9 +140,10 @@ function getUrenPerTrainee(traineeID){
                // createNewAutoTableHeader();
                addHtmlElement(table, UurSpecifiekTableHeader());
                var tbody = addHtmlElement(table, document.createElement("tbody"));
-              
                for(var i = 0; i< trainee.uren.length; i++) {
-                  addHtmlElement(tbody,  UurSpecifiekTableRow(trainee.voornaam, trainee.achternaam, trainee.uren[i]));
+                  if (trainee.uren[i].accordStatus == "TEACCORDEREN"){
+                    addHtmlElement(tbody,  UurSpecifiekTableRow(trainee.voornaam, trainee.achternaam, trainee.uren[i]));
+                  }
                }
 
                // document.getElementById("UrenSpecificaties").appendChild(table);

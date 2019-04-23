@@ -89,10 +89,16 @@ function GETRowUrenTabel(uur){
 	insertedCell3.innerHTML = statusAkkoord;
 
 
-	var insertedCell5 = insertedRow.insertCell(4);   
-    var klant = document.createElement("td");
-		GetKlant(uur.bijKlant, klant);
-				insertedCell5.appendChild(klant);
+	var insertedCell5 = insertedRow.insertCell(4);
+		console.log("insertedCell5:");
+		console.log(insertedCell5);   
+		// var klant = document.createElement("td");
+
+		GetKlant(uur.bijKlant, insertedCell5);
+				// insertedCell5.appendChild(klant);
+				// console.log("klant:");
+				// console.log(klant);
+				// insertedCell5.innerHTML = klant;
 }
 
 // EMIEL - GET de klant van het uur
