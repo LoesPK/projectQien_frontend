@@ -223,14 +223,12 @@ function GETUrenPerMaand(theMonth){
             // Tim - Year tabel opbouwen
             if(YearTotaalUren > 0){
                 addHtmlElement(Yeartbody, PercentagesYearTableRow(trainee));
-
             }
             addHtmlElement(Yeartbody, YearTableRow(trainee));
 
             // Tim - Opbouwen van de body van de tabel
             if(GoedgekeurdTotaalUren > 0){
                 addHtmlElement(tbody, adminPercentagesTableRow(trainee));
-
             }
             addHtmlElement(tbody, adminUrentGoedgekeurdTableRow(trainee));
             addHtmlElement(tbody, adminUrentAfgekeurdTableRow(trainee));
