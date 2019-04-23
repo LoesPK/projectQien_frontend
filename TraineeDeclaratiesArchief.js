@@ -13,11 +13,21 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+var theMonth = setCurrentMonth();//tableBody[tableBody.selectedIndex].value; // Jordi
+
+function setCurrentMonth(){
+  console.log("today.substring(5,7):")
+	console.log(today.substring(5,7));
+	var month = document.getElementById("selectedMonth");
+	month.value = mm
+  console.log("month.value:")
+  console.log(month.value)
+}
 
 // EMIEL - De maand selecteren
 function selectMonth(){
 	var tableBody = document.getElementById("selectedMonth");
-        var theMonth = tableBody[tableBody.selectedIndex].value;
+        // var theMonth = tableBody[tableBody.selectedIndex].value;
         var table = document.getElementById("kostenTabel");
             for(var i = table.rows.length - 1; i > 0; i--){
                 if(i !=0){
