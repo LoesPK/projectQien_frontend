@@ -262,7 +262,8 @@ function export_table_to_csv(filename) {
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector("table").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
+// Jordi: dit deel weggehaald
+// document.querySelector("#exporting").addEventListener("click", function () {
+//     var html = document.querySelector("table").outerHTML;
+//   export_table_to_csv(html, "table.csv");
+// });

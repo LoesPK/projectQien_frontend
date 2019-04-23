@@ -278,6 +278,7 @@ function GETRowUrenTabel(uur){
 
 	var insertedCell = insertedRow.insertCell(0);
 	console.log(uur.accordStatus);
+
 	if(uur.accordStatus == "TEACCORDEREN" || uur.accordStatus == "GOEDGEKEURD"){
 		console.log("in if");
 		insertedCell.innerHTML = uur.factuurDatum.substring(8,10) + "/" + uur.factuurDatum.substring(5,7) +"/" + uur.factuurDatum.substring(0,4)
@@ -303,6 +304,10 @@ function GETRowUrenTabel(uur){
 			// document.getElementById("buttonopslaan").setAttribute("disabled", "disabled");
 			var but = document.getElementsByClassName("fas fa-trash-alt");
 			insertedCell.appendChild(Datum);
+
+					//Jordi
+		var datumSelector = document.querySelector('[type=date]');
+		datumSelector.addEventListener('input', isDeclarabeleDag);
 	}else{
 		var Datum = document.createElement("input");
 		Datum.className = "form-control"
@@ -310,6 +315,10 @@ function GETRowUrenTabel(uur){
 		Datum.value = uur.factuurDatum.substring(0,10);
 		Datum.setAttribute("max", today);
 		insertedCell.appendChild(Datum);
+
+				//Jordi
+				var datumSelector = document.querySelector('[type=date]');
+				datumSelector.addEventListener('input', isDeclarabeleDag);
 	}
 	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
@@ -406,12 +415,10 @@ function addRowUrenTabel(){
 				temp1.value = today;
 				insertedCell.appendChild(temp1);
 
-				//Jordi
+				// //Jordi
 				var datumSelector = document.querySelector('[type=date]');
 				ds = document.getElementById(temp1.id);
-				// console.log(datumSelector);
 				datumSelector.addEventListener('input', isDeclarabeleDag);
-				// ds.onchange = alert("yo");
 			}
 			//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
 			if (i == 1) {
