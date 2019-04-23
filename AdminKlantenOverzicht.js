@@ -90,7 +90,7 @@ function addHtmlElement(parent, child) {
 // EMIEL - Voeg child aan parent toe, zet de tekst als innerHTML in de child
 function addHtmlElementContent(parent, child, tekst, id) {
    parent.appendChild(child);
-   child.innerHTML = tekst;
+   child.innerText = tekst;
    child.id = id;
    return child;
 }
