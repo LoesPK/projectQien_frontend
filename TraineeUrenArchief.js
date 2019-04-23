@@ -75,7 +75,7 @@ function GETRowUrenTabel(uur){
     //aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);   
 		insertedCell2.innerHTML = uur.aantal;
-
+	var statusAkkoord = "";
 		//akkoordstatus
 	var insertedCell3 = insertedRow.insertCell(3);   
 	if(uur.accordStatus == "NIETINGEVULD"){
@@ -88,7 +88,6 @@ function GETRowUrenTabel(uur){
 		statusAkkoord = "Afgekeurd";
 	}
 	insertedCell3.innerHTML = statusAkkoord;
-	//insertedCell3.appendChild(status);
 
 	var insertedCell5 = insertedRow.insertCell(4);   
     var klant = document.createElement("td");

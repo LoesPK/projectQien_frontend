@@ -27,11 +27,11 @@
 	</nav>
 </div>
 <div class="container">
-<div class="row mb-2">
+<div class="row mb-auto">
 	<div class="col-sm"></div>
 
 	<div class="col-sm">
-		<h1>Urentabel</h1>
+		<h1>Uren</h1>
 	</div>
 	<div class="col-sm"></div>
 
@@ -39,7 +39,7 @@
 <div class="row mb-2">
 
 	<div class="col-sm"></div>
-	<div class="col-sm"></div>
+	<div class="col-lg"></div>
 	<div class="col-sm"></div>
 	<div class="col-lg">
 		
@@ -56,21 +56,14 @@
 			<tbody id="urenTabel">
 			</tbody>
 		</table>
+		<div class="d-flex justify-content-center mb-2" >
+			<button class ="mr-2" id="buttonopslaan" type ="submit" value="opslaan" onclick="HourSave()">Opslaan</button>
+			<button id="sendHours" onclick="UrenVerzenden()">Verzenden</button>
+		</div>
 		</div><!--//col table-->
 	<div class="col-sm"><button type="button" id="addButton" onclick=" addRowUrenTabel()">+</button></div>
 	<div class="col-sm"></div>
 
-</div><!--//row-->
-
-<div class="row mb-2">
-	<div class="col-sm"></div>
-	<div class="col-sm">
-		<button id="buttonopslaan" type ="submit" value="opslaan" onclick="HourSave()">Opslaan</button>
-	</div>
-	<div class="col-sm">
-		<button id="sendHours" onclick="UrenVerzenden()">Verzenden</button>
-	</div>
-	<div class="col-sm"></div>
 </div><!--//row-->
 </div><!--container-->
 
