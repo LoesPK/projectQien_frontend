@@ -54,25 +54,19 @@ function GETRowUrenTabel(aantalUren, akkoordstatus, trainee){
     
     //Voornaam
 	var insertedCell = insertedRow.insertCell(0);
-	var Voornaam = document.createElement("td");
-	Voornaam.innerHTML = trainee.voornaam;
-		insertedCell.appendChild(Voornaam);
+		insertedCell.innerHTML = trainee.voornaam;
     
     //Achternaam
 	var insertedCell1 = insertedRow.insertCell(1);
-    var Achternaam = document.createElement("td");
-    Achternaam.innerHTML = trainee.achternaam;
-        insertedCell1.appendChild(Achternaam);
+    insertedCell1.innerHTML = trainee.achternaam;;
 
     //aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);   
-    var AantalUur = document.createElement("td");
-	AantalUur.innerHTML = aantalUren;
-	insertedCell2.appendChild(AantalUur);
+	insertedCell2.innerHTML = aantalUren;
+
 
 	//akkoordstatus
 	var insertedCell3 = insertedRow.insertCell(3);   
-	var status = document.createElement("td");
 	var statusAkkoord;
 	if(akkoordstatus == "GOEDGEKEURD"){
 		statusAkkoord = "Goedgekeurd";
@@ -80,7 +74,6 @@ function GETRowUrenTabel(aantalUren, akkoordstatus, trainee){
 		statusAkkoord = "Afgekeurd";
 	}
 	insertedCell3.innerHTML = statusAkkoord;
-	insertedCell3.appendChild(status);
 }
 
 function Userlogout(){

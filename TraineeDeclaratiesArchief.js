@@ -30,11 +30,9 @@ function selectMonth(){
         var theMonth = tableBody[tableBody.selectedIndex].value;
         var body = document.getElementById("kostentabel");
         console.log(body);
-            for(var i = body.rows.length - 1; i > 0; i--){
-                if(i !=0){
-                    console.log(i);     
-                    table.deleteRow(i);
-                }//end if
+            for(var i = body.rows.length - 1; i >= 0; i--){   
+                    body.deleteRow(i);
+
             }//end for
         console.log("theMonth: " + theMonth);
 		GETDeclaratiesPerMaand(theMonth);
