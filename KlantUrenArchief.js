@@ -86,4 +86,3 @@ function GETRowUrenTabel(aantalUren, akkoordstatus, trainee){
 function Userlogout(){
 	sessionStorage.clear();
 }
-
