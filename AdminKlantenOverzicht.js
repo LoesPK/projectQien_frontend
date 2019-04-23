@@ -9,6 +9,7 @@ function GETKlanten(){
       if (this.readyState == 4 && this.status == 200) {
         var klant = JSON.parse(this.responseText);	
         var table = document.createElement("table");
+        table.className = "table table-striped";
         addHtmlElement(table,klantTableHeader());
         var tbody = addHtmlElement(table, document.createElement("tbody"));
       
@@ -36,6 +37,7 @@ function klantTableHeader() {
    addHtmlElementContent(tr, document.createElement("th"), "Username", "username");
    
    
+   
    return tableHeader;
 }
 
@@ -47,38 +49,36 @@ function klantTableRow(klant) {
     addHtmlElementContent(tr, document.createElement("td"), klant.voornaam, "VoornaamInDB"+tr.id);
     addHtmlElementContent(tr, document.createElement("td"), klant.achternaam, "AchternaamInDB"+tr.id);
     addHtmlElementContent(tr, document.createElement("td"), klant.emailadres, "EmailadresInDB"+tr.id);
-    addHtmlElementContent(tr, document.createElement("td"), klant.username, "UsernameInDB"+tr.id);
-    
 
-  // Aanpasknop
-  var temp1 = document.createElement("span");
-  temp1.className = "fas fa-pencil-alt";
-  temp1.addEventListener("click", function(){
-    var td = event.target.parentNode;
+     var pencil = document.createElement("span");
+    var trash = document.createElement("span");
+    addHtmlElementContentPlusAwesome(tr, pencil, trash, document.createElement("td"), klant.username, "UsernameInDB"+tr.id, klant.id);
+   
 
-    GETKlantById(klant.id)
-    td.parentNode.appendChild(td);    
-    });//end EventListener
-
-    tr.appendChild(temp1);
-    addHtmlElementContent(tr, temp1, "", "wijzig");
-
-    // Verwijderknop: Maakt een element en geeft aan aan dat er een delete actie op de parent (=rij vd cel) moet worden uitgevoerd
-    // klant wordt ook verwijderd uit de database
-    var temp2 = document.createElement("span");
-    temp2.className = "fas fa-trash-alt";
-    temp2.addEventListener("click", function(){
-    var td = event.target.parentNode;
-    //Als een klant trainees heeft kan deze niet verwijderd worden
-    CheckKlantOpTrainee(klant.id);
-    // Als een klant geen trainees heeft kan deze verwijderd worden
-    //DeleteKlant(klant.id);
-    td.parentNode.removeChild(td);    
-    });//end EventListener
-    tr.appendChild(temp2);
-    addHtmlElementContent(tr, temp2, "", "verwijder");
 
     return tr;
+}
+
+function addHtmlElementContentPlusAwesome(parent, icon,  icon2, child, tekst, id, klantID) {
+    icon.className = "fas fa-pencil-alt";
+    icon.style.paddingLeft = "10px"
+    icon.addEventListener("click", function(){
+     GETKlantById(klantID)
+    child.parentNode.appendChild(child);    
+    });//end EventListener
+
+    icon2.className = "fas fa-trash-alt";
+    icon2.style.paddingLeft = "10px"
+    icon2.addEventListener("click", function(){
+    DeleteTrainee(traineeID)
+    child.parentNode.removeChild(child);    
+    });//end EventListener
+    parent.appendChild(child) 
+    child.innerHTML = tekst;
+    child.id=id;
+    child.appendChild(icon);
+    icon.appendChild(icon2);
+    return child;
 }
 
 // EMIEL - Voeg child aan parent toe
@@ -206,7 +206,8 @@ function DeleteKlant(numb) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
     document.location.reload(true)
-    alert("Klant is verwijderd!");    
+    alert("Klant is verwijderd!"); 
+
     }//end if
   };//end xhttp function
 
@@ -260,7 +261,8 @@ function export_table_to_csv(filename) {
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector("table").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
+// Jordi: dit deel weggehaald
+// document.querySelector("#exporting").addEventListener("click", function () {
+//     var html = document.querySelector("table").outerHTML;
+//   export_table_to_csv(html, "table.csv");
+// });

@@ -729,26 +729,28 @@ function download_csv(csv, filename) {
 
 function export_table_to_csv(filename) {
   var csv = [];
-  var table = document.getElementById("pertraineeUren");
+  var table = document.getElementById("pertraineeUren"); // table wordt niet aangeroepen?
   var rows = document.querySelectorAll(".pertraineeUren tr");
-  
+    // console.log(rows);
     for (var i = 0; i < rows.length; i++) {
     var row = [], cols = rows[i].querySelectorAll("td, th");
     
-        for (var j = 0; j < cols.length; j++) 
+        for (var j = 0; j < cols.length; j++) {
             row.push(cols[j].innerText);
-        
+            // console.log(cols[j].innerText);  
+        }
     csv.push(row.join(","));    
   }
-
     // Download CSV
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector(".pertraineeUren").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
+// Jordi: is dit deel echt nodig? als je het weghaalt lijkt de export nog steeds te werken...
+// document.querySelector("#exporting").addEventListener("click", function () {
+//     var html = document.querySelector(".pertraineeUren").outerHTML;
+//     // console.log(html);
+//   export_table_to_csv(html, "table.csv");
+// });
 
 
 //Tabel sorteren door op de header van een kolom te klikken
@@ -809,7 +811,6 @@ function sortTable(n) {
 
 function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
     icon.className = "fas fa-exclamation-triangle";
-    parent.className = "table-warning"
     parent.appendChild(icon)
     icon.appendChild(child);
     child.style.color="red";

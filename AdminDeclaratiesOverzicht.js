@@ -361,11 +361,6 @@ function export_table_to_csv(filename) {
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector(".pertraineeUren").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
-
 //Tabel sorteren door op de header van een kolom te klikken
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
@@ -420,12 +415,12 @@ function sortTable(n) {
         }
       }
     }
-   }
+}
 
 
 
    //Downloaden CSV
-function download_csv(csv, filename) {
+    function download_csv(csv, filename) {
     var csvFile;
     var downloadLink;
 
@@ -461,7 +456,8 @@ function export_table_to_csv(filename) {
     download_csv(csv.join("\n"), filename);
 }
 
-document.querySelector("#exporting").addEventListener("click", function () {
-    var html = document.querySelector(".pertraineeKosten").outerHTML;
-  export_table_to_csv(html, "table.csv");
-});
+// document.querySelector("#exporting").addEventListener("click", function () {
+// var html = document.querySelector(".pertraineeKosten").outerHTML;
+// export_table_to_csv(html, "table.csv");
+// });
+
