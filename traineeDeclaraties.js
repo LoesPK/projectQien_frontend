@@ -256,6 +256,7 @@ function addRowKostenTabel(){
             temp6.type = "number";
             temp6.value = 0;
             temp6.className = "form-control";
+            temp6.style.width = "auto";
             temp6.setAttribute("disabled", "disabled");
             insertedCell4.appendChild(temp6);
 
