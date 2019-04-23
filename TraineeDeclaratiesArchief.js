@@ -13,6 +13,16 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+var theMonth = setCurrentMonth();//tableBody[tableBody.selectedIndex].value; // Jordi
+
+function setCurrentMonth(){
+  console.log("today.substring(5,7):")
+	console.log(today.substring(5,7));
+	var month = document.getElementById("selectedMonth");
+	month.value = mm
+  console.log("month.value:")
+  console.log(month.value)
+}
 
 // EMIEL - De maand selecteren
 function selectMonth(){
