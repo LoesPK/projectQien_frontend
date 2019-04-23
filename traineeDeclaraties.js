@@ -26,6 +26,7 @@ var yyyy = today.getFullYear();
 if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
+console.log(today + "date");
 
 
 //Dropdown menu opbouwen
@@ -48,14 +49,19 @@ function GETTrainee(){
       trainee = JSON.parse(this.responseText);  
       trainee.kosten.sort(function(a,b){return a.factuurDatum<b.factuurDatum?-1:1});
       for(var i = 0; i<trainee.kosten.length; i++){
-        GETRowKostenTabel(trainee.kosten[i]);
+        console.log(trainee.kosten[i].status + "DE STATUSSS");
+        if(trainee.kosten[i].status == "Opgeslagen"){
 
-          if(trainee.kosten[i].soort == "Auto"){
-            bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
-            totaleKosten += bedragAuto;
-          }else{
-            totaleKosten += trainee.kosten[i].bedrag;
-          }//end if else
+          GETRowKostenTabel(trainee.kosten[i]);
+            if(trainee.kosten[i].soort == "Auto"){
+              bedragAuto = trainee.kosten[i].aantalKM * trainee.kosten[i].bedrag;
+              totaleKosten += bedragAuto;
+            }else{
+              totaleKosten += trainee.kosten[i].bedrag;
+            }//end if else
+
+        }
+
       }//end for
       calcTotaal(totaleKosten);
       }
@@ -329,7 +335,7 @@ function PUTTrainee(trainee){
     if (this.readyState == 4)
       if(this.status == 200) { 
       trainee = JSON.parse(this.responseText);
-      // document.location.reload(true);
+      document.location.reload(true);
         }
         else{
           alert("HELP!" + this.status);
@@ -338,4 +344,10 @@ function PUTTrainee(trainee){
   xhttp.open("PUT", apiUserId, true);
   xhttp.setRequestHeader("Content-type", "application/json");
   xhttp.send(JSON.stringify(trainee));
+}
+
+function setsubjectline(){
+  var subjectline = "string";
+  subjectline = "subject function works";
+  return subjectline;
 }
