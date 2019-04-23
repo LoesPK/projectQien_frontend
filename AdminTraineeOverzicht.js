@@ -10,6 +10,7 @@ function GETTrainees(){
       if (this.readyState == 4 && this.status == 200) {
         var trainee = JSON.parse(this.responseText);	
         var table = document.createElement("table");
+        table.className = "table table-striped";
         addHtmlElement(table,traineeTableHeader());
         var tbody = addHtmlElement(table, document.createElement("tbody"));
       
@@ -46,36 +47,35 @@ function traineeTableRow(trainee) {
     addHtmlElementContent(tr, document.createElement("td"), trainee.achternaam, "AchternaamInDB"+tr.id);
     addHtmlElementContent(tr, document.createElement("td"), trainee.emailadres, "EmailadresInDB"+tr.id);
     addHtmlElementContent(tr, document.createElement("td"), trainee.username, "UsernameInDB"+tr.id);
-    addHtmlElementContent(tr, document.createElement("td"), trainee.klant.bedrijf, "KlantInDB"+tr.id);
+    var pencil = document.createElement("span");
+    var trash = document.createElement("span");
+    addHtmlElementContentPlusAwesome(tr, pencil, trash, document.createElement("td"), trainee.klant.bedrijf, "KlantInDB"+tr.id, trainee.id);
    
-
-  // Aanpasknop
-  var temp1 = document.createElement("span");
-  temp1.className = "fas fa-pencil-alt";
-  temp1.addEventListener("click", function(){
-    var td = event.target.parentNode;
-
-    GETTraineeById(trainee.id)
-    td.parentNode.appendChild(td);    
-    });//end EventListener
-
-    tr.appendChild(temp1);
-    addHtmlElementContent(tr, temp1, "", "wijzig");
-
-    // Verwijderknop: Maakt een element en geeft aan aan dat er een delete actie op de parent (=rij vd cel) moet worden uitgevoerd
-    // trainee wordt ook verwijderd uit de database
-    var temp2 = document.createElement("span");
-    temp2.className = "fas fa-trash-alt";
-    temp2.addEventListener("click", function(){
-    var td = event.target.parentNode;
-    DeleteTrainee(trainee.id)
-    td.parentNode.removeChild(td);    
-    });//end EventListener
-    tr.appendChild(temp2);
-    addHtmlElementContent(tr, temp2, "", "verwijder");
-
     return tr;
 }
+
+function addHtmlElementContentPlusAwesome(parent, icon,  icon2, child, tekst, id, traineeID) {
+    icon.className = "fas fa-pencil-alt";
+    icon.style.paddingLeft = "10px"
+    icon.addEventListener("click", function(){
+    GETTraineeById(traineeID)
+    child.parentNode.appendChild(child);    
+    });//end EventListener
+
+    icon2.className = "fas fa-trash-alt";
+    icon2.style.paddingLeft = "10px"
+    icon2.addEventListener("click", function(){
+    DeleteTrainee(traineeID)
+    child.parentNode.removeChild(child);    
+    });//end EventListener
+    parent.appendChild(child) 
+    child.innerHTML = tekst;
+    child.id=id;
+    child.appendChild(icon);
+    icon.appendChild(icon2);
+    return child;
+}
+
 
 // EMIEL - Voeg child aan parent toe
 function addHtmlElement(parent, child) {

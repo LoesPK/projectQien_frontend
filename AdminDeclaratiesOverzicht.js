@@ -287,6 +287,8 @@ function PerTraineeGeenKostenRow(traineelijst) {
 
 
     addHtmlElementContent(tr, document.createElement("td"), "-");
+    addHtmlElementContent(tr, document.createElement("td"), "-");
+    addHtmlElementContent(tr, document.createElement("td"), "-");
     return tr;
 }
 // EMIEL - elementen toevoegen in tabel
