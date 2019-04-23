@@ -268,7 +268,7 @@ function addHtmlElementContentPlusAwesome(parent, icon, color, child, tekst) {
     icon.style.color = color;
     parent.appendChild(icon)
     icon.appendChild(child);
-    child.style.display="inline-block";
+
     child.innerHTML = tekst;
     return icon;
 }
