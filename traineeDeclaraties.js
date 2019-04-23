@@ -334,7 +334,7 @@ function PUTTrainee(trainee){
     if (this.readyState == 4)
       if(this.status == 200) { 
       trainee = JSON.parse(this.responseText);
-      // document.location.reload(true);
+      document.location.reload(true);
         }
         else{
           alert("HELP!" + this.status);
