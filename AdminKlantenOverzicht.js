@@ -74,7 +74,7 @@ function addHtmlElementContentPlusAwesome(parent, icon,  icon2, child, tekst, id
     child.parentNode.removeChild(child);    
     });//end EventListener
     parent.appendChild(child) 
-    child.innerHTML = tekst;
+    child.innerText = tekst;
     child.id=id;
     child.appendChild(icon);
     icon.appendChild(icon2);
@@ -90,7 +90,7 @@ function addHtmlElement(parent, child) {
 // EMIEL - Voeg child aan parent toe, zet de tekst als innerHTML in de child
 function addHtmlElementContent(parent, child, tekst, id) {
    parent.appendChild(child);
-   child.innerHTML = tekst;
+   child.innerText = tekst;
    child.id = id;
    return child;
 }
@@ -122,6 +122,7 @@ function GETKlantById(id){
       t.value = col.innerText;
       t.id = "Nieuw" + col.id;
   //    console.log(t.id);
+  col.innerText = "";
       e.appendChild(t);
     //   }//end if
     }//end for

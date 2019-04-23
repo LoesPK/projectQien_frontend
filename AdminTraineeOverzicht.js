@@ -86,7 +86,7 @@ function addHtmlElement(parent, child) {
 // EMIEL - Voeg child aan parent toe, zet de tekst als innerHTML in de child
 function addHtmlElementContent(parent, child, tekst, id) {
    parent.appendChild(child);
-   child.innerHTML = tekst;
+   child.innerText = tekst;
    child.id = id;
    return child;
 }
@@ -131,15 +131,21 @@ function wijzigTrainee(trainee){
     if(j==4){
       var t = document.createElement("select");
       t.id = "Nieuw" + col.id;
+      col.innerText = "";
       col.appendChild(t);
+
       updateDropdownKlanten(row);
     }else{
 //    console.log(col.id);
 //    console.log(col.innerText);
+
+////
+
     var t = document.createElement("input");
     var e = col;
     t.value = col.innerText;
     t.id = "Nieuw" + col.id;
+    e.innerText = "";
 //    console.log(t.id);
     e.appendChild(t);
     }//end if
