@@ -805,10 +805,12 @@ function sortTable(n) {
 
 function addHtmlElementContentPlusAwesome(parent, icon, child, tekst) {
     icon.className = "fas fa-exclamation-triangle";
+    parent.className = "table-warning"
     parent.appendChild(icon)
     icon.appendChild(child);
-    child.style.display="inline-block";
     child.style.color="red";
+    // child.className = "fas fa-exclamation-triangle";
     child.innerHTML = tekst;
-    return icon;
+    // child.style.fontFamily = "Roboto"
+    return child;
 }
