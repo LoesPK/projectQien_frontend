@@ -20,6 +20,115 @@ if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
 today = yyyy+'-'+mm+'-'+dd ;
 
+// Jordi
+// Checkt of de aangeklikte dag declarabel is (dus geen weekend of vrije feestdag)
+function isDeclarabeleDag(e){
+	var dagvdWeek = new Date( e.target.value ).getUTCDay() + 1; // telt nu van 1-7 (begin bij zondag)
+
+	var jaar = new Date( e.target.value ).getUTCFullYear();
+	var maand = new Date( e.target.value ).getUTCMonth() + 1; // nu 1-12 (januari = 1)
+	var dag = new Date( e.target.value ).getUTCDate(); // 1-31 (dag vd maand)
+
+	var pasen = new Date (jaar, EasterMaand(jaar)-1, EasterDag(jaar)); //-1 omdat gewoon zomaar
+
+	var hemelvaart = new Date(jaar, pasen.getUTCMonth(), pasen.getUTCDate());
+	hemelvaart.setDate(pasen.getUTCDate() + 40);
+
+	var pinksteren = new Date(jaar, pasen.getUTCMonth(), pasen.getUTCDate());
+	pinksteren.setDate(pasen.getUTCDate() + 50);
+
+	console.log("jaar: " + jaar + ", maand: " + maand + ", dag: " + dag);
+	console.log("pasen:");
+	console.log(pasen);
+	console.log("hemelvaart:");
+	console.log(hemelvaart);
+	console.log(hemelvaart.getUTCMonth());
+	console.log(hemelvaart.getUTCDate());
+	console.log("pinksterdag 1:");
+	console.log(pinksteren);
+	console.log(pinksteren.getUTCMonth());
+	console.log(pinksteren.getUTCDate());
+
+	// Is het weekend?
+	if(dagvdWeek == 1 || dagvdWeek == 7){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// nieuwjaar
+	else if(maand == 1 && dag == 1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// koningsdag (als het op zondag valt wordt het een dag eerder gevierd, maar zaterdag valt al onder weekend check)
+	else if(maand == 4 && dag == 27){
+		// if (!(koningsdag.getUTCDay + 1) == 1){
+			alert("Let op, deze dag is niet declarabel");
+		// }
+	}
+	// kerstdagen
+	else if(maand == 12 && dag == 25){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	else if(maand == 12 && dag == 26){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// niet-vaste vrije dagen:
+	// paasdagen
+	// 1e
+	else if(maand == EasterMaand(jaar) && dag == EasterDag(jaar)){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// 2e
+	else if(maand == EasterMaand(jaar) && dag == EasterDag(jaar)+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// hemelvaart
+	else if(maand == hemelvaart.getUTCMonth()+1 && dag == hemelvaart.getUTCDate()+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+	// pinksterdagen
+	// 1e
+	else if(maand == pinksteren.getUTCMonth()+1 && dag == pinksteren.getUTCDate()+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+	// 2e
+	else if(maand == pinksteren.getUTCMonth()+1 && dag == pinksteren.getUTCDate()+1+1){
+		alert("Let op, deze dag is niet declarabel");
+	}
+
+}
+
+// kant en klare berekening, returnt de maand (M) en de dag (D) van pasen van het meegegeven jaar (Y)
+function EasterMaand(Y) {
+	var C = Math.floor(Y/100);
+	var N = Y - 19*Math.floor(Y/19);
+	var K = Math.floor((C - 17)/25);
+	var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
+	I = I - 30*Math.floor((I/30));
+	I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
+	var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+	J = J - 7*Math.floor(J/7);
+	var L = I - J;
+	var M = 3 + Math.floor((L + 40)/44);
+	var D = L + 28 - 31*Math.floor(M/4);
+	return M;
+}
+function EasterDag(Y) {
+	var C = Math.floor(Y/100);
+	var N = Y - 19*Math.floor(Y/19);
+	var K = Math.floor((C - 17)/25);
+	var I = C - Math.floor(C/4) - Math.floor((C - K)/3) + 19*N + 15;
+	I = I - 30*Math.floor((I/30));
+	I = I - Math.floor(I/28)*(1 - Math.floor(I/28)*Math.floor(29/(I + 1))*Math.floor((21 - N)/11));
+	var J = Y + Math.floor(Y/4) + I + 2 - C + Math.floor(C/4);
+	J = J - 7*Math.floor(J/7);
+	var L = I - J;
+	var M = 3 + Math.floor((L + 40)/44);
+	var D = L + 28 - 31*Math.floor(M/4);
+	return D;
+}
+
 //Dropdown menu opbouwen
 function traineeDropDownMenu(selectID){
 	var select = document.getElementById("select"+selectID),
@@ -70,12 +179,11 @@ function GETTrainee(){
 }//end GETTrainee
 
 function UrenVerzenden(){
-	var table = document.getElementById("urenTabel");
-	var tablebody = table.children[0];
-	var aantal = tablebody.children.length;
-   for(var i = 1; i<aantal; i++){
+	var body = document.getElementById("urenTabel");
+	var aantal = body.children.length;
+   for(var i = 0; i<aantal; i++){
 	var uur = {}
-	var tablerow = tablebody.children[i];
+	var tablerow = body.children[i];
    	uur.id = tablerow.id;
 	uur.accordStatus = 1;
 	akkoordUur(uur, uur.id);
@@ -103,19 +211,22 @@ function akkoordUur(uur, i) {
 //Uren Opslaan functie
 function HourSave(){
 	var urenlijst = new Array();
-	var table = document.getElementById("urenTabel");
-	var tablebody = table.children[0];
-	var aantal = tablebody.children.length;
+	var body = document.getElementById("urenTabel");
+	var aantal = body.children.length;
 
-   for(var i = 1; i<aantal; i++){
+   for(var i = 0; i<aantal; i++){
  	var uur = {}
-   	var tablerow = tablebody.children[i];
+   	var tablerow = body.children[i];
+   	console.log(tablerow);
    	uur.id = tablerow.id;
 	var c = tablerow.children;
+	console.log(c);
 	// ------- soort uren veld -------//
 	var ch = c[1];
+	console.log(c[1])
 	var chi = ch.children[0];
 	var chiVal = chi.value;
+	console.log(chiVal);
 	// ------- datumveld -------//
 	var ch0 = c[0];
 	var chi0 = ch0.children[0];
@@ -126,6 +237,7 @@ function HourSave(){
  	uur.waarde = chiVal;
 	uur.aantal = chi2.value; 
 	var d = new Date(chi0.value);
+	console.log("hier misschien die functie?"); // Jordi
 	uur.factuurDatum = d;
 	uur.bijKlant = trainee.klant.id;
 	console.log("KlanvhUur: ")
@@ -158,9 +270,10 @@ function PutTrainee(trainee){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowUrenTabel(uur){
-	var table = document.getElementById("urenTabel");
-	var insertedRow = table.insertRow(1);
+	var body = document.getElementById("urenTabel");
+	var insertedRow = body.insertRow(0);
 	insertedRow.id = uur.id;
+	insertedRow.style.borderBottom = "dotted 1px darkslategrey"
 	//datum
 
 	var insertedCell = insertedRow.insertCell(0);
@@ -168,14 +281,21 @@ function GETRowUrenTabel(uur){
 	if(uur.accordStatus == "TEACCORDEREN" || uur.accordStatus == "GOEDGEKEURD"){
 		console.log("in if");
 		insertedCell.innerHTML = uur.factuurDatum.substring(8,10) + "/" + uur.factuurDatum.substring(5,7) +"/" + uur.factuurDatum.substring(0,4)
+
 		document.getElementById("addButton").setAttribute("disabled", "disabled");
 		document.getElementById("buttonopslaan").setAttribute("disabled", "disabled");
 		document.getElementById("sendHours").setAttribute("disabled", "disabled");
 		var but = document.getElementsByClassName("fas fa-trash-alt");
 		console.log(but);
+
+		// Jordi
+		// console.log(uur.factuurDatum);
+		// isDeclarabeleDag(uur.factuurDatum); 
+		// console.log("De dag " + uur.factuurDatum + " is declarabel: " + isDeclarabeleDag(uur.factuurDatum));
 	}
 	else if(uur.accordStatus == "AFGEKEURD"){
 			var Datum = document.createElement("input");
+			Datum.className = "form-control"
 			Datum.type = "date";
 			Datum.value = uur.factuurDatum.substring(0,10);
 			Datum.setAttribute("max", today);
@@ -185,6 +305,7 @@ function GETRowUrenTabel(uur){
 			insertedCell.appendChild(Datum);
 	}else{
 		var Datum = document.createElement("input");
+		Datum.className = "form-control"
 		Datum.type = "date";
 		Datum.value = uur.factuurDatum.substring(0,10);
 		Datum.setAttribute("max", today);
@@ -198,17 +319,27 @@ function GETRowUrenTabel(uur){
 		}
 	else{
 	var arr = ["Gewerkte Uren", "Overuren 100%", "Overuren 125%", "Verlof Uren", "Ziekte Uren"];
+	var div = document.createElement("div");
+	div.className = "form-group";
 	var SoortUur = document.createElement("select");
-		SoortUur.id = uur.id;
+	SoortUur.className = "form-control";
+	SoortUur.style.width = "auto";
+	SoortUur.id = uur.id;
+		
 	for(var i = 0; i<arr.length; i++){
+
 		var option = document.createElement("OPTION"),
 		txt = document.createTextNode(arr[i]);
+		option.value=txt;
 		option.appendChild(txt);
 		option.value = arr[i];
 		SoortUur.insertBefore(option,SoortUur.lastChild);
+
 		if(arr[i] === uur.waarde){
+
 			SoortUur.value = uur.waarde;
 		}
+		
 	insertedCell1.appendChild(SoortUur);
 	}
 	}
@@ -222,19 +353,9 @@ function GETRowUrenTabel(uur){
 		var AantalUur = document.createElement("input");
 		AantalUur.type = "number";
 		AantalUur.value = uur.aantal;
+		AantalUur.className = "form-control";
 		insertedCell2.appendChild(AantalUur);
-		var VerwijderKnop = document.createElement("span");
-		VerwijderKnop.className = "fas fa-trash-alt";
-		VerwijderKnop.addEventListener("click", function(){
-		var xhttp = new XMLHttpRequest();
-	  	xhttp.onreadystatechange = function() {
-	    	if (this.readyState == 4 && this.status == 200) {
-					insertedRow.parentNode.removeChild(insertedRow);
-    		}
- 	 	};
-  		xhttp.open("DELETE", apiHour+uur.id, true);
-  		xhttp.send();});
-	insertedCell2.appendChild(VerwijderKnop);
+		
 	}
 	var insertedCell3 = insertedRow.insertCell(3);
 	if(uur.accordStatus == "NIETINGEVULD"){
@@ -246,14 +367,30 @@ function GETRowUrenTabel(uur){
 	}if(uur.accordStatus == "AFGEKEURD"){
 		statusAkkoord = "Afgekeurd";
 	}
-	insertedCell3.innerHTML = statusAkkoord;
+var VerwijderKnop = document.createElement("span");
+		VerwijderKnop.className = "fas fa-trash-alt";
+		VerwijderKnop.addEventListener("click", function(){
+		var xhttp = new XMLHttpRequest();
+	  	xhttp.onreadystatechange = function() {
+	    	if (this.readyState == 4 && this.status == 200) {
+					insertedRow.parentNode.removeChild(insertedRow);
+    		}
+ 	 	};
+  		xhttp.open("DELETE", apiHour+uur.id, true);
+  		xhttp.send();});
+  		insertedCell3.innerHTML = statusAkkoord;
+	insertedCell3.appendChild(VerwijderKnop);
+				
+
+	
 
 }
 
 //functie om rijen toe te voegen aan de tabel
 function addRowUrenTabel(){
-	table = document.getElementById("urenTabel");
-	var insertedRow = table.insertRow(1);
+	var body = document.getElementById("urenTabel");
+	var insertedRow = body.insertRow(0);
+
 	insertedRow.id = "0";
 	for(var i = 0; i<4; i++){
 		var insertedCell = insertedRow.insertCell(i);
@@ -263,16 +400,26 @@ function addRowUrenTabel(){
 				dateID++;
 				var temp1 = document.createElement("input");
 				temp1.type = "date";
+				temp1.className = "form-control"
 				temp1.id = "datum"+dateID; 
 				temp1.setAttribute("max", today);
 				temp1.value = today;
 				insertedCell.appendChild(temp1);
+
+				//Jordi
+				var datumSelector = document.querySelector('[type=date]');
+				ds = document.getElementById(temp1.id);
+				// console.log(datumSelector);
+				datumSelector.addEventListener('input', isDeclarabeleDag);
+				// ds.onchange = alert("yo");
 			}
 			//voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
 			if (i == 1) {
 				selectID++;
 				var temp1 = document.createElement("select");
 				temp1.id = "select"+selectID;
+				temp1.className = "form-control";
+				temp1.style.width="auto";
 				var temp2 = document.createElement("OPTION");
 				temp2.innerHTML = "Gewerkte Uren"
 				temp1.appendChild(temp2);
@@ -283,10 +430,23 @@ function addRowUrenTabel(){
 				aantalID++;
 				var temp1 = document.createElement("input");
 				temp1.type = "number";
+				temp1.className = "form-control"
 				temp1.min = 0;
 				temp1.max = 24;
 				temp1.value = 8;
 				temp1.id = "aantal"+aantalID; 
+				// var temp2 = document.createElement("span");
+				// temp2.className = "fas fa-trash-alt";
+				// temp2.addEventListener("click", function(){
+				// 	var tr = event.target.parentNode;
+				// 	var td = tr.parentNode;
+				// 	td.parentNode.removeChild(td);
+				// 	});
+				insertedCell.appendChild(temp1);
+				// insertedCell.appendChild(temp2);		
+			}
+			if(i == 3){
+				insertedCell.innerHTML = "Nieuw";
 				var temp2 = document.createElement("span");
 				temp2.className = "fas fa-trash-alt";
 				temp2.addEventListener("click", function(){
@@ -294,11 +454,7 @@ function addRowUrenTabel(){
 					var td = tr.parentNode;
 					td.parentNode.removeChild(td);
 					});
-				insertedCell.appendChild(temp1);
 				insertedCell.appendChild(temp2);		
-			}
-			if(i == 3){
-				insertedCell.innerHTML = "Nieuw";
 			}
 	}
 	traineeDropDownMenu(selectID);
