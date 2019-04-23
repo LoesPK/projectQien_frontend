@@ -156,7 +156,7 @@ function GETTrainee(){
 					var uurInDBHemZeYear = trainee.uren[i].factuurDatum.substring(0,4);
 					
 					//Check op status vd uren zodat alleen de uren die niet ingevuld of teaccorderen zijn worden weergegeven
-					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCODEREN" || trainee.uren[i].accordStatus == "AFGEKEURD") { 
+					if (trainee.uren[i].accordStatus == "NIETINGEVULD" || trainee.uren[i].accordStatus == "TEACCORDEREN" || trainee.uren[i].accordStatus == "AFGEKEURD") { 
 						GETRowUrenTabel(trainee.uren[i]);
 						
 						//voorwaarden wanneer een uur toegestaan is: anders wordt het uur roodgekleurd en moet de trainee deze (zelf) verwijderen
@@ -239,6 +239,9 @@ function HourSave(){
 	var d = new Date(chi0.value);
 	console.log("hier misschien die functie?"); // Jordi
 	uur.factuurDatum = d;
+	uur.bijKlant = trainee.klant.id;
+	console.log("KlanvhUur: ")
+	console.log(uur.bijKlant)
   	urenlijst.push(uur);
 	}
 	trainee.uren = urenlijst;
@@ -275,7 +278,7 @@ function GETRowUrenTabel(uur){
 
 	var insertedCell = insertedRow.insertCell(0);
 	console.log(uur.accordStatus);
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD"){
+	if(uur.accordStatus == "TEACCORDEREN" || uur.accordStatus == "GOEDGEKEURD"){
 		console.log("in if");
 		insertedCell.innerHTML = uur.factuurDatum.substring(8,10) + "/" + uur.factuurDatum.substring(5,7) +"/" + uur.factuurDatum.substring(0,4)
 
@@ -311,7 +314,7 @@ function GETRowUrenTabel(uur){
 	//soort uren
 	var insertedCell1 = insertedRow.insertCell(1);
 	
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD"){
+	if(uur.accordStatus == "TEACCORDEREN" || uur.accordStatus == "GOEDGEKEURD"){
 			insertedCell1.innerHTML = uur.waarde;
 		}
 	else{
@@ -343,7 +346,7 @@ function GETRowUrenTabel(uur){
 	
 	//aantal uren
 	var insertedCell2 = insertedRow.insertCell(2);
-	if(uur.accordStatus == "TEACCODEREN" || uur.accordStatus == "GOEDGEKEURD"){
+	if(uur.accordStatus == "TEACCORDEREN" || uur.accordStatus == "GOEDGEKEURD"){
 		insertedCell2.innerHTML = uur.aantal;
 	}
 	else{
@@ -357,8 +360,8 @@ function GETRowUrenTabel(uur){
 	var insertedCell3 = insertedRow.insertCell(3);
 	if(uur.accordStatus == "NIETINGEVULD"){
 		statusAkkoord = "Opgeslagen";
-	}if(uur.accordStatus == "TEACCODEREN"){
-		statusAkkoord = "Te Accoderen";
+	}if(uur.accordStatus == "TEACCORDEREN"){
+		statusAkkoord = "Te Accorderen";
 	}if(uur.accordStatus == "GOEDGEKEURD"){
 		statusAkkoord = "Goedgekeurd";
 	}if(uur.accordStatus == "AFGEKEURD"){

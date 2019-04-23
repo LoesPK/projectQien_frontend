@@ -5,6 +5,7 @@ var apiTrainee = "http://localhost:8082/api/trainee/";
 var klant;
 
 
+
 // EMIEL - GET Uren per maand
 function GETUrenPerTrainee(){
   console.log ("huidige ingelogde user:")
@@ -25,6 +26,7 @@ function GETUrenPerTrainee(){
       xhttp.send(); 
 }
 
+//opbouwen van drop down menu
 function GetKlant(){
   var xhttp = new XMLHttpRequest();
    var trainees = document.getElementById("selectedTrainee");
@@ -58,16 +60,18 @@ function GetKlant(){
 function GETRowUrenTabel(trainee){
   var akkoordstatus = "";
   var aantalUren = 0;
+  console.log(sessionStorage.getItem("storedUserID"))
   console.log(trainee.uren.length);
   for(var i=0;i<trainee.uren.length;i++){
-      console.log(trainee.uren[i].accordStatus);
-      if(trainee.uren[i].accordStatus == "TEACCODEREN"){
-        akkoordstatus = "Te Accoderen";
+      console.log(trainee.uren[i].accordStatus);   
+      
+      if(trainee.uren[i].accordStatus == "TEACCORDEREN"&& trainee.uren[i].bijKlant == sessionStorage.getItem("storedUserID")){
+        akkoordstatus = "Te Accorderen";
           aantalUren += trainee.uren[i].aantal ;
           console.log(akkoordstatus);
     }
   }
-  if(akkoordstatus == "Te Accoderen"){
+  if(akkoordstatus == "Te Accorderen"){
   var table = document.getElementById("traineelijst");
   var insertedRow = table.insertRow(0);
 
@@ -200,7 +204,7 @@ console.log(row);
    for(var i = 0; i<uren.length; i++){
 
     console.log(uren[i].accordStatus);
-    if(uren[i].accordStatus == "TEACCODEREN"){
+    if(uren[i].accordStatus == "TEACCORDEREN"){
          var uur = {}
     uur.id = uren[i].id;
     console.log(uur.id);
