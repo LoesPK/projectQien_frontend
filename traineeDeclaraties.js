@@ -67,8 +67,8 @@ function GETTrainee(){
 
 //GET functie met opbouwen rijen urentabel
 function GETRowKostenTabel(kosten){
-  var table = document.getElementById("kostenTabel");
-  var insertedRow = table.insertRow(1);
+  var body = document.getElementById("kostenTabel");
+  var insertedRow = body.insertRow(0);
   insertedRow.id = kosten.id;
 
   var insertedCell = insertedRow.insertCell(0);
@@ -77,6 +77,7 @@ function GETRowKostenTabel(kosten){
   var insertedCell = insertedRow.insertCell(1);
     var Datum = document.createElement("input");
     Datum.type = "date";
+    Datum.className= "form-control";
     Datum.value = kosten.factuurDatum.substring(0,10);
     Datum.setAttribute("max", today);
     insertedCell.appendChild(Datum);
@@ -85,6 +86,8 @@ function GETRowKostenTabel(kosten){
   var insertedCell1 = insertedRow.insertCell(2); 
   var arr = ["Openbaar Vervoer", "Overige Kosten", "Auto"];
   var SoortKosten = document.createElement("select");
+  SoortKosten.className= "form-control";
+  SoortKosten.style.width = "auto";
     SoortKosten.id = kosten.id;
   for(var i = 0; i<arr.length; i++){
     var option = document.createElement("OPTION"),
@@ -120,6 +123,8 @@ function GETRowKostenTabel(kosten){
   var insertedCell2 = insertedRow.insertCell(3);
     var Bedrag = document.createElement("input");
     Bedrag.type = "number";
+    Bedrag.style.width = "auto";
+    Bedrag.className= "form-control";
     Bedrag.value = kosten.bedrag/100;
     insertedCell2.appendChild(Bedrag);
 
@@ -128,7 +133,10 @@ function GETRowKostenTabel(kosten){
   //aantal KM
     var insertedCell3 = insertedRow.insertCell(4);
     var km = document.createElement("input");
+    km.className= "form-control";
     km.type = "number";
+
+    km.style.width = "auto";
     km.value = kosten.aantalKM;
     insertedCell3.appendChild(km);
     if(kosten.soort == "Auto"){
@@ -143,9 +151,11 @@ function GETRowKostenTabel(kosten){
   var insertedCell5 = insertedRow.insertCell(5);
   var Opmerking1 = document.createElement("input");
   Opmerking1.maxLength = 150;
+  Opmerking1.className= "form-control";
+  Opmerking1.style.display="inline";
+  // Opmerking1.style.width = "auto";
   Opmerking1.type = "string";
   Opmerking1.value = kosten.opmerking;
-  insertedCell5.appendChild(Opmerking1);
 
 
     var VerwijderKnop  = document.createElement("span");
@@ -159,17 +169,20 @@ function GETRowKostenTabel(kosten){
     };
       xhttp.open("DELETE", apiCosts+kosten.id, true);
       xhttp.send();});
+  insertedCell5.style.width= "auto";
+  insertedCell5.appendChild(Opmerking1);
   insertedCell5.appendChild(VerwijderKnop);
   
+
      
 
 }
 //functie om rijen toe te voegen aan de tabel
 function addRowKostenTabel(){
   
-  table = document.getElementById("kostenTabel");
+  body = document.getElementById("kostenTabel");
 
-    var insertedRow = table.insertRow(1);
+    var insertedRow = body.insertRow(0);
   insertedRow.id = "0";
           
 //voor de eerste cel (cel 0(i=0)): voeg het status inputveld toe
@@ -186,11 +199,14 @@ function addRowKostenTabel(){
         temp2.id = "datum"+dateID; 
         temp2.setAttribute("max", today);
         temp2.value = today;
+        temp2.className = "form-control";
         insertedCell1.appendChild(temp2);
 //voor de eerste cel (cel 1(i=1)): voeg het dropdownmenu toe
       var insertedCell2 = insertedRow.insertCell(2);
         selectID++;
+        
         var temp3 = document.createElement("select");
+        temp3.className = "form-control";
         temp3.id = "select"+selectID;
         var temp4 = document.createElement("OPTION");
         temp4.innerHTML = "Openbaar Vervoer"
@@ -203,6 +219,7 @@ function addRowKostenTabel(){
           if(choice.innerHTML == "Auto"){
           
             temp5.value = 0.19;
+
             temp5.setAttribute("disabled", "disabled");
             temp6.removeAttribute("disabled");
           }if(choice.innerHTML == "Openbaar Vervoer" || choice.innerHTML == "Overige Kosten" ){
@@ -210,6 +227,7 @@ function addRowKostenTabel(){
               temp5.value = 0;
               temp5.removeAttribute("disabled");
               temp6.setAttribute("disabled", "disabled");
+
             }
         })
 //voor de eerste cel (cel 2 (i=2)): voeg het bedrag inputveld toe
@@ -217,6 +235,7 @@ function addRowKostenTabel(){
         aantalID++;
         var temp5 = document.createElement("input");
         temp5.type = "number";
+        temp5.className = "form-control";
         temp5.value = 0;
         temp5.id = "aantal"+aantalID; 
         
@@ -225,6 +244,7 @@ function addRowKostenTabel(){
       var temp6 = document.createElement("input");
             temp6.type = "number";
             temp6.value = 0;
+            temp6.className = "form-control";
             temp6.setAttribute("disabled", "disabled");
             insertedCell4.appendChild(temp6);
 
@@ -234,6 +254,8 @@ function addRowKostenTabel(){
   Opmerking2.maxLength = 150;
   Opmerking2.type = "string";
   Opmerking2.value = "";
+  Opmerking2.className = "form-control";
+  Opmerking2.style.display="inline";
   insertedCell5.appendChild(Opmerking2);
 
     //verwijderknop
@@ -253,15 +275,12 @@ function addRowKostenTabel(){
 function KostenOpslaan(){
   var kostenlijst = new Array();
   console.log("in kostenopslaan");
-  var table = document.getElementById("kostenTabel");
-  var tablebody = table.children[0]; 
-  console.log(table);
-  console.log(tablebody);
-  var aantal = tablebody.children.length;
+  var body = document.getElementById("kostenTabel");
+  var aantal = body.children.length;
   console.log(aantal);
-   for(var i = 1; i<aantal; i++){
+   for(var i = 0; i<aantal; i++){
     var kosten = {}
-    var tablerow = tablebody.children[i];
+    var tablerow = body.children[i];
     kosten.id = tablerow.id;
     var c = tablerow.children;
     console.log(c);
@@ -329,7 +348,7 @@ function PUTTrainee(trainee){
     if (this.readyState == 4)
       if(this.status == 200) { 
       trainee = JSON.parse(this.responseText);
-      // document.location.reload(true);
+      document.location.reload(true);
         }
         else{
           alert("HELP!" + this.status);
